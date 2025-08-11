@@ -1,6 +1,22 @@
-import React from 'react';
-import { SearchIcon, UserIcon } from 'lucide-react';
+import React, { useState } from 'react';
+import { SearchIcon, UserIcon, LogOutIcon } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
+import { AuthModal } from './AuthModal';
+
 export const Navbar = () => {
+  const { user, signOut } = useAuth();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
+
+  const openAuthModal = (mode: 'signin' | 'signup') => {
+    setAuthMode(mode);
+    setShowAuthModal(true);
+  };
+
   return <nav className="bg-white shadow-sm border-b border-gray-200">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
@@ -18,15 +34,44 @@ export const Navbar = () => {
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <button className="text-gray-600 hover:text-gray-800 transition-colors">
-              Sign In
-            </button>
-            <button className="bg-indigo-600 text-white px-5 py-2 rounded-sm hover:bg-indigo-700 transition-all duration-200 flex items-center shadow-sm hover:shadow">
-              <UserIcon size={18} className="mr-1.5" />
-              Sign Up
-            </button>
+            {user ? (
+              <div className="flex items-center space-x-4">
+                <span className="text-gray-600 text-sm">
+                  Welcome, {user.email}
+                </span>
+                <button 
+                  onClick={handleSignOut}
+                  className="text-gray-600 hover:text-gray-800 transition-colors flex items-center gap-1"
+                >
+                  <LogOutIcon size={16} />
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <>
+                <button 
+                  onClick={() => openAuthModal('signin')}
+                  className="text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  Sign In
+                </button>
+                <button 
+                  onClick={() => openAuthModal('signup')}
+                  className="bg-indigo-600 text-white px-5 py-2 rounded-sm hover:bg-indigo-700 transition-all duration-200 flex items-center shadow-sm hover:shadow"
+                >
+                  <UserIcon size={18} className="mr-1.5" />
+                  Sign Up
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
+      
+      <AuthModal 
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        initialMode={authMode}
+      />
     </nav>;
 };
