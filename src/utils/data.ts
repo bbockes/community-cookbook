@@ -1,4 +1,5 @@
 import { Cookbook } from './types';
+
 export const cuisineImages = {
   All: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
   Italian: 'https://images.unsplash.com/photo-1498579150354-977475b7ea0b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
@@ -16,6 +17,7 @@ export const cuisineImages = {
   Seasonal: 'https://images.unsplash.com/photo-1601815075650-5a41a262d7ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
   Science: 'https://images.unsplash.com/photo-1603203040743-24aced9d6f22?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
 };
+
 export const cookingMethodImages = {
   All: 'https://images.unsplash.com/photo-1556911073-38141963c9e0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
   Baking: 'https://images.unsplash.com/photo-1549057446-9f5c6ac91a04?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
@@ -39,60 +41,7 @@ export const cookingMethodImages = {
   Smoking: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
   Caramelizing: 'https://images.unsplash.com/photo-1599599810769-bcde5a160d32?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'
 };
-export const cookbooks: Cookbook[] = [{
-  id: '1',
-  title: 'The Art of Simple Food',
-  author: 'Alice Waters',
-  description: 'A delicious revolution of simple, seasonal cooking with 200+ recipes for beginners and experts alike.',
-  imageUrl: "/cookbook_cards.png",
-  votes: 124,
-  tags: ['Italian', 'Seasonal'],
-  publishedDate: '2023-01-15'
-}, {
-  id: '2',
-  title: 'Salt, Fat, Acid, Heat',
-  author: 'Samin Nosrat',
-  description: 'Master the elements of good cooking with 100 essential recipes and techniques.',
-  imageUrl: 'https://images.unsplash.com/photo-1589820296156-2454bb8a6ad1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-  votes: 87,
-  tags: ['Technique', 'Fundamentals'],
-  publishedDate: '2023-02-20'
-}, {
-  id: '3',
-  title: 'The Wok: Recipes and Techniques',
-  author: 'J. Kenji López-Alt',
-  description: 'A comprehensive guide to mastering wok cooking with science-based approaches.',
-  imageUrl: 'https://images.unsplash.com/photo-1607877742444-c2cedc111dd2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-  votes: 152,
-  tags: ['Asian', 'Technique'],
-  publishedDate: '2023-03-10'
-}, {
-  id: '4',
-  title: 'Dessert Person',
-  author: 'Claire Saffitz',
-  description: 'A baking book for both novice and experienced bakers with detailed instructions and beautiful photography.',
-  imageUrl: 'https://images.unsplash.com/photo-1603033156166-2ae22eb2b7e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-  votes: 93,
-  tags: ['Baking', 'Dessert'],
-  publishedDate: '2023-04-05'
-}, {
-  id: '5',
-  title: 'Ottolenghi Simple',
-  author: 'Yotam Ottolenghi',
-  description: 'Vibrant Middle Eastern recipes with 10 or fewer ingredients, made in 30 minutes or less.',
-  imageUrl: 'https://images.unsplash.com/photo-1576867757603-05b134ebc379?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-  votes: 78,
-  tags: ['Middle Eastern', 'Quick'],
-  publishedDate: '2023-05-12'
-}, {
-  id: '6',
-  title: 'The Food Lab',
-  author: 'J. Kenji López-Alt',
-  description: 'Better home cooking through science with hundreds of tested recipes and techniques.',
-  imageUrl: 'https://images.unsplash.com/photo-1466637574441-749b8f19452f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-  votes: 210,
-  tags: ['Science', 'Technique'],
-  publishedDate: '2023-06-18'
-}];
+
 export const cuisineTags = ['All', 'Italian', 'Asian', 'Middle Eastern', 'French', 'American', 'Mexican', 'Indian', 'Vegetarian', 'Baking', 'Dessert', 'Technique', 'Quick', 'Seasonal', 'Science'];
+
 export const cookingMethodTags = ['All', 'Baking', 'Boiling', 'Sautéing', 'Grilling', 'Roasting', 'Frying', 'Broiling', 'Steaming', 'Simmering', 'Poaching', 'Braising', 'Stewing', 'Sous-vide', 'Microwaving', 'Toasting', 'Searing', 'Blanching', 'Pressure cooking', 'Smoking', 'Caramelizing'];

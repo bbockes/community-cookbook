@@ -3,7 +3,12 @@ import { SearchIcon, UserIcon, LogOutIcon } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { AuthModal } from './AuthModal';
 
-export const Navbar = () => {
+interface NavbarProps {
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+}
+
+export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery }) => {
   const { user, signOut } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
@@ -27,7 +32,13 @@ export const Navbar = () => {
           </div>
           <div className="flex-1 max-w-md mx-4">
             <div className="relative">
-              <input type="text" placeholder="Search cookbooks..." className="w-full py-2 px-4 pl-10 bg-gray-50 border border-gray-200 rounded-sm text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all" />
+              <input 
+                type="text" 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search cookbooks..." 
+                className="w-full py-2 px-4 pl-10 bg-gray-50 border border-gray-200 rounded-sm text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all" 
+              />
               <div className="absolute left-3 top-2.5 text-gray-400">
                 <SearchIcon size={18} />
               </div>
