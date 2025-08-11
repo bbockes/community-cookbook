@@ -29,6 +29,24 @@ export function useAuth() {
       email,
       password,
     });
+
+    // If signup was successful, create a profile entry
+    if (data.user && !error) {
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .insert({
+          id: data.user.id,
+          email: data.user.email,
+          wishlist: [],
+          favorite_cookbooks: []
+        });
+
+      if (profileError) {
+        console.error('Error creating user profile:', profileError);
+        return { data, error: profileError };
+      }
+    }
+
     return { data, error };
   };
 
