@@ -26,7 +26,7 @@ export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery }) =
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <h1 className="text-2xl font-bold text-charcoal font-heading">
+            <h1 className="text-2xl font-bold text-navy font-heading">
               <span className="text-navy">Community</span> Cookbook
             </h1>
           </div>
@@ -62,13 +62,13 @@ export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery }) =
               <>
                 <button 
                   onClick={() => openAuthModal('signin')}
-                  className="text-charcoal/80 hover:text-charcoal transition-colors"
+                  className="bg-coral text-white px-4 py-2 rounded-sm hover:bg-coral/90 transition-colors"
                 >
                   Sign In
                 </button>
                 <button 
                   onClick={() => openAuthModal('signup')}
-                  className="bg-navy text-white px-5 py-2 rounded-sm hover:bg-navy/90 transition-all duration-200 flex items-center shadow-sm hover:shadow"
+                  className="bg-coral text-white px-5 py-2 rounded-sm hover:bg-coral/90 transition-all duration-200 flex items-center shadow-sm hover:shadow"
                 >
                   <UserIcon size={18} className="mr-1.5" />
                   Sign Up
@@ -77,7 +77,7 @@ export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery }) =
             )}
           </div>
         </div>
-      </div>
+        <div className="container mx-auto px-4 py-3 bg-cream">
       
       <AuthModal 
         isOpen={showAuthModal}
