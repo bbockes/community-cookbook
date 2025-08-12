@@ -94,7 +94,6 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                 <div>
                   <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-semibold">User Reviews</h3>
-                    <button className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors text-sm">
                     <button className="bg-navy text-white px-4 py-2 rounded-md hover:bg-navy/90 transition-colors text-sm">
                       Write Review
                     </button>
@@ -109,7 +108,6 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                 <div>
                   <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-semibold">Recipe Cards</h3>
-                    <button className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors text-sm">
                     <button className="bg-navy text-white px-4 py-2 rounded-md hover:bg-navy/90 transition-colors text-sm">
                       Add Recipe Card
                     </button>
