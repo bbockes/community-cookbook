@@ -35,7 +35,7 @@ export const Home: React.FC<HomeProps> = ({
       searchQuery: searchQuery || undefined,
       cuisine: activeCuisine,
       cookingMethod: activeCookingMethod,
-      sortBy: activeSort as 'newest' | 'popular',
+      sortBy: activeSort as 'newest' | 'popular' | 'rating',
       timeFilter: activeTimeFilter as 'today' | 'week' | 'month' | 'all',
     };
     
@@ -51,7 +51,7 @@ export const Home: React.FC<HomeProps> = ({
             searchQuery: searchQuery || undefined,
             cuisine: activeCuisine,
             cookingMethod: activeCookingMethod,
-            sortBy: activeSort as 'newest' | 'popular',
+            sortBy: activeSort as 'newest' | 'popular' | 'rating',
             timeFilter: activeTimeFilter as 'today' | 'week' | 'month' | 'all',
           };
           loadMoreCookbooks(filterOptions);
