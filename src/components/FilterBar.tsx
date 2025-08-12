@@ -166,7 +166,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               <>
                 <CuisineCard 
                   key="all-subcuisine" 
-                  cuisine="All" 
+                  cuisine={`All ${showSubcuisines}`}
                   active={activeCuisine === showSubcuisines} 
                   onClick={() => handleCuisineClick(showSubcuisines)} 
                 />
