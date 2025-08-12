@@ -26,8 +26,8 @@ export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery }) =
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <h1 className="text-2xl font-bold text-gray-800 font-heading">
-              <span className="text-indigo-600">Community</span> Cookbook
+            <h1 className="text-2xl font-bold text-charcoal font-heading">
+              <span className="text-navy">Community</span> Cookbook
             </h1>
           </div>
           <div className="flex-1 max-w-md mx-4">
@@ -37,9 +37,9 @@ export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery }) =
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search cookbooks..." 
-                className="w-full py-2 px-4 pl-10 bg-gray-50 border border-gray-200 rounded-sm text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all" 
+                className="w-full py-2 px-4 pl-10 bg-gray-50 border border-gray-200 rounded-sm text-sm focus:outline-none focus:ring-1 focus:ring-navy transition-all" 
               />
-              <div className="absolute left-3 top-2.5 text-gray-400">
+              <div className="absolute left-3 top-2.5 text-charcoal/60">
                 <SearchIcon size={18} />
               </div>
             </div>
@@ -47,12 +47,12 @@ export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery }) =
           <div className="flex items-center space-x-4">
             {user ? (
               <div className="flex items-center space-x-4">
-                <span className="text-gray-600 text-sm">
+                <span className="text-charcoal/80 text-sm">
                   Welcome, {user.email}
                 </span>
                 <button 
                   onClick={handleSignOut}
-                  className="text-gray-600 hover:text-gray-800 transition-colors flex items-center gap-1"
+                  className="text-charcoal/80 hover:text-charcoal transition-colors flex items-center gap-1"
                 >
                   <LogOutIcon size={16} />
                   Sign Out
@@ -62,13 +62,13 @@ export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery }) =
               <>
                 <button 
                   onClick={() => openAuthModal('signin')}
-                  className="text-gray-600 hover:text-gray-800 transition-colors"
+                  className="text-charcoal/80 hover:text-charcoal transition-colors"
                 >
                   Sign In
                 </button>
                 <button 
                   onClick={() => openAuthModal('signup')}
-                  className="bg-indigo-600 text-white px-5 py-2 rounded-sm hover:bg-indigo-700 transition-all duration-200 flex items-center shadow-sm hover:shadow"
+                  className="bg-navy text-white px-5 py-2 rounded-sm hover:bg-navy/90 transition-all duration-200 flex items-center shadow-sm hover:shadow"
                 >
                   <UserIcon size={18} className="mr-1.5" />
                   Sign Up

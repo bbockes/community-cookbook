@@ -30,11 +30,11 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
               <img src={cookbook.image_url || 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'} alt={cookbook.title} className="w-full aspect-[3/4] object-cover rounded-sm" />
             </div>
             <div className="w-2/3">
-              <h1 className="text-2xl font-bold text-gray-900 mb-1">
+              <h1 className="text-2xl font-bold text-charcoal mb-1">
                 {cookbook.title}
               </h1>
-              <p className="text-gray-600 mb-4">by {cookbook.author}</p>
-              <p className="text-gray-700 mb-6">{cookbook.description}</p>
+              <p className="text-charcoal/70 mb-4">by {cookbook.author}</p>
+              <p className="text-charcoal/80 mb-6">{cookbook.description}</p>
               <div className="flex flex-wrap gap-2 mb-6">
                 {tags.map(tag => <TagPill key={tag} tag={tag} />)}
               </div>
@@ -52,7 +52,7 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                       href={cookbook.affiliate_link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-sm hover:bg-indigo-700 transition-colors"
+                      className="flex items-center gap-2 bg-coral text-white px-4 py-2 rounded-sm hover:bg-coral/90 transition-colors"
                     >
                       <ShoppingCartIcon size={18} />
                       Buy It
@@ -69,8 +69,8 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                   onClick={() => setActiveTab('reviews')}
                   className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
                     activeTab === 'reviews'
-                      ? 'border-indigo-500 text-indigo-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                      ? 'border-navy text-navy'
+                      : 'border-transparent text-charcoal/60 hover:text-charcoal hover:border-gray-300'
                   }`}
                 >
                   Reviews
@@ -79,8 +79,8 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                   onClick={() => setActiveTab('recipe-cards')}
                   className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
                     activeTab === 'recipe-cards'
-                      ? 'border-indigo-500 text-indigo-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                      ? 'border-navy text-navy'
+                      : 'border-transparent text-charcoal/60 hover:text-charcoal hover:border-gray-300'
                   }`}
                 >
                   Recipe Cards
@@ -95,10 +95,11 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                   <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-semibold">User Reviews</h3>
                     <button className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors text-sm">
+                    <button className="bg-navy text-white px-4 py-2 rounded-md hover:bg-navy/90 transition-colors text-sm">
                       Write Review
                     </button>
                   </div>
-                  <div className="text-gray-500 text-center py-8">
+                  <div className="text-charcoal/60 text-center py-8">
                     No reviews yet. Be the first to review this cookbook!
                   </div>
                 </div>
@@ -109,10 +110,11 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                   <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-semibold">Recipe Cards</h3>
                     <button className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors text-sm">
+                    <button className="bg-navy text-white px-4 py-2 rounded-md hover:bg-navy/90 transition-colors text-sm">
                       Add Recipe Card
                     </button>
                   </div>
-                  <div className="text-gray-500 text-center py-8">
+                  <div className="text-charcoal/60 text-center py-8">
                     No recipe cards yet. Share your experience with specific recipes!
                   </div>
                 </div>
@@ -122,11 +124,11 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
               <div className="mt-8 pt-6 border-t border-gray-200">
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <p className="text-gray-500">Published</p>
+                    <p className="text-charcoal/60">Published</p>
                     <p>{publishedDate}</p>
                   </div>
                   <div>
-                    <p className="text-gray-500">Votes</p>
+                    <p className="text-charcoal/60">Votes</p>
                     <p>{cookbook.favorites}</p>
                   </div>
                 </div>

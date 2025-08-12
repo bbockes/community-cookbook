@@ -17,7 +17,7 @@ export const CuisineCard: React.FC<CuisineCardProps> = ({
       backgroundImage: `url(${backgroundImage})`
     }} />
       {/* Overlay */}
-      <div className={`absolute inset-0 ${active ? 'bg-indigo-700/70' : 'bg-black/60 hover:bg-indigo-800/60'} transition-colors duration-300`} />
+      <div className={`absolute inset-0 ${active ? 'bg-navy/70' : 'bg-black/60 hover:bg-navy/60'} transition-colors duration-300`} />
       {/* Text */}
       <div className="absolute inset-0 flex items-center justify-center">
         <span className="text-white font-medium text-lg">{cuisine}</span>

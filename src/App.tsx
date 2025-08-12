@@ -8,7 +8,7 @@ export function App() {
   const [selectedCookbook, setSelectedCookbook] = useState<DbCookbook | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
-  return <div className="min-h-screen bg-gray-50">
+  return <div className="min-h-screen bg-cream">
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <main className="container mx-auto px-4 py-6">
         <Home onCookbookSelect={setSelectedCookbook} searchQuery={searchQuery} />

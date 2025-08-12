@@ -76,6 +76,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             setIsCookingMethodOpen(false);
           }
         }} className={`flex items-center gap-2 px-4 py-2 bg-white rounded-sm border border-gray-200 shadow-sm hover:bg-gray-50 transition-all duration-300 ${isCuisineOpen ? 'ring-2 ring-indigo-600 ring-offset-2 shadow-md bg-indigo-50' : ''}`}>
+        }} className={`flex items-center gap-2 px-4 py-2 bg-white rounded-sm border border-gray-200 shadow-sm hover:bg-gray-50 transition-all duration-300 ${isCuisineOpen ? 'ring-2 ring-navy ring-offset-2 shadow-md bg-navy/5' : ''}`}>
             <span>Cuisine</span>
             <ChevronDownIcon size={16} className={`transition-transform duration-200 ${isCuisineOpen ? 'rotate-180' : ''}`} />
           </button>
@@ -86,11 +87,12 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             setIsCuisineOpen(false);
           }
         }} className={`flex items-center gap-2 px-4 py-2 bg-white rounded-sm border border-gray-200 shadow-sm hover:bg-gray-50 transition-all duration-300 ml-2 ${isCookingMethodOpen ? 'ring-2 ring-indigo-600 ring-offset-2 shadow-md bg-indigo-50' : ''}`}>
+        }} className={`flex items-center gap-2 px-4 py-2 bg-white rounded-sm border border-gray-200 shadow-sm hover:bg-gray-50 transition-all duration-300 ml-2 ${isCookingMethodOpen ? 'ring-2 ring-navy ring-offset-2 shadow-md bg-navy/5' : ''}`}>
             <span>Cooking Methods</span>
             <ChevronDownIcon size={16} className={`transition-transform duration-200 ${isCookingMethodOpen ? 'rotate-180' : ''}`} />
           </button>
           {(activeCuisine !== 'All' || activeCookingMethod !== 'All') && <div className="ml-4 flex items-center flex-wrap gap-2">
-              <span className="text-sm text-gray-500 mr-1">Filtered by:</span>
+              <span className="text-sm text-charcoal/60 mr-1">Filtered by:</span>
               {activeCuisine !== 'All' && (
                 <TagPill 
                   tag={parentCuisine ? `${parentCuisine} - ${activeCuisine}` : activeCuisine} 
@@ -109,7 +111,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                   setActiveCookingMethod('All');
                   setParentCuisine(null);
                 }}
-                className="text-xs text-gray-500 hover:text-indigo-600 underline ml-2 transition-colors"
+                className="text-xs text-charcoal/60 hover:text-coral underline ml-2 transition-colors"
               >
                 Clear all
               </button>
@@ -134,10 +136,12 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 </label>
                 <div className="flex flex-col gap-2">
                   <button onClick={() => handleSortChange('newest')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'newest' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+                  <button onClick={() => handleSortChange('newest')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'newest' ? 'bg-navy text-white' : 'bg-gray-100 text-charcoal hover:bg-gray-200'}`}>
                     Newest
                   </button>
                   <button onClick={() => handleSortChange('popular')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'popular' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
-                    Most favorited
+                  <button onClick={() => handleSortChange('popular')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'popular' ? 'bg-navy text-white' : 'bg-gray-100 text-charcoal hover:bg-gray-200'}`}>
+                    Popular
                   </button>
                   <button onClick={() => handleSortChange('rating')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'rating' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
                     Rating
@@ -152,6 +156,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                   </label>
                   <div className="flex flex-col gap-2">
                     {['all', 'year', 'month', 'week'].map(period => <button key={period} onClick={() => setActiveTimeFilter(period)} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeTimeFilter === period ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+                     {['all', 'year', 'month', 'week'].map(period => <button key={period} onClick={() => setActiveTimeFilter(period)} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeTimeFilter === period ? 'bg-navy text-white' : 'bg-gray-100 text-charcoal hover:bg-gray-200'}`}>
                         {period === 'year' && 'This Year'}
                         {period === 'week' && 'This Week'}
                         {period === 'month' && 'This Month'}
