@@ -96,7 +96,6 @@ export const FilterBar: React.FC<FilterBarProps> = ({
       {/* Filters Dropdown Panel */}
       {isFiltersOpen && <div className="bg-white rounded-md border border-gray-200 shadow-md p-8 mb-6 animate-fadeIn">
           <div className="grid grid-cols-1 gap-8">
-          <div className="grid grid-cols-2 gap-8">
             {/* Cuisine Filter */}
             <div>
               <button onClick={() => toggleFilterSection('cuisine')} className="w-full flex items-center justify-between text-left font-medium mb-4">
@@ -123,7 +122,6 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                   {cookingMethodTags.map(method => <MethodCard key={method} method={method} active={activeCookingMethod === method} onClick={() => setActiveCookingMethod(method)} />)}
                 </div>}
             </div>
-          </div>
           </div>
         </div>}
     </div>;
