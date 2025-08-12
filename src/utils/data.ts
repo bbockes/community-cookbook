@@ -45,3 +45,13 @@ export const cookingMethodImages = {
 export const cuisineTags = ['All', 'Italian', 'Asian', 'Middle Eastern', 'French', 'American', 'Mexican', 'Indian', 'Vegetarian', 'Baking', 'Dessert', 'Technique', 'Quick', 'Seasonal', 'Science'];
 
 export const cookingMethodTags = ['All', 'Baking', 'Boiling', 'Sautéing', 'Grilling', 'Roasting', 'Frying', 'Broiling', 'Steaming', 'Simmering', 'Poaching', 'Braising', 'Stewing', 'Sous-vide', 'Microwaving', 'Toasting', 'Searing', 'Blanching', 'Pressure cooking', 'Smoking', 'Caramelizing'];
+
+export const subcuisines = {
+  Asian: ['China', 'India', 'Japan', 'Indonesia', 'Pakistan', 'Saudi Arabia', 'Thailand', 'South Korea', 'Iran', 'Vietnam'],
+  Italian: ['Northern Italian', 'Southern Italian', 'Sicilian', 'Tuscan', 'Roman', 'Venetian'],
+  French: ['Classical French', 'Provençal', 'Normandy', 'Burgundy', 'Alsatian', 'Breton'],
+  American: ['Southern', 'Tex-Mex', 'Cajun', 'New England', 'California', 'Pacific Northwest'],
+  'Middle Eastern': ['Lebanese', 'Turkish', 'Persian', 'Moroccan', 'Israeli', 'Egyptian'],
+  Mexican: ['Traditional Mexican', 'Oaxacan', 'Yucatecan', 'Tex-Mex', 'Baja', 'Pueblan'],
+  Indian: ['North Indian', 'South Indian', 'Bengali', 'Punjabi', 'Gujarati', 'Maharashtrian']
+};

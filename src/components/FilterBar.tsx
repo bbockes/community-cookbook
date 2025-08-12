@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TagPill } from './TagPill';
 import { CuisineCard } from './CuisineCard';
 import { MethodCard } from './MethodCard';
-import { cuisineTags, cookingMethodTags } from '../utils/data';
+import { cuisineTags, cookingMethodTags, subcuisines } from '../utils/data';
 import { ChevronDownIcon, SlidersIcon, FilterIcon, ClockIcon, UtensilsIcon, ArrowDownAZIcon } from 'lucide-react';
 interface FilterBarProps {
   activeSort: string;
@@ -27,11 +27,30 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   const [isCuisineOpen, setIsCuisineOpen] = useState(false);
   const [isCookingMethodOpen, setIsCookingMethodOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
+  const [showSubcuisines, setShowSubcuisines] = useState<string | null>(null);
   const handleSortChange = (sort: string) => {
     setActiveSort(sort);
     if (sort === 'popular') {
       setActiveTimeFilter('all');
     }
+  };
+
+  const handleCuisineClick = (cuisine: string) => {
+    if (cuisine === 'All') {
+      setActiveCuisine(cuisine);
+      setShowSubcuisines(null);
+    } else if (subcuisines[cuisine as keyof typeof subcuisines]) {
+      // Show subcuisines for this main cuisine
+      setShowSubcuisines(cuisine);
+    } else {
+      // This is a subcuisine, select it
+      setActiveCuisine(cuisine);
+      setShowSubcuisines(null);
+    }
+  };
+
+  const handleBackToCuisines = () => {
+    setShowSubcuisines(null);
   };
 
   return <div className="mb-8">
@@ -113,8 +132,37 @@ export const FilterBar: React.FC<FilterBarProps> = ({
       
       {/* Cuisine Dropdown */}
       {isCuisineOpen && <div className="bg-white rounded-md border border-gray-200 shadow-md p-8 mb-6 animate-fadeIn">
+          {showSubcuisines && (
+            <div className="mb-6">
+              <button 
+                onClick={handleBackToCuisines}
+                className="text-indigo-600 hover:text-indigo-800 text-sm font-medium mb-4 flex items-center gap-1"
+              >
+                ← Back to cuisines
+              </button>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">{showSubcuisines} Cuisines</h3>
+            </div>
+          )}
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-            {cuisineTags.map(tag => <CuisineCard key={tag} cuisine={tag} active={activeCuisine === tag} onClick={() => setActiveCuisine(tag)} />)}
+            {showSubcuisines ? (
+              subcuisines[showSubcuisines as keyof typeof subcuisines]?.map(subcuisine => (
+                <CuisineCard 
+                  key={subcuisine} 
+                  cuisine={subcuisine} 
+                  active={activeCuisine === subcuisine} 
+                  onClick={() => handleCuisineClick(subcuisine)} 
+                />
+              ))
+            ) : (
+              cuisineTags.map(tag => (
+                <CuisineCard 
+                  key={tag} 
+                  cuisine={tag} 
+                  active={activeCuisine === tag} 
+                  onClick={() => handleCuisineClick(tag)} 
+                />
+              ))
+            )}
           </div>
         </div>}
       
