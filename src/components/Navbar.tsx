@@ -23,7 +23,7 @@ export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery }) =
   };
 
   return (
-    <>
+    <div>
       <nav className="bg-cream shadow-sm border-b border-gray-200">
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
@@ -141,6 +141,6 @@ export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery }) =
         onClose={() => setShowAuthModal(false)}
         initialMode={authMode}
       />
-    </>
+    </div>
   );
 };
