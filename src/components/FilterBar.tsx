@@ -107,6 +107,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 <ChevronDownIcon size={18} className={`transition-transform duration-200 ${activeFilterSection === 'cuisine' ? 'rotate-180' : ''}`} />
               </button>
               {activeFilterSection === 'cuisine' && <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mt-5 animate-fadeIn">
+              {activeFilterSection === 'cuisine' && <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mt-5 animate-fadeIn">
                   {cuisineTags.map(tag => <CuisineCard key={tag} cuisine={tag} active={activeCuisine === tag} onClick={() => setActiveCuisine(tag)} />)}
                 </div>}
             </div>
@@ -119,6 +120,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 </div>
                 <ChevronDownIcon size={18} className={`transition-transform duration-200 ${activeFilterSection === 'method' ? 'rotate-180' : ''}`} />
               </button>
+              {activeFilterSection === 'method' && <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mt-5 animate-fadeIn">
               {activeFilterSection === 'method' && <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mt-5 animate-fadeIn">
                   {cookingMethodTags.map(method => <MethodCard key={method} method={method} active={activeCookingMethod === method} onClick={() => setActiveCookingMethod(method)} />)}
                 </div>}
