@@ -27,6 +27,13 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   const [isCuisineOpen, setIsCuisineOpen] = useState(false);
   const [isCookingMethodOpen, setIsCookingMethodOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
+  const handleSortChange = (sort: string) => {
+    setActiveSort(sort);
+    if (sort === 'popular') {
+      setActiveTimeFilter('all');
+    }
+  };
+
   return <div className="mb-8">
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center">
@@ -77,10 +84,10 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                   Sort by
                 </label>
                 <div className="flex flex-col gap-2">
-                  <button onClick={() => setActiveSort('newest')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'newest' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+                  <button onClick={() => handleSortChange('newest')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'newest' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
                     Newest
                   </button>
-                  <button onClick={() => setActiveSort('popular')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'popular' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+                  <button onClick={() => handleSortChange('popular')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'popular' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
                     Popular
                   </button>
                 </div>
