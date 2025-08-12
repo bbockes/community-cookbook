@@ -26,15 +26,6 @@ export const FilterBar: React.FC<FilterBarProps> = ({
 }) => {
   const [isCuisineOpen, setIsCuisineOpen] = useState(false);
   const [isCookingMethodOpen, setIsCookingMethodOpen] = useState(false);
-  const [isSortOpen, setIsSortOpen] = useState(false);
-  const [activeFilterSection, setActiveFilterSection] = useState<string | null>(null);
-  const toggleFilterSection = (section: string) => {
-    if (activeFilterSection === section) {
-      setActiveFilterSection(null);
-    } else {
-      setActiveFilterSection(section);
-    }
-  };
   return <div className="mb-8">
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center">
@@ -114,33 +105,15 @@ export const FilterBar: React.FC<FilterBarProps> = ({
       
       {/* Cuisine Dropdown */}
       {isCuisineOpen && <div className="bg-white rounded-md border border-gray-200 shadow-md p-8 mb-6 animate-fadeIn">
-          <div>
-            <button onClick={() => toggleFilterSection('cuisine')} className="w-full flex items-center justify-between text-left font-medium mb-4">
-              <div className="flex items-center gap-2">
-                <FilterIcon size={18} />
-                <span className="text-lg">Cuisine</span>
-              </div>
-              <ChevronDownIcon size={18} className={`transition-transform duration-200 ${activeFilterSection === 'cuisine' ? 'rotate-180' : ''}`} />
-            </button>
-            {activeFilterSection === 'cuisine' && <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mt-5 animate-fadeIn">
-                {cuisineTags.map(tag => <CuisineCard key={tag} cuisine={tag} active={activeCuisine === tag} onClick={() => setActiveCuisine(tag)} />)}
-              </div>}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+            {cuisineTags.map(tag => <CuisineCard key={tag} cuisine={tag} active={activeCuisine === tag} onClick={() => setActiveCuisine(tag)} />)}
           </div>
         </div>}
       
       {/* Cooking Methods Dropdown */}
       {isCookingMethodOpen && <div className="bg-white rounded-md border border-gray-200 shadow-md p-8 mb-6 animate-fadeIn">
-          <div>
-            <button onClick={() => toggleFilterSection('method')} className="w-full flex items-center justify-between text-left font-medium mb-4">
-              <div className="flex items-center gap-2">
-                <UtensilsIcon size={18} />
-                <span className="text-lg">Cooking Methods</span>
-              </div>
-              <ChevronDownIcon size={18} className={`transition-transform duration-200 ${activeFilterSection === 'method' ? 'rotate-180' : ''}`} />
-            </button>
-            {activeFilterSection === 'method' && <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mt-5 animate-fadeIn">
-                {cookingMethodTags.map(method => <MethodCard key={method} method={method} active={activeCookingMethod === method} onClick={() => setActiveCookingMethod(method)} />)}
-              </div>}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+            {cookingMethodTags.map(method => <MethodCard key={method} method={method} active={activeCookingMethod === method} onClick={() => setActiveCookingMethod(method)} />)}
           </div>
         </div>}
     </div>;
