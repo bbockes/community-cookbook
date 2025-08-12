@@ -100,6 +100,16 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 />
               )}
               {activeCookingMethod !== 'All' && <TagPill tag={activeCookingMethod} active={true} onClick={() => setActiveCookingMethod('All')} variant="square" />}
+              <button
+                onClick={() => {
+                  setActiveCuisine('All');
+                  setActiveCookingMethod('All');
+                  setParentCuisine(null);
+                }}
+                className="text-xs text-gray-500 hover:text-indigo-600 underline ml-2 transition-colors"
+              >
+                Clear all
+              </button>
             </div>}
         </div>
         <div className="relative">
