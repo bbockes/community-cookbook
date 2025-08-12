@@ -77,11 +77,11 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                   Sort by
                 </label>
                 <div className="flex flex-col gap-2">
-                  <button onClick={() => setActiveSort('popular')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'popular' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
-                    Popular
-                  </button>
                   <button onClick={() => setActiveSort('newest')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'newest' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
                     Newest
+                  </button>
+                  <button onClick={() => setActiveSort('popular')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'popular' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+                    Popular
                   </button>
                 </div>
               </div>
@@ -92,7 +92,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                     Time Period
                   </label>
                   <div className="flex flex-col gap-2">
-                    {['today', 'week', 'month', 'all'].map(period => <button key={period} onClick={() => setActiveTimeFilter(period)} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeTimeFilter === period ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+                    {['all', 'month', 'week', 'today'].map(period => <button key={period} onClick={() => setActiveTimeFilter(period)} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeTimeFilter === period ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
                         {period === 'today' && 'Today'}
                         {period === 'week' && 'This Week'}
                         {period === 'month' && 'This Month'}
