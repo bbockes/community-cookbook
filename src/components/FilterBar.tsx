@@ -49,12 +49,15 @@ export const FilterBar: React.FC<FilterBarProps> = ({
     } else {
       // This is a subcuisine, select it
       setActiveCuisine(cuisine);
-      setShowSubcuisines(null);
       // Find the parent cuisine for this subcuisine
       const parent = Object.keys(subcuisines).find(key => 
         subcuisines[key as keyof typeof subcuisines].includes(cuisine)
       );
       setParentCuisine(parent || null);
+      // Keep the subcuisine dashboard open
+      if (parent) {
+        setShowSubcuisines(parent);
+      }
     }
   };
 
