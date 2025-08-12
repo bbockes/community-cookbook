@@ -34,7 +34,7 @@ export const CookbookCard: React.FC<CookbookCardProps> = ({
         {/* Cookbook Image */}
         <img src={cookbook.image_url || 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'} alt={cookbook.title} className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:grayscale-[30%]" />
         {/* Overlay with info on hover */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center p-5">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center p-5">
           <h3 className="font-semibold text-lg text-white mb-1">
             {cookbook.title}
           </h3>
