@@ -160,6 +160,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 ← Back to cuisines
               </button>
               <h3 className="text-lg font-semibold text-gray-800 mb-4">{showSubcuisines} Cuisines</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Optional: Filter by {showSubcuisines} sub-cuisine</h3>
             </div>
           )}
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 transition-all duration-300">
