@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { XIcon, HeartIcon, ShareIcon, BookmarkIcon } from 'lucide-react';
+import { XIcon, HeartIcon, BookmarkIcon, ShoppingCartIcon } from 'lucide-react';
 import { DbCookbook } from '../utils/types';
 import { TagPill } from './TagPill';
 
@@ -52,8 +52,9 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                       href={cookbook.affiliate_link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-indigo-600 text-white px-4 py-2 rounded-sm hover:bg-indigo-700 transition-colors"
+                      className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-sm hover:bg-indigo-700 transition-colors"
                     >
+                      <ShoppingCartIcon size={18} />
                       Buy It
                     </a>
                   )}
