@@ -38,8 +38,7 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
               <div className="flex flex-wrap gap-2 mb-6">
                 {tags.map(tag => <TagPill key={tag} tag={tag} />)}
               </div>
-              <div className="flex flex-col gap-3">
-                <div className="flex gap-4">
+              <div className="flex gap-4">
                   <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-sm hover:bg-gray-200 transition-colors">
                     <HeartIcon size={18} />
                     <span>Favorite</span>
@@ -47,12 +46,6 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                   <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-sm hover:bg-gray-200 transition-colors">
                     <BookmarkIcon size={18} />
                     <span>Add to Wishlist</span>
-                  </button>
-                </div>
-                <div className="flex gap-4">
-                  <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-sm hover:bg-gray-200 transition-colors">
-                    <ShareIcon size={18} />
-                    <span>Share</span>
                   </button>
                   {cookbook.affiliate_link && (
                     <a
@@ -64,7 +57,6 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                       Buy It
                     </a>
                   )}
-                </div>
               </div>
             </div>
           </div>
