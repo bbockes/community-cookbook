@@ -68,9 +68,6 @@ export const Home: React.FC<HomeProps> = ({
   }, [hasMore, loading, searchQuery, activeCuisine, activeCookingMethod, activeSort, activeTimeFilter]);
   return <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Discover Cookbooks
-        </h1>
         <p className="text-gray-600">
           Find and vote for your favorite cookbooks from the culinary community.
         </p>
