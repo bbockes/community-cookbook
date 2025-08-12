@@ -26,6 +26,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
 }) => {
   const [isCuisineOpen, setIsCuisineOpen] = useState(false);
   const [isCookingMethodOpen, setIsCookingMethodOpen] = useState(false);
+  const [isSortOpen, setIsSortOpen] = useState(false);
   return <div className="mb-8">
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center">
