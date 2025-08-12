@@ -53,13 +53,6 @@ export const CookbookCard: React.FC<CookbookCardProps> = ({
             <HeartIcon size={18} fill={isFavorited ? 'currentColor' : 'none'} className="transition-transform duration-200 group-hover:scale-110" />
           </button>
         </div>
-        {/* Tags */}
-        <div className="absolute bottom-3 left-3 right-3 flex flex-wrap gap-2">
-          {tags.slice(0, 2).map(tag => <TagPill key={tag} tag={tag} />)}
-          {tags.length > 2 && <span className="text-xs bg-white/80 backdrop-blur-sm px-2.5 py-1 rounded-full font-medium">
-              +{tags.length - 2}
-            </span>}
-        </div>
       </div>
     </div>;
 };
