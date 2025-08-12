@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { XIcon, HeartIcon, ShareIcon } from 'lucide-react';
 import { DbCookbook } from '../utils/types';
 import { TagPill } from './TagPill';
@@ -12,6 +13,7 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
   cookbook,
   onClose
 }) => {
+  const [activeTab, setActiveTab] = useState<'reviews' | 'recipe-cards'>('reviews');
   const tags = [cookbook.cuisine, cookbook.cooking_method].filter(Boolean);
   const publishedDate = new Date(cookbook.created_at).toLocaleDateString();
 
@@ -60,17 +62,74 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
             </div>
           </div>
           <div className="mt-8">
-            <h3 className="text-lg font-semibold mb-4">
-              Additional Information
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-gray-500">Published</p>
-                <p>{publishedDate}</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Votes</p>
-                <p>{cookbook.favorites}</p>
+            {/* Tab Navigation */}
+            <div className="border-b border-gray-200 mb-6">
+              <nav className="-mb-px flex space-x-8">
+                <button
+                  onClick={() => setActiveTab('reviews')}
+                  className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                    activeTab === 'reviews'
+                      ? 'border-indigo-500 text-indigo-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
+                >
+                  Reviews
+                </button>
+                <button
+                  onClick={() => setActiveTab('recipe-cards')}
+                  className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                    activeTab === 'recipe-cards'
+                      ? 'border-indigo-500 text-indigo-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
+                >
+                  Recipe Cards
+                </button>
+              </nav>
+            </div>
+            
+            {/* Tab Content */}
+            <div className="min-h-[200px]">
+              {activeTab === 'reviews' && (
+                <div>
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-semibold">User Reviews</h3>
+                    <button className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors text-sm">
+                      Write Review
+                    </button>
+                  </div>
+                  <div className="text-gray-500 text-center py-8">
+                    No reviews yet. Be the first to review this cookbook!
+                  </div>
+                </div>
+              )}
+              
+              {activeTab === 'recipe-cards' && (
+                <div>
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-semibold">Recipe Cards</h3>
+                    <button className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors text-sm">
+                      Add Recipe Card
+                    </button>
+                  </div>
+                  <div className="text-gray-500 text-center py-8">
+                    No recipe cards yet. Share your experience with specific recipes!
+                  </div>
+                </div>
+              )}
+              
+              {/* Cookbook Info moved to bottom */}
+              <div className="mt-8 pt-6 border-t border-gray-200">
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p className="text-gray-500">Published</p>
+                    <p>{publishedDate}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-500">Votes</p>
+                    <p>{cookbook.favorites}</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
