@@ -28,6 +28,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   const [isCookingMethodOpen, setIsCookingMethodOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [showSubcuisines, setShowSubcuisines] = useState<string | null>(null);
+  const [parentCuisine, setParentCuisine] = useState<string | null>(null);
   const handleSortChange = (sort: string) => {
     setActiveSort(sort);
     if (sort === 'popular') {
@@ -39,18 +40,26 @@ export const FilterBar: React.FC<FilterBarProps> = ({
     if (cuisine === 'All') {
       setActiveCuisine(cuisine);
       setShowSubcuisines(null);
+      setParentCuisine(null);
     } else if (subcuisines[cuisine as keyof typeof subcuisines]) {
       // Show subcuisines for this main cuisine
       setShowSubcuisines(cuisine);
+      setParentCuisine(null);
     } else {
       // This is a subcuisine, select it
       setActiveCuisine(cuisine);
       setShowSubcuisines(null);
+      // Find the parent cuisine for this subcuisine
+      const parent = Object.keys(subcuisines).find(key => 
+        subcuisines[key as keyof typeof subcuisines].includes(cuisine)
+      );
+      setParentCuisine(parent || null);
     }
   };
 
   const handleBackToCuisines = () => {
     setShowSubcuisines(null);
+    setParentCuisine(null);
   };
 
   return <div className="mb-8">
@@ -80,7 +89,17 @@ export const FilterBar: React.FC<FilterBarProps> = ({
           </button>
           {(activeCuisine !== 'All' || activeCookingMethod !== 'All') && <div className="ml-4 flex items-center flex-wrap gap-2">
               <span className="text-sm text-gray-500 mr-1">Filtered by:</span>
-              {activeCuisine !== 'All' && <TagPill tag={activeCuisine} active={true} onClick={() => setActiveCuisine('All')} variant="square" />}
+              {activeCuisine !== 'All' && (
+                <TagPill 
+                  tag={parentCuisine ? `${parentCuisine} - ${activeCuisine}` : activeCuisine} 
+                  active={true} 
+                  onClick={() => {
+                    setActiveCuisine('All');
+                    setParentCuisine(null);
+                  }} 
+                  variant="square" 
+                />
+              )}
               {activeCookingMethod !== 'All' && <TagPill tag={activeCookingMethod} active={true} onClick={() => setActiveCookingMethod('All')} variant="square" />}
             </div>}
         </div>
@@ -131,9 +150,9 @@ export const FilterBar: React.FC<FilterBarProps> = ({
       </div>
       
       {/* Cuisine Dropdown */}
-      {isCuisineOpen && <div className="bg-white rounded-md border border-gray-200 shadow-md p-8 mb-6 animate-fadeIn">
+      {isCuisineOpen && <div className="bg-white rounded-md border border-gray-200 shadow-md p-8 mb-6 animate-fadeIn transition-all duration-300">
           {showSubcuisines && (
-            <div className="mb-6">
+            <div className="mb-6 transition-all duration-300">
               <button 
                 onClick={handleBackToCuisines}
                 className="text-indigo-600 hover:text-indigo-800 text-sm font-medium mb-4 flex items-center gap-1"
@@ -143,7 +162,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               <h3 className="text-lg font-semibold text-gray-800 mb-4">{showSubcuisines} Cuisines</h3>
             </div>
           )}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 transition-all duration-300">
             {showSubcuisines ? (
               subcuisines[showSubcuisines as keyof typeof subcuisines]?.map(subcuisine => (
                 <CuisineCard 
@@ -167,7 +186,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         </div>}
       
       {/* Cooking Methods Dropdown */}
-      {isCookingMethodOpen && <div className="bg-white rounded-md border border-gray-200 shadow-md p-8 mb-6 animate-fadeIn">
+      {isCookingMethodOpen && <div className="bg-white rounded-md border border-gray-200 shadow-md p-8 mb-6 animate-fadeIn transition-all duration-300">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
             {cookingMethodTags.map(method => <MethodCard key={method} method={method} active={activeCookingMethod === method} onClick={() => setActiveCookingMethod(method)} />)}
           </div>

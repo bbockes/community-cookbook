@@ -47,11 +47,11 @@ export const cuisineTags = ['All', 'Italian', 'Asian', 'Middle Eastern', 'French
 export const cookingMethodTags = ['All', 'Baking', 'Boiling', 'Sautéing', 'Grilling', 'Roasting', 'Frying', 'Broiling', 'Steaming', 'Simmering', 'Poaching', 'Braising', 'Stewing', 'Sous-vide', 'Microwaving', 'Toasting', 'Searing', 'Blanching', 'Pressure cooking', 'Smoking', 'Caramelizing'];
 
 export const subcuisines = {
-  Asian: ['China', 'India', 'Japan', 'Indonesia', 'Pakistan', 'Saudi Arabia', 'Thailand', 'South Korea', 'Iran', 'Vietnam'],
+  Asian: ['Chinese', 'Indian', 'Japanese', 'Indonesian', 'Pakistani', 'Saudi Arabian', 'Thai', 'Korean', 'Persian', 'Vietnamese'],
   Italian: ['Northern Italian', 'Southern Italian', 'Sicilian', 'Tuscan', 'Roman', 'Venetian'],
-  French: ['Classical French', 'Provençal', 'Normandy', 'Burgundy', 'Alsatian', 'Breton'],
-  American: ['Southern', 'Tex-Mex', 'Cajun', 'New England', 'California', 'Pacific Northwest'],
+  French: ['Classical French', 'Provençal', 'Normandy', 'Burgundian', 'Alsatian', 'Breton'],
+  American: ['Southern American', 'Tex-Mex', 'Cajun', 'New England', 'Californian', 'Pacific Northwest'],
   'Middle Eastern': ['Lebanese', 'Turkish', 'Persian', 'Moroccan', 'Israeli', 'Egyptian'],
-  Mexican: ['Traditional Mexican', 'Oaxacan', 'Yucatecan', 'Tex-Mex', 'Baja', 'Pueblan'],
+  Mexican: ['Traditional Mexican', 'Oaxacan', 'Yucatecan', 'Tex-Mex', 'Baja Mexican', 'Pueblan'],
   Indian: ['North Indian', 'South Indian', 'Bengali', 'Punjabi', 'Gujarati', 'Maharashtrian']
 };
