@@ -81,7 +81,7 @@ export function useCookbooks() {
         query = query.order('favorites', { ascending: false });
       }
 
-      const { data, error } = await supabase
+      const { data, error } = await query;
 
       if (error) throw error;
       
