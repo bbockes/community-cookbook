@@ -4,6 +4,7 @@ import { CuisineCard } from './CuisineCard';
 import { MethodCard } from './MethodCard';
 import { cuisineTags, cookingMethodTags, subcuisines } from '../utils/data';
 import { ChevronDownIcon, SlidersIcon, FilterIcon, ClockIcon, UtensilsIcon, ArrowDownAZIcon } from 'lucide-react';
+
 interface FilterBarProps {
   activeSort: string;
   setActiveSort: (sort: string) => void;
@@ -14,6 +15,7 @@ interface FilterBarProps {
   activeCookingMethod: string;
   setActiveCookingMethod: (method: string) => void;
 }
+
 export const FilterBar: React.FC<FilterBarProps> = ({
   activeSort,
   setActiveSort,
@@ -29,6 +31,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [showSubcuisines, setShowSubcuisines] = useState<string | null>(null);
   const [parentCuisine, setParentCuisine] = useState<string | null>(null);
+
   const handleSortChange = (sort: string) => {
     setActiveSort(sort);
     if (sort === 'popular' || sort === 'rating') {
@@ -75,7 +78,6 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             setIsSortOpen(false);
             setIsCookingMethodOpen(false);
           }
-        }} className={`flex items-center gap-2 px-4 py-2 bg-white rounded-sm border border-gray-200 shadow-sm hover:bg-gray-50 transition-all duration-300 ${isCuisineOpen ? 'ring-2 ring-indigo-600 ring-offset-2 shadow-md bg-indigo-50' : ''}`}>
         }} className={`flex items-center gap-2 px-4 py-2 bg-white rounded-sm border border-gray-200 shadow-sm hover:bg-gray-50 transition-all duration-300 ${isCuisineOpen ? 'ring-2 ring-navy ring-offset-2 shadow-md bg-navy/5' : ''}`}>
             <span>Cuisine</span>
             <ChevronDownIcon size={16} className={`transition-transform duration-200 ${isCuisineOpen ? 'rotate-180' : ''}`} />
@@ -86,7 +88,6 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             setIsSortOpen(false);
             setIsCuisineOpen(false);
           }
-        }} className={`flex items-center gap-2 px-4 py-2 bg-white rounded-sm border border-gray-200 shadow-sm hover:bg-gray-50 transition-all duration-300 ml-2 ${isCookingMethodOpen ? 'ring-2 ring-indigo-600 ring-offset-2 shadow-md bg-indigo-50' : ''}`}>
         }} className={`flex items-center gap-2 px-4 py-2 bg-white rounded-sm border border-gray-200 shadow-sm hover:bg-gray-50 transition-all duration-300 ml-2 ${isCookingMethodOpen ? 'ring-2 ring-navy ring-offset-2 shadow-md bg-navy/5' : ''}`}>
             <span>Cooking Methods</span>
             <ChevronDownIcon size={16} className={`transition-transform duration-200 ${isCookingMethodOpen ? 'rotate-180' : ''}`} />
@@ -135,15 +136,13 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                   Sort by
                 </label>
                 <div className="flex flex-col gap-2">
-                  <button onClick={() => handleSortChange('newest')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'newest' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
                   <button onClick={() => handleSortChange('newest')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'newest' ? 'bg-navy text-white' : 'bg-gray-100 text-charcoal hover:bg-gray-200'}`}>
                     Newest
                   </button>
-                  <button onClick={() => handleSortChange('popular')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'popular' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
                   <button onClick={() => handleSortChange('popular')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'popular' ? 'bg-navy text-white' : 'bg-gray-100 text-charcoal hover:bg-gray-200'}`}>
                     Popular
                   </button>
-                  <button onClick={() => handleSortChange('rating')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'rating' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+                  <button onClick={() => handleSortChange('rating')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'rating' ? 'bg-navy text-white' : 'bg-gray-100 text-charcoal hover:bg-gray-200'}`}>
                     Rating
                   </button>
                 </div>
@@ -155,8 +154,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                     Time Period
                   </label>
                   <div className="flex flex-col gap-2">
-                    {['all', 'year', 'month', 'week'].map(period => <button key={period} onClick={() => setActiveTimeFilter(period)} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeTimeFilter === period ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
-                     {['all', 'year', 'month', 'week'].map(period => <button key={period} onClick={() => setActiveTimeFilter(period)} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeTimeFilter === period ? 'bg-navy text-white' : 'bg-gray-100 text-charcoal hover:bg-gray-200'}`}>
+                    {['all', 'year', 'month', 'week'].map(period => <button key={period} onClick={() => setActiveTimeFilter(period)} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeTimeFilter === period ? 'bg-navy text-white' : 'bg-gray-100 text-charcoal hover:bg-gray-200'}`}>
                         {period === 'year' && 'This Year'}
                         {period === 'week' && 'This Week'}
                         {period === 'month' && 'This Month'}
