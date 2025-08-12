@@ -36,7 +36,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             setIsSortOpen(false);
             setIsCookingMethodOpen(false);
           }
-        }} className={`flex items-center gap-2 px-4 py-2 bg-white rounded-sm border border-gray-200 shadow-sm hover:bg-gray-50 transition-all duration-300 ${isCuisineOpen ? 'ring-2 ring-indigo-600 ring-offset-2 scale-105 shadow-md bg-indigo-50' : ''}`}>
+        }} className={`flex items-center gap-2 px-4 py-2 bg-white rounded-sm border border-gray-200 shadow-sm hover:bg-gray-50 transition-all duration-300 ${isCuisineOpen ? 'ring-2 ring-indigo-600 ring-offset-2 shadow-md bg-indigo-50' : ''}`}>
             <FilterIcon size={16} />
             <span>Cuisine</span>
             <ChevronDownIcon size={16} className={`transition-transform duration-200 ${isCuisineOpen ? 'rotate-180' : ''}`} />
@@ -47,7 +47,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             setIsSortOpen(false);
             setIsCuisineOpen(false);
           }
-        }} className={`flex items-center gap-2 px-4 py-2 bg-white rounded-sm border border-gray-200 shadow-sm hover:bg-gray-50 transition-all duration-300 ml-2 ${isCookingMethodOpen ? 'ring-2 ring-indigo-600 ring-offset-2 scale-105 shadow-md bg-indigo-50' : ''}`}>
+        }} className={`flex items-center gap-2 px-4 py-2 bg-white rounded-sm border border-gray-200 shadow-sm hover:bg-gray-50 transition-all duration-300 ml-2 ${isCookingMethodOpen ? 'ring-2 ring-indigo-600 ring-offset-2 shadow-md bg-indigo-50' : ''}`}>
             <UtensilsIcon size={16} />
             <span>Cooking Methods</span>
             <ChevronDownIcon size={16} className={`transition-transform duration-200 ${isCookingMethodOpen ? 'rotate-180' : ''}`} />
