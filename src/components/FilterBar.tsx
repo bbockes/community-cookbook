@@ -85,8 +85,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   };
   return <div className="mb-8">
       <div className="flex justify-between items-center mb-4">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center">
+        <div className="flex items-center">
           <button onClick={() => {
           setIsCuisineOpen(!isCuisineOpen);
           if (!isCuisineOpen) {
@@ -109,8 +108,8 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             <span>Cooking Method</span>
             <ChevronDownIcon size={16} className={`transition-transform duration-200 ${isCookingMethodOpen ? 'rotate-180' : ''}`} />
           </button>
-          </div>
-          <div className="flex items-center gap-2">
+        </div>
+        <div className="flex items-center gap-2">
           <div className="flex flex-wrap gap-2">
             {activeCuisines.length > 0 && (
               <div className="flex flex-wrap gap-2">
@@ -148,7 +147,6 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 ))}
               </div>
             )}
-          </div>
           </div>
         </div>
         <div className="relative">
