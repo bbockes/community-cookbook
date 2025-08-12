@@ -18,7 +18,7 @@ export function useCookbooks() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
-  const [page, setPage] = useState(0);
+  const [nextPage, setNextPage] = useState(0);
   const { user } = useAuth();
 
   const ITEMS_PER_PAGE = 12;
@@ -27,10 +27,11 @@ export function useCookbooks() {
     try {
       if (reset) {
         setLoading(true);
-        setPage(0);
+        setNextPage(0);
+        setCookbooks([]);
       }
 
-      const currentPage = reset ? 0 : page;
+      const currentPage = reset ? 0 : nextPage;
       const from = currentPage * ITEMS_PER_PAGE;
       const to = from + ITEMS_PER_PAGE - 1;
 
@@ -94,9 +95,7 @@ export function useCookbooks() {
       }
       
       setHasMore(newCookbooks.length === ITEMS_PER_PAGE);
-      if (!reset) {
-        setPage(currentPage + 1);
-      }
+      setNextPage(currentPage + 1);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
