@@ -31,7 +31,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   const [parentCuisine, setParentCuisine] = useState<string | null>(null);
   const handleSortChange = (sort: string) => {
     setActiveSort(sort);
-    if (sort === 'popular') {
+    if (sort === 'popular' || sort === 'rating') {
       setActiveTimeFilter('all');
     }
   };
@@ -120,7 +120,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             setIsCookingMethodOpen(false);
           }
         }} className="flex items-center gap-2 px-4 py-2 bg-white rounded-sm border border-gray-200 shadow-sm hover:bg-gray-50 transition-colors">
-            <span>Sort: {activeSort === 'popular' ? 'Popular' : 'Newest'}</span>
+            <span>Sort: {activeSort === 'popular' ? 'Most favorited' : activeSort === 'rating' ? 'Rating' : 'Newest'}</span>
             <ChevronDownIcon size={16} className={`transition-transform duration-200 ${isSortOpen ? 'rotate-180' : ''}`} />
           </button>
           {/* Sort Dropdown */}
@@ -134,12 +134,15 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                     Newest
                   </button>
                   <button onClick={() => handleSortChange('popular')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'popular' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
-                    Popular
+                    Most favorited
+                  </button>
+                  <button onClick={() => handleSortChange('rating')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'rating' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+                    Rating
                   </button>
                 </div>
               </div>
               {/* Time Period (only shown when Popular is selected) */}
-              {activeSort === 'popular' && <div className="border-t border-gray-200 pt-4 mt-2">
+              {(activeSort === 'popular' || activeSort === 'rating') && <div className="border-t border-gray-200 pt-4 mt-2">
                   <label className="text-sm font-medium text-gray-700 flex items-center gap-2 mb-3">
                     <ClockIcon size={16} />
                     Time Period

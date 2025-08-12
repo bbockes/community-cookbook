@@ -9,7 +9,7 @@ interface FilterOptions {
   searchQuery?: string;
   cuisine?: string;
   cookingMethod?: string;
-  sortBy?: 'newest' | 'popular';
+  sortBy?: 'newest' | 'popular' | 'rating';
   timeFilter?: 'today' | 'week' | 'month' | 'all';
 }
 
@@ -78,6 +78,9 @@ export function useCookbooks() {
       // Apply sorting
       if (options.sortBy === 'newest') {
         query = query.order('created_at', { ascending: false });
+      } else if (options.sortBy === 'rating') {
+        // For now, sort by favorites. Later this could be enhanced to sort by average rating
+        query = query.order('favorites', { ascending: false });
       } else {
         query = query.order('favorites', { ascending: false });
       }
