@@ -77,7 +77,9 @@ export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery }) =
             )}
           </div>
         </div>
+      </div>
         <div className="container mx-auto px-4 py-3 bg-cream">
+        </div>
       
       <AuthModal 
         isOpen={showAuthModal}
