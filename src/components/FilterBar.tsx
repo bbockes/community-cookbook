@@ -9,20 +9,20 @@ interface FilterBarProps {
   setActiveSort: (sort: string) => void;
   activeTimeFilter: string;
   setActiveTimeFilter: (filter: string) => void;
-  activeCuisines: string[];
-  setActiveCuisines: (cuisines: string[]) => void;
-  activeCookingMethods: string[];
-  setActiveCookingMethods: (methods: string[]) => void;
+  activeCuisine: string;
+  setActiveCuisine: (cuisine: string) => void;
+  activeCookingMethod: string;
+  setActiveCookingMethod: (method: string) => void;
 }
 export const FilterBar: React.FC<FilterBarProps> = ({
   activeSort,
   setActiveSort,
   activeTimeFilter,
   setActiveTimeFilter,
-  activeCuisines,
-  setActiveCuisines,
-  activeCookingMethods,
-  setActiveCookingMethods
+  activeCuisine,
+  setActiveCuisine,
+  activeCookingMethod,
+  setActiveCookingMethod
 }) => {
   const [isCuisineOpen, setIsCuisineOpen] = useState(false);
   const [isCookingMethodOpen, setIsCookingMethodOpen] = useState(false);
@@ -38,26 +38,17 @@ export const FilterBar: React.FC<FilterBarProps> = ({
 
   const handleCuisineClick = (cuisine: string) => {
     if (cuisine === 'All') {
-      setActiveCuisines([]);
+      setActiveCuisine(cuisine);
       setShowSubcuisines(null);
       setParentCuisine(null);
     } else if (subcuisines[cuisine as keyof typeof subcuisines]) {
       // Show subcuisines for this main cuisine
       setShowSubcuisines(cuisine);
-      // Toggle the main cuisine in the active list
-      if (activeCuisines.includes(cuisine)) {
-        setActiveCuisines(activeCuisines.filter(c => c !== cuisine));
-      } else {
-        setActiveCuisines([...activeCuisines, cuisine]);
-      }
+      setActiveCuisine(cuisine);
       setParentCuisine(null);
     } else {
       // This is a subcuisine, select it
-      if (activeCuisines.includes(cuisine)) {
-        setActiveCuisines(activeCuisines.filter(c => c !== cuisine));
-      } else {
-        setActiveCuisines([...activeCuisines, cuisine]);
-      }
+      setActiveCuisine(cuisine);
       setShowSubcuisines(null);
       // Find the parent cuisine for this subcuisine
       const parent = Object.keys(subcuisines).find(key => 
@@ -72,17 +63,6 @@ export const FilterBar: React.FC<FilterBarProps> = ({
     setParentCuisine(null);
   };
 
-  const handleCookingMethodClick = (method: string) => {
-    if (method === 'All') {
-      setActiveCookingMethods([]);
-    } else {
-      if (activeCookingMethods.includes(method)) {
-        setActiveCookingMethods(activeCookingMethods.filter(m => m !== method));
-      } else {
-        setActiveCookingMethods([...activeCookingMethods, method]);
-      }
-    }
-  };
   return <div className="mb-8">
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center">
@@ -105,49 +85,24 @@ export const FilterBar: React.FC<FilterBarProps> = ({
           }
         }} className={`flex items-center gap-2 px-4 py-2 bg-white rounded-sm border border-gray-200 shadow-sm hover:bg-gray-50 transition-all duration-300 ml-2 ${isCookingMethodOpen ? 'ring-2 ring-indigo-600 ring-offset-2 shadow-md bg-indigo-50' : ''}`}>
             <UtensilsIcon size={16} />
-            <span>Cooking Method</span>
+            <span>Cooking Methods</span>
             <ChevronDownIcon size={16} className={`transition-transform duration-200 ${isCookingMethodOpen ? 'rotate-180' : ''}`} />
           </button>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="flex flex-wrap gap-2">
-            {activeCuisines.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {activeCuisines.map(cuisine => {
-                  const parent = Object.keys(subcuisines).find(key => 
-                    subcuisines[key as keyof typeof subcuisines].includes(cuisine)
-                  );
-                  return (
-                    <TagPill 
-                      key={cuisine}
-                      tag={parent ? `${parent} - ${cuisine}` : cuisine} 
-                      active={true} 
-                      onClick={() => {
-                        setActiveCuisines(activeCuisines.filter(c => c !== cuisine));
-                        if (parentCuisine === cuisine) {
-                          setParentCuisine(null);
-                        }
-                      }} 
-                      variant="square" 
-                    />
-                  );
-                })}
-              </div>
-            )}
-            {activeCookingMethods.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {activeCookingMethods.map(method => (
-                  <TagPill 
-                    key={method}
-                    tag={method} 
-                    active={true} 
-                    onClick={() => setActiveCookingMethods(activeCookingMethods.filter(m => m !== method))} 
-                    variant="square" 
-                  />
-                ))}
-              </div>
-            )}
-          </div>
+          {(activeCuisine !== 'All' || activeCookingMethod !== 'All') && <div className="ml-4 flex items-center flex-wrap gap-2">
+              <span className="text-sm text-gray-500 mr-1">Filtered by:</span>
+              {activeCuisine !== 'All' && (
+                <TagPill 
+                  tag={parentCuisine ? `${parentCuisine} - ${activeCuisine}` : activeCuisine} 
+                  active={true} 
+                  onClick={() => {
+                    setActiveCuisine('All');
+                    setParentCuisine(null);
+                  }} 
+                  variant="square" 
+                />
+              )}
+              {activeCookingMethod !== 'All' && <TagPill tag={activeCookingMethod} active={true} onClick={() => setActiveCookingMethod('All')} variant="square" />}
+            </div>}
         </div>
         <div className="relative">
           <button onClick={() => {
@@ -213,14 +168,14 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 <CuisineCard 
                   key="all-subcuisine" 
                   cuisine={`All ${showSubcuisines}`}
-                  active={activeCuisines.includes(showSubcuisines)} 
+                  active={activeCuisine === showSubcuisines} 
                   onClick={() => handleCuisineClick(showSubcuisines)} 
                 />
                 {subcuisines[showSubcuisines as keyof typeof subcuisines]?.map(subcuisine => (
                   <CuisineCard 
                     key={subcuisine} 
                     cuisine={subcuisine} 
-                    active={activeCuisines.includes(subcuisine)} 
+                    active={activeCuisine === subcuisine} 
                     onClick={() => handleCuisineClick(subcuisine)} 
                   />
                 ))}
@@ -230,7 +185,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 <CuisineCard 
                   key={tag} 
                   cuisine={tag} 
-                  active={tag === 'All' ? activeCuisines.length === 0 : activeCuisines.includes(tag)} 
+                  active={activeCuisine === tag} 
                   onClick={() => handleCuisineClick(tag)} 
                 />
               ))
@@ -241,14 +196,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
       {/* Cooking Methods Dropdown */}
       {isCookingMethodOpen && <div className="bg-white rounded-md border border-gray-200 shadow-md p-8 mb-6 animate-fadeIn transition-all duration-300">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-            {cookingMethodTags.map(method => (
-              <MethodCard 
-                key={method} 
-                method={method} 
-                active={method === 'All' ? activeCookingMethods.length === 0 : activeCookingMethods.includes(method)} 
-                onClick={() => handleCookingMethodClick(method)} 
-              />
-            ))}
+            {cookingMethodTags.map(method => <MethodCard key={method} method={method} active={activeCookingMethod === method} onClick={() => setActiveCookingMethod(method)} />)}
           </div>
         </div>}
     </div>;

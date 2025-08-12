@@ -15,8 +15,8 @@ export const Home: React.FC<HomeProps> = ({
 }) => {
   const [activeSort, setActiveSort] = useState('newest');
   const [activeTimeFilter, setActiveTimeFilter] = useState('week');
-  const [activeCuisines, setActiveCuisines] = useState<string[]>([]);
-  const [activeCookingMethods, setActiveCookingMethods] = useState<string[]>([]);
+  const [activeCuisine, setActiveCuisine] = useState('All');
+  const [activeCookingMethod, setActiveCookingMethod] = useState('All');
   
   const { 
     cookbooks, 
@@ -33,14 +33,14 @@ export const Home: React.FC<HomeProps> = ({
   useEffect(() => {
     const filterOptions = {
       searchQuery: searchQuery || undefined,
-      cuisines: activeCuisines,
-      cookingMethods: activeCookingMethods,
+      cuisine: activeCuisine,
+      cookingMethod: activeCookingMethod,
       sortBy: activeSort as 'newest' | 'popular',
       timeFilter: activeTimeFilter as 'today' | 'week' | 'month' | 'all',
     };
     
     fetchCookbooks(filterOptions, true);
-  }, [searchQuery, activeCuisines, activeCookingMethods, activeSort, activeTimeFilter]);
+  }, [searchQuery, activeCuisine, activeCookingMethod, activeSort, activeTimeFilter]);
 
   // Infinite scroll logic
   useEffect(() => {
@@ -49,8 +49,8 @@ export const Home: React.FC<HomeProps> = ({
         if (entries[0].isIntersecting && hasMore && !loading) {
           const filterOptions = {
             searchQuery: searchQuery || undefined,
-            cuisines: activeCuisines,
-            cookingMethods: activeCookingMethods,
+            cuisine: activeCuisine,
+            cookingMethod: activeCookingMethod,
             sortBy: activeSort as 'newest' | 'popular',
             timeFilter: activeTimeFilter as 'today' | 'week' | 'month' | 'all',
           };
@@ -65,7 +65,7 @@ export const Home: React.FC<HomeProps> = ({
     }
 
     return () => observer.disconnect();
-  }, [hasMore, loading, searchQuery, activeCuisines, activeCookingMethods, activeSort, activeTimeFilter]);
+  }, [hasMore, loading, searchQuery, activeCuisine, activeCookingMethod, activeSort, activeTimeFilter]);
   return <div>
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -76,16 +76,7 @@ export const Home: React.FC<HomeProps> = ({
         </p>
       </div>
       
-      <FilterBar 
-        activeSort={activeSort} 
-        setActiveSort={setActiveSort} 
-        activeTimeFilter={activeTimeFilter} 
-        setActiveTimeFilter={setActiveTimeFilter} 
-        activeCuisines={activeCuisines} 
-        setActiveCuisines={setActiveCuisines} 
-        activeCookingMethods={activeCookingMethods} 
-        setActiveCookingMethods={setActiveCookingMethods} 
-      />
+      <FilterBar activeSort={activeSort} setActiveSort={setActiveSort} activeTimeFilter={activeTimeFilter} setActiveTimeFilter={setActiveTimeFilter} activeCuisine={activeCuisine} setActiveCuisine={setActiveCuisine} activeCookingMethod={activeCookingMethod} setActiveCookingMethod={setActiveCookingMethod} />
       
       {error && (
         <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md mb-6">

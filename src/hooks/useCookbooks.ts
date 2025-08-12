@@ -7,8 +7,8 @@ type Cookbook = Database['public']['Tables']['cookbooks']['Row'];
 
 interface FilterOptions {
   searchQuery?: string;
-  cuisines?: string[];
-  cookingMethods?: string[];
+  cuisine?: string;
+  cookingMethod?: string;
   sortBy?: 'newest' | 'popular';
   timeFilter?: 'today' | 'week' | 'month' | 'all';
 }
@@ -46,15 +46,13 @@ export function useCookbooks() {
       }
 
       // Apply cuisine filter
-      if (options.cuisines && options.cuisines.length > 0) {
-        const cuisineFilters = options.cuisines.map(cuisine => `cuisine.eq.${cuisine}`).join(',');
-        query = query.or(cuisineFilters);
+      if (options.cuisine && options.cuisine !== 'All') {
+        query = query.eq('cuisine', options.cuisine);
       }
 
       // Apply cooking method filter
-      if (options.cookingMethods && options.cookingMethods.length > 0) {
-        const methodFilters = options.cookingMethods.map(method => `cooking_method.eq.${method}`).join(',');
-        query = query.or(methodFilters);
+      if (options.cookingMethod && options.cookingMethod !== 'All') {
+        query = query.eq('cooking_method', options.cookingMethod);
       }
 
       // Apply time filter for popular sort
