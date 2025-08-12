@@ -124,6 +124,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 </div>}
             </div>
           </div>
+          </div>
         </div>}
     </div>;
 };
