@@ -24,7 +24,7 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
             <XIcon size={20} />
           </button>
         </div>
-        <div className="p-6">
+        <div className="px-6 pt-2 pb-6">
           <div className="flex gap-6">
             <div className="w-1/3">
               <img src={cookbook.image_url || 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'} alt={cookbook.title} className="w-full aspect-[3/4] object-cover rounded-sm" />
