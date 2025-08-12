@@ -44,6 +44,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
     } else if (subcuisines[cuisine as keyof typeof subcuisines]) {
       // Show subcuisines for this main cuisine
       setShowSubcuisines(cuisine);
+      setActiveCuisine(cuisine);
       setParentCuisine(null);
     } else {
       // This is a subcuisine, select it
