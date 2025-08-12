@@ -29,7 +29,7 @@ export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery }) =
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <h1 className="text-2xl font-bold text-navy font-heading">
-                <span className="text-navy">Community</span> Cookbook
+                <span className="text-navy">Community</span> <span className="text-purple-600">Cookbook</span>
               </h1>
             </div>
             <div className="flex-1 max-w-md mx-4">
