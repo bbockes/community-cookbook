@@ -92,8 +92,8 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                     Time Period
                   </label>
                   <div className="flex flex-col gap-2">
-                    {['all', 'month', 'week', 'today'].map(period => <button key={period} onClick={() => setActiveTimeFilter(period)} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeTimeFilter === period ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
-                        {period === 'today' && 'Today'}
+                    {['all', 'year', 'month', 'week'].map(period => <button key={period} onClick={() => setActiveTimeFilter(period)} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeTimeFilter === period ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+                        {period === 'year' && 'This Year'}
                         {period === 'week' && 'This Week'}
                         {period === 'month' && 'This Month'}
                         {period === 'all' && 'All Time'}
