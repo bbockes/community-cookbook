@@ -102,36 +102,52 @@ export const FilterBar: React.FC<FilterBarProps> = ({
           if (!isCookingMethodOpen) {
             setIsSortOpen(false);
             setIsCuisineOpen(false);
-              {activeCuisines.map(cuisine => {
-                const parent = Object.keys(subcuisines).find(key => 
-                  subcuisines[key as keyof typeof subcuisines].includes(cuisine)
-                );
-                return (
+          }
+        }} className={`flex items-center gap-2 px-4 py-2 bg-white rounded-sm border border-gray-200 shadow-sm hover:bg-gray-50 transition-all duration-300 ml-2 ${isCookingMethodOpen ? 'ring-2 ring-indigo-600 ring-offset-2 shadow-md bg-indigo-50' : ''}`}>
+            <UtensilsIcon size={16} />
+            <span>Cooking Method</span>
+            <ChevronDownIcon size={16} className={`transition-transform duration-200 ${isCookingMethodOpen ? 'rotate-180' : ''}`} />
+          </button>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="flex flex-wrap gap-2">
+            {activeCuisines.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {activeCuisines.map(cuisine => {
+                  const parent = Object.keys(subcuisines).find(key => 
+                    subcuisines[key as keyof typeof subcuisines].includes(cuisine)
+                  );
+                  return (
+                    <TagPill 
+                      key={cuisine}
+                      tag={parent ? `${parent} - ${cuisine}` : cuisine} 
+                      active={true} 
+                      onClick={() => {
+                        setActiveCuisines(activeCuisines.filter(c => c !== cuisine));
+                        if (parentCuisine === cuisine) {
+                          setParentCuisine(null);
+                        }
+                      }} 
+                      variant="square" 
+                    />
+                  );
+                })}
+              </div>
+            )}
+            {activeCookingMethods.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {activeCookingMethods.map(method => (
                   <TagPill 
-                    key={cuisine}
-                    tag={parent ? `${parent} - ${cuisine}` : cuisine} 
+                    key={method}
+                    tag={method} 
                     active={true} 
-                    onClick={() => {
-                      setActiveCuisines(activeCuisines.filter(c => c !== cuisine));
-                      if (parentCuisine === cuisine) {
-                        setParentCuisine(null);
-                      }
-                    }} 
+                    onClick={() => setActiveCookingMethods(activeCookingMethods.filter(m => m !== method))} 
                     variant="square" 
                   />
-                );
-              })}
-              {activeCookingMethods.map(method => (
-                <TagPill 
-                  key={method}
-                  tag={method} 
-                  active={true} 
-                  onClick={() => setActiveCookingMethods(activeCookingMethods.filter(m => m !== method))} 
-                  variant="square" 
-                />
-              ))}
-              {activeCookingMethod !== 'All' && <TagPill tag={activeCookingMethod} active={true} onClick={() => setActiveCookingMethod('All')} variant="square" />}
-            </div>}
+                ))}
+              </div>
+            )}
+          </div>
         </div>
         <div className="relative">
           <button onClick={() => {
@@ -211,6 +227,20 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               </>
             ) : (
               cuisineTags.map(tag => (
+                <CuisineCard 
+                  key={tag} 
+                  cuisine={tag} 
+                  active={tag === 'All' ? activeCuisines.length === 0 : activeCuisines.includes(tag)} 
+                  onClick={() => handleCuisineClick(tag)} 
+                />
+              ))
+            )}
+          </div>
+        </div>}
+      
+      {/* Cooking Methods Dropdown */}
+      {isCookingMethodOpen && <div className="bg-white rounded-md border border-gray-200 shadow-md p-8 mb-6 animate-fadeIn transition-all duration-300">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
             {cookingMethodTags.map(method => (
               <MethodCard 
                 key={method} 
@@ -219,13 +249,6 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 onClick={() => handleCookingMethodClick(method)} 
               />
             ))}
-          </div>
-        </div>}
-      
-      {/* Cooking Methods Dropdown */}
-      {isCookingMethodOpen && <div className="bg-white rounded-md border border-gray-200 shadow-md p-8 mb-6 animate-fadeIn transition-all duration-300">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-            {cookingMethodTags.map(method => <MethodCard key={method} method={method} active={activeCookingMethod === method} onClick={() => setActiveCookingMethod(method)} />)}
           </div>
         </div>}
     </div>;
