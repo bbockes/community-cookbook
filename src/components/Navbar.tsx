@@ -1,20 +1,28 @@
 import React, { useState } from 'react';
-import { SearchIcon, UserIcon, LogOutIcon } from 'lucide-react';
+import { SearchIcon, UserIcon, LogOutIcon, HomeIcon, User } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { AuthModal } from './AuthModal';
 
 interface NavbarProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
+  currentPage: 'home' | 'profile';
+  setCurrentPage: (page: 'home' | 'profile') => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery }) => {
+export const Navbar: React.FC<NavbarProps> = ({ 
+  searchQuery, 
+  setSearchQuery, 
+  currentPage, 
+  setCurrentPage 
+}) => {
   const { user, signOut } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
 
   const handleSignOut = async () => {
     await signOut();
+    setCurrentPage('home'); // Return to home when signing out
   };
 
   const openAuthModal = (mode: 'signin' | 'signup') => {
@@ -33,7 +41,8 @@ export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery }) =
               </h1>
             </div>
             <div className="flex-1 max-w-md mx-4">
-              <div className="relative">
+          {currentPage === 'home' && (
+            <div className="flex-1 max-w-md mx-4">
                 <input 
                   type="text" 
                   value={searchQuery}
@@ -47,12 +56,10 @@ export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery }) =
               </div>
             </div>
             <div className="flex items-center space-x-4">
+          )}
               {user ? (
                 <div className="flex items-center space-x-4">
                   <span className="text-charcoal/80 text-sm">
-                    My Profile
-                  </span>
-                  <button 
                     onClick={handleSignOut}
                     className="text-charcoal/80 hover:text-charcoal transition-colors flex items-center gap-1"
                   >
@@ -78,6 +85,32 @@ export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery }) =
                 </>
               )}
             </div>
+            {user && (
+              <div className="flex items-center space-x-2 ml-6">
+                <button
+                  onClick={() => setCurrentPage('home')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm transition-colors ${
+                    currentPage === 'home' 
+                      ? 'bg-navy text-white' 
+                      : 'text-charcoal/70 hover:text-charcoal hover:bg-gray-100'
+                  }`}
+                >
+                  <HomeIcon size={16} />
+                  Home
+                </button>
+                <button
+                  onClick={() => setCurrentPage('profile')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm transition-colors ${
+                    currentPage === 'profile' 
+                      ? 'bg-navy text-white' 
+                      : 'text-charcoal/70 hover:text-charcoal hover:bg-gray-100'
+                  }`}
+                >
+                  <User size={16} />
+                  Profile
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </nav>
