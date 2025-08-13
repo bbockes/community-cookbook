@@ -126,7 +126,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             setIsCookingMethodOpen(false);
           }
         }} className="flex items-center gap-2 px-4 py-2 bg-white rounded-sm border border-gray-200 shadow-sm hover:bg-gray-50 transition-colors">
-            <span>Sort: {activeSort === 'popular' ? 'Most favorited' : activeSort === 'rating' ? 'Rating' : 'Newest'}</span>
+            <span>Sort: {activeSort === 'popular' ? 'Most favorited' : activeSort === 'rating' ? 'Average rating' : 'Newest'}</span>
             <ChevronDownIcon size={16} className={`transition-transform duration-200 ${isSortOpen ? 'rotate-180' : ''}`} />
           </button>
           {/* Sort Dropdown */}
@@ -143,7 +143,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                     Most favorited
                   </button>
                   <button onClick={() => handleSortChange('rating')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'rating' ? 'bg-navy text-white' : 'bg-gray-100 text-charcoal hover:bg-gray-200'}`}>
-                    Rating
+                    Average rating
                   </button>
                 </div>
               </div>
