@@ -1,8 +1,22 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { XIcon, HeartIcon, BookmarkIcon, ShoppingCartIcon } from 'lucide-react';
 import { DbCookbook } from '../utils/types';
 import { TagPill } from './TagPill';
+import { supabase } from '../lib/supabase';
+
+interface ReviewWithProfile {
+  id: string;
+  user_id: string;
+  cookbook_id: string;
+  rating: number;
+  text: string;
+  created_at: string;
+  updated_at: string;
+  profiles: {
+    email: string;
+  };
+}
 
 interface CookbookModalProps {
   cookbook: DbCookbook;
@@ -14,8 +28,54 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
   onClose
 }) => {
   const [activeTab, setActiveTab] = useState<'reviews' | 'recipe-cards'>('reviews');
+  const [reviews, setReviews] = useState<ReviewWithProfile[]>([]);
+  const [loadingReviews, setLoadingReviews] = useState(true);
+  const [reviewsError, setReviewsError] = useState<string | null>(null);
+  
   const tags = [cookbook.cuisine, cookbook.cooking_method].filter(Boolean);
   const publishedDate = new Date(cookbook.created_at).toLocaleDateString();
+
+  // Fetch reviews when cookbook changes
+  useEffect(() => {
+    const fetchReviews = async () => {
+      setLoadingReviews(true);
+      setReviewsError(null);
+      
+      try {
+        const { data, error } = await supabase
+          .from('reviews')
+          .select(`
+            *,
+            profiles (
+              email
+            )
+          `)
+          .eq('cookbook_id', cookbook.id)
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        
+        setReviews(data || []);
+      } catch (err) {
+        setReviewsError(err instanceof Error ? err.message : 'Failed to fetch reviews');
+      } finally {
+        setLoadingReviews(false);
+      }
+    };
+
+    fetchReviews();
+  }, [cookbook.id]);
+
+  const renderStars = (rating: number) => {
+    return Array.from({ length: 5 }, (_, i) => (
+      <span
+        key={i}
+        className={`text-lg ${i < rating ? 'text-yellow-400' : 'text-gray-300'}`}
+      >
+        ★
+      </span>
+    ));
+  };
 
   return <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-md max-w-[80%] w-[80%] max-h-[80vh] overflow-y-auto">
@@ -98,9 +158,48 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                       Write Review
                     </button>
                   </div>
-                  <div className="text-charcoal/60 text-center py-8">
-                    No reviews yet. Be the first to review this cookbook!
-                  </div>
+                  
+                  {loadingReviews ? (
+                    <div className="flex justify-center items-center py-8">
+                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-navy"></div>
+                    </div>
+                  ) : reviewsError ? (
+                    <div className="text-red-600 text-center py-8 bg-red-50 rounded-md p-4">
+                      {reviewsError}
+                    </div>
+                  ) : reviews.length > 0 ? (
+                    <div className="space-y-4">
+                      {reviews.map((review) => (
+                        <div key={review.id} className="border border-gray-200 rounded-md p-4 bg-gray-50">
+                          <div className="flex justify-between items-start mb-2">
+                            <div>
+                              <p className="font-medium text-charcoal text-sm">
+                                {review.profiles.email}
+                              </p>
+                              <div className="flex items-center gap-1 mt-1">
+                                {renderStars(review.rating)}
+                                <span className="text-sm text-charcoal/60 ml-2">
+                                  {review.rating}/5
+                                </span>
+                              </div>
+                            </div>
+                            <span className="text-xs text-charcoal/50">
+                              {new Date(review.created_at).toLocaleDateString()}
+                            </span>
+                          </div>
+                          {review.text && (
+                            <p className="text-charcoal/80 text-sm leading-relaxed">
+                              {review.text}
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-charcoal/60 text-center py-8">
+                      No reviews yet. Be the first to review this cookbook!
+                    </div>
+                  )}
                 </div>
               )}
               
