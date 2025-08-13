@@ -168,70 +168,52 @@ export const FilterBar: React.FC<FilterBarProps> = ({
       
       {/* Cuisine Dropdown */}
       {isCuisineOpen && <div className="bg-white rounded-md border border-gray-200 shadow-md p-8 mb-6 animate-fadeIn transition-all duration-300">
-        <div 
-          className="fixed inset-0 z-10"
-          onClick={() => setIsCuisineOpen(false)}
-        >
-          <div 
-            className="bg-white rounded-md border border-gray-200 shadow-md p-8 mb-6 animate-fadeIn transition-all duration-300 relative z-20"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {showSubcuisines && <div className="mb-6 transition-all duration-300">
+          {showSubcuisines && (
+            <div className="mb-6 transition-all duration-300">
               <button 
                 onClick={handleBackToCuisines}
                 className="text-indigo-600 hover:text-indigo-800 text-sm font-medium mb-4 flex items-center gap-1"
               >
                 ← Back to cuisines
               </button>
-            </div>}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 transition-all duration-300">
-              {showSubcuisines ? (
-                <>
-                  <CuisineCard 
-                    key="all-subcuisine" 
-                    cuisine={`All ${showSubcuisines}`}
-                    active={activeCuisine === showSubcuisines} 
-                    onClick={() => handleCuisineClick(showSubcuisines)} 
-                  />
-                  {subcuisines[showSubcuisines as keyof typeof subcuisines]?.map(subcuisine => (
-                    <CuisineCard 
-                      key={subcuisine} 
-                      cuisine={subcuisine} 
-                      active={activeCuisine === subcuisine} 
-                      onClick={() => handleCuisineClick(subcuisine)} 
-                    />
-                  ))}
-                </>
-              ) : (
-                cuisineTags.map(tag => (
-                  <CuisineCard 
-                    key={tag} 
-                    cuisine={tag} 
-                    active={activeCuisine === tag} 
-                    onClick={() => handleCuisineClick(tag)} 
-                  />
-                ))
-              )}
             </div>
+          )}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 transition-all duration-300">
+            {showSubcuisines ? (
+              <>
+                <CuisineCard 
+                  key="all-subcuisine" 
+                  cuisine={`All ${showSubcuisines}`}
+                  active={activeCuisine === showSubcuisines} 
+                  onClick={() => handleCuisineClick(showSubcuisines)} 
+                />
+                {subcuisines[showSubcuisines as keyof typeof subcuisines]?.map(subcuisine => (
+                  <CuisineCard 
+                    key={subcuisine} 
+                    cuisine={subcuisine} 
+                    active={activeCuisine === subcuisine} 
+                    onClick={() => handleCuisineClick(subcuisine)} 
+                  />
+                ))}
+              </>
+            ) : (
+              cuisineTags.map(tag => (
+                <CuisineCard 
+                  key={tag} 
+                  cuisine={tag} 
+                  active={activeCuisine === tag} 
+                  onClick={() => handleCuisineClick(tag)} 
+                />
+              ))
+            )}
           </div>
-        </div>
-      </div>}
+        </div>}
       
       {/* Cooking Methods Dropdown */}
       {isCookingMethodOpen && <div className="bg-white rounded-md border border-gray-200 shadow-md p-8 mb-6 animate-fadeIn transition-all duration-300">
-        <div 
-          className="fixed inset-0 z-10"
-          onClick={() => setIsCookingMethodOpen(false)}
-        >
-          <div 
-            className="bg-white rounded-md border border-gray-200 shadow-md p-8 mb-6 animate-fadeIn transition-all duration-300 relative z-20"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 transition-all duration-300">
-              {cookingMethodTags.map(method => <MethodCard key={method} method={method} active={activeCookingMethod === method} onClick={() => setActiveCookingMethod(method)} />)}
-            </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+            {cookingMethodTags.map(method => <MethodCard key={method} method={method} active={activeCookingMethod === method} onClick={() => setActiveCookingMethod(method)} />)}
           </div>
-        </div>
-      </div>}
+        </div>}
     </div>;
 };
