@@ -3,27 +3,25 @@ import { HeartIcon } from 'lucide-react';
 import { TagPill } from './TagPill';
 import { DbCookbook } from '../utils/types';
 import { useAuth } from '../hooks/useAuth';
+import { useFavorites } from '../hooks/useFavorites';
 
 interface CookbookCardProps {
   cookbook: DbCookbook;
   onClick: () => void;
-  onFavoriteToggle: (cookbookId: string) => void;
 }
 
 export const CookbookCard: React.FC<CookbookCardProps> = ({
   cookbook,
   onClick,
-  onFavoriteToggle
 }) => {
   const { user } = useAuth();
-  const [isFavorited, setIsFavorited] = useState(false);
+  const { isFavorited, toggleFavorite, favoriteCount } = useFavorites(cookbook.id, cookbook.favorites);
   const [isHovered, setIsHovered] = useState(false);
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (user) {
-      setIsFavorited(!isFavorited);
-      onFavoriteToggle(cookbook.id);
+      toggleFavorite();
     }
   };
 
@@ -43,12 +41,18 @@ export const CookbookCard: React.FC<CookbookCardProps> = ({
         {/* Heart/Upvote Button with Vote Count */}
         <div className="absolute top-3 right-3 flex items-center gap-2 z-10">
           <span className="bg-black/50 backdrop-blur-sm text-white text-xs font-medium rounded-full px-2.5 py-1">
-            {cookbook.favorites}
+            {favoriteCount}
           </span>
           <button 
             onClick={handleFavoriteClick} 
             disabled={!user}
-            className={`bg-white rounded-full p-2 shadow-md transition-all duration-200 ${!user ? 'opacity-50 cursor-not-allowed' : isFavorited ? 'text-red-500 scale-110' : 'text-gray-400 hover:text-red-500'}`}
+            className={`bg-white rounded-full p-2 shadow-md transition-all duration-200 ${
+              !user 
+                ? 'opacity-50 cursor-not-allowed' 
+                : isFavorited 
+                  ? 'text-red-500 scale-110 hover:text-red-600' 
+                  : 'text-gray-400 hover:text-red-500'
+            }`}
           >
             <HeartIcon size={18} fill={isFavorited ? 'currentColor' : 'none'} className="transition-transform duration-200 group-hover:scale-110" />
           </button>
