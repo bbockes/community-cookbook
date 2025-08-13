@@ -237,6 +237,79 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
     setReviewRating(1);
   };
 
+  const handleRecipeCardSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user || submittingRecipeCard) return;
+
+    setSubmittingRecipeCard(true);
+    try {
+      const { data, error } = await supabase
+        .from('recipe_cards')
+        .insert([
+          {
+            user_id: user.id,
+            cookbook_id: cookbook.id,
+            recipe_title: recipeCardData.recipe_title.trim(),
+            rating: recipeCardData.rating,
+            text: recipeCardData.text.trim(),
+            image_url: recipeCardData.image_url.trim(),
+            overall_outcome_text: recipeCardData.overall_outcome_text.trim(),
+            would_make_again_text: recipeCardData.would_make_again_text.trim(),
+            what_to_do_differently_text: recipeCardData.what_to_do_differently_text.trim(),
+          }
+        ])
+        .select(`
+          *,
+          profiles (
+            username
+          )
+        `)
+        .single();
+
+      if (error) throw error;
+      
+      // Add new recipe card to the list
+      setRecipeCards(prev => [data, ...prev]);
+      handleRecipeCardCancel();
+    } catch (err) {
+      setRecipeCardsError(err instanceof Error ? err.message : 'Failed to submit recipe card');
+    } finally {
+      setSubmittingRecipeCard(false);
+    }
+  };
+
+  const handleRecipeCardCancel = () => {
+    setShowRecipeCardForm(false);
+    setRecipeCardData({
+      recipe_title: '',
+      rating: 1,
+      text: '',
+      image_url: '',
+      overall_outcome_text: '',
+      would_make_again_text: '',
+      what_to_do_differently_text: ''
+    });
+  };
+
+  const renderRecipeCardStars = (rating: number) => {
+    const displayRating = recipeCardHoverRating > 0 ? recipeCardHoverRating : rating;
+    
+    return Array.from({ length: 5 }, (_, i) => (
+      <button
+        key={i}
+        type="button"
+        onClick={() => setRecipeCardData(prev => ({ ...prev, rating: i + 1 }))}
+        onMouseEnter={() => setRecipeCardHoverRating(i + 1)}
+        onMouseLeave={() => setRecipeCardHoverRating(0)}
+        className={`text-2xl transition-colors hover:text-yellow-400 ${
+          i < displayRating ? 'text-yellow-400' : 'text-gray-300'
+        }`}
+      >
+        ★
+      </button>
+    ));
+  };
+
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
       <span
