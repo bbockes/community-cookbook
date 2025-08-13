@@ -446,7 +446,7 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                           >
                             Edit Review
                           </button>
-                        </div>
+                        </>
                       )}
                       {!user && (
                         <div className="flex flex-col items-end gap-1">
