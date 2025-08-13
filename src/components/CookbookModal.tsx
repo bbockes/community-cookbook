@@ -273,80 +273,35 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                       {recipeCardsError}
                     </div>
                   ) : recipeCards.length > 0 ? (
-                    <div className="space-y-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                       {recipeCards.map((card) => (
-                        <div key={card.id} className="border border-gray-200 rounded-md p-6 bg-gray-50">
-                          <div className="flex justify-between items-start mb-4">
-                            <div>
-                              <h4 className="font-semibold text-lg text-charcoal mb-1">
+                        <div key={card.id} className="bg-white rounded-md overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-lg group">
+                          <div className="relative aspect-square">
+                            {/* Recipe Image */}
+                            <img 
+                              src={card.image_url || 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800'} 
+                              alt={card.recipe_title}
+                              className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105"
+                            />
+                            {/* Overlay with info on hover */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center p-4">
+                              <h4 className="font-semibold text-lg text-white mb-1 text-center">
                                 {card.recipe_title}
                               </h4>
-                              <p className="text-sm text-charcoal/60 mb-2">
+                              <p className="text-sm text-gray-200 text-center mb-2">
                                 by {card.profiles.username}
                               </p>
-                              <div className="flex items-center gap-1">
+                              <div className="flex items-center justify-center gap-1">
                                 {renderStars(card.rating)}
-                                <span className="text-sm text-charcoal/60 ml-2">
+                                <span className="text-sm text-white ml-2">
                                   {card.rating}/5
                                 </span>
                               </div>
                             </div>
-                            <span className="text-xs text-charcoal/50">
+                            {/* Date stamp */}
+                            <div className="absolute top-2 right-2 bg-black/50 backdrop-blur-sm text-white text-xs font-medium rounded-full px-2 py-1">
                               {new Date(card.created_at).toLocaleDateString()}
-                            </span>
-                          </div>
-                          
-                          {card.image_url && (
-                            <div className="mb-4">
-                              <img 
-                                src={card.image_url} 
-                                alt={card.recipe_title}
-                                className="w-full max-w-md h-48 object-cover rounded-md"
-                              />
                             </div>
-                          )}
-                          
-                          {card.text && (
-                            <div className="mb-4">
-                              <p className="text-charcoal/80 text-sm leading-relaxed">
-                                {card.text}
-                              </p>
-                            </div>
-                          )}
-                          
-                          <div className="space-y-3">
-                            {card.overall_outcome_text && (
-                              <div>
-                                <h5 className="font-medium text-sm text-charcoal mb-1">
-                                  How did it turn out overall?
-                                </h5>
-                                <p className="text-sm text-charcoal/80 leading-relaxed">
-                                  {card.overall_outcome_text}
-                                </p>
-                              </div>
-                            )}
-                            
-                            {card.would_make_again_text && (
-                              <div>
-                                <h5 className="font-medium text-sm text-charcoal mb-1">
-                                  Would you make it again?
-                                </h5>
-                                <p className="text-sm text-charcoal/80 leading-relaxed">
-                                  {card.would_make_again_text}
-                                </p>
-                              </div>
-                            )}
-                            
-                            {card.what_to_do_differently_text && (
-                              <div>
-                                <h5 className="font-medium text-sm text-charcoal mb-1">
-                                  What would you do differently next time?
-                                </h5>
-                                <p className="text-sm text-charcoal/80 leading-relaxed">
-                                  {card.what_to_do_differently_text}
-                                </p>
-                              </div>
-                            )}
                           </div>
                         </div>
                       ))}
