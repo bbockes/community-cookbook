@@ -343,7 +343,7 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
     ));
   };
 
-  return <div 
+  return (<div 
     className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md flex items-center justify-center z-50 p-4"
     onClick={onClose}
   >
@@ -448,9 +448,11 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                           </button>
                         </>
                       )}
-                      <div className="flex flex-col items-end gap-1">
-                        <div className="text-sm text-charcoal/60 text-right">
-                          Sign in to write a review
+                      {!user && (
+                        <div className="flex flex-col items-end gap-1">
+                          <div className="text-sm text-charcoal/60 text-right">
+                            Sign in to write a review
+                          </div>
                         </div>
                       )}
                     </div>
@@ -759,5 +761,5 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
           onClose={() => setSelectedRecipeCard(null)} 
         />
       )}
-    </div>;
+    </div>);
 };
