@@ -62,6 +62,8 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
   const [submittingReview, setSubmittingReview] = useState(false);
   const [userHasReviewed, setUserHasReviewed] = useState(false);
   const [hoverRating, setHoverRating] = useState(0);
+  const [isEditingReview, setIsEditingReview] = useState(false);
+  const [userReview, setUserReview] = useState<ReviewWithProfile | null>(null);
   
   const tags = [cookbook.cuisine, cookbook.cooking_method].filter(Boolean);
   const publishedDate = new Date(cookbook.created_at).toLocaleDateString();
@@ -92,6 +94,7 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
         if (user) {
           const userReview = data?.find(review => review.user_id === user.id);
           setUserHasReviewed(!!userReview);
+          setUserReview(userReview || null);
         }
       } catch (err) {
         setReviewsError(err instanceof Error ? err.message : 'Failed to fetch reviews');
@@ -140,23 +143,87 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
 
     setSubmittingReview(true);
     try {
-      const { data, error } = await supabase
-        .from('reviews')
-        .insert([
-          {
-            user_id: user.id,
-            cookbook_id: cookbook.id,
+      if (isEditingReview && userReview) {
+        // Update existing review
+        const { data, error } = await supabase
+          .from('reviews')
+          .update({
             rating: reviewRating,
             text: reviewText.trim(),
-          }
-        ])
-        .select(`
-          *,
-          profiles (
-            username
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', userReview.id)
+          .select(`
+            *,
+            profiles (
+              username
+            )
+          `)
+          .single();
+
+        if (error) throw error;
+        
+        // Update the review in the list
+        setReviews(prev => 
+          prev.map(review => 
+            review.id === userReview.id ? data : review
           )
-        `)
-        .single();
+        );
+        setUserReview(data);
+      } else {
+        // Create new review
+        const { data, error } = await supabase
+          .from('reviews')
+          .insert([
+            {
+              user_id: user.id,
+              cookbook_id: cookbook.id,
+              rating: reviewRating,
+              text: reviewText.trim(),
+            }
+          ])
+          .select(`
+            *,
+            profiles (
+              username
+            )
+          `)
+          .single();
+
+        if (error) throw error;
+        
+        // Add new review to the list
+        setReviews(prev => [data, ...prev]);
+        setUserHasReviewed(true);
+        setUserReview(data);
+      }
+      
+      setShowReviewForm(false);
+      setIsEditingReview(false);
+      setReviewText('');
+      setReviewRating(1);
+    } catch (err) {
+      setReviewsError(err instanceof Error ? err.message : 'Failed to submit review');
+    } finally {
+      setSubmittingReview(false);
+    }
+  };
+
+  const handleEditReview = () => {
+    if (userReview) {
+      setReviewRating(userReview.rating);
+      setReviewText(userReview.text || '');
+      setIsEditingReview(true);
+      setShowReviewForm(true);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setShowReviewForm(false);
+    setIsEditingReview(false);
+    setReviewText('');
+    setReviewRating(1);
+  };
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
       <span
@@ -306,6 +373,14 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                         Write Review
                       </button>
                     )}
+                    {user && userHasReviewed && (
+                      <button 
+                        onClick={handleEditReview}
+                        className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors text-sm"
+                      >
+                        Edit Review
+                      </button>
+                    )}
                     {!user && (
                       <div className="text-sm text-charcoal/60">
                         Sign in to write a review
@@ -321,7 +396,9 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                   {/* Review Form */}
                   {showReviewForm && user && (
                     <div className="bg-gray-50 rounded-md p-6 mb-6 border border-gray-200">
-                      <h4 className="text-lg font-semibold text-charcoal mb-4">Write Your Review</h4>
+                      <h4 className="text-lg font-semibold text-charcoal mb-4">
+                        {isEditingReview ? 'Edit Your Review' : 'Write Your Review'}
+                      </h4>
                       <form onSubmit={handleReviewSubmit} className="space-y-4">
                         <div>
                           <label className="block text-sm font-medium text-charcoal mb-2">
@@ -353,15 +430,14 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                             disabled={submittingReview}
                             className="bg-navy text-white px-4 py-2 rounded-md hover:bg-navy/90 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                           >
-                            {submittingReview ? 'Submitting...' : 'Submit Review'}
+                            {submittingReview ? 
+                              (isEditingReview ? 'Updating...' : 'Submitting...') : 
+                              (isEditingReview ? 'Update Review' : 'Submit Review')
+                            }
                           </button>
                           <button
                             type="button"
-                            onClick={() => {
-                              setShowReviewForm(false);
-                              setReviewText('');
-                              setReviewRating(1);
-                            }}
+                            onClick={handleCancelEdit}
                             className="bg-gray-200 text-charcoal px-4 py-2 rounded-md hover:bg-gray-300 transition-colors text-sm"
                           >
                             Cancel
