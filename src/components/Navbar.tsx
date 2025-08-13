@@ -92,7 +92,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </button>
                 <button
                   onClick={handleSignOut}
-                  className="text-charcoal/80 hover:text-charcoal transition-colors flex items-center gap-1"
+                 className="text-charcoal/80 hover:text-charcoal transition-colors flex items-center gap-1 text-sm"
                 >
                   <LogOutIcon size={16} />
                   Sign Out
