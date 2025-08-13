@@ -64,6 +64,18 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
   const [hoverRating, setHoverRating] = useState(0);
   const [isEditingReview, setIsEditingReview] = useState(false);
   const [userReview, setUserReview] = useState<ReviewWithProfile | null>(null);
+  const [showRecipeCardForm, setShowRecipeCardForm] = useState(false);
+  const [recipeCardData, setRecipeCardData] = useState({
+    recipe_title: '',
+    rating: 1,
+    text: '',
+    image_url: '',
+    overall_outcome_text: '',
+    would_make_again_text: '',
+    what_to_do_differently_text: ''
+  });
+  const [submittingRecipeCard, setSubmittingRecipeCard] = useState(false);
+  const [recipeCardHoverRating, setRecipeCardHoverRating] = useState(0);
   
   const tags = [cookbook.cuisine, cookbook.cooking_method].filter(Boolean);
   const publishedDate = new Date(cookbook.created_at).toLocaleDateString();
