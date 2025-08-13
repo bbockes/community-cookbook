@@ -153,7 +153,6 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
               {activeTab === 'reviews' && (
                 <div>
                   <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-semibold">User Reviews</h3>
                     <button className="bg-navy text-white px-4 py-2 rounded-md hover:bg-navy/90 transition-colors text-sm">
                       Write Review
                     </button>
