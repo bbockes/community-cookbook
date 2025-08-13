@@ -41,7 +41,7 @@ export const RecipeCardModal: React.FC<RecipeCardModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] p-4">
-      <div className="bg-white rounded-md max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-md max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center p-4 border-b">
           <h2 className="text-xl font-semibold text-charcoal">Recipe Card</h2>
           <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
