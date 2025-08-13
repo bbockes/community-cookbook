@@ -40,26 +40,29 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span className="text-navy">Community</span> <span className="text-purple-800">Cookbook</span>
               </h1>
             </div>
-            <div className="flex-1 max-w-md mx-4">
-          {currentPage === 'home' && (
-            <div className="flex-1 max-w-md mx-4">
-                <input 
-                  type="text" 
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search cookbooks..." 
-                  className="w-full py-2 px-4 pl-10 bg-gray-50 border border-gray-200 rounded-sm text-sm focus:outline-none focus:ring-1 focus:ring-navy transition-all" 
-                />
-                <div className="absolute left-3 top-2.5 text-charcoal/60">
-                  <SearchIcon size={18} />
+            {currentPage === 'home' && (
+              <div className="flex-1 max-w-md mx-4">
+                <div className="relative">
+                  <input 
+                    type="text" 
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search cookbooks..." 
+                    className="w-full py-2 px-4 pl-10 bg-gray-50 border border-gray-200 rounded-sm text-sm focus:outline-none focus:ring-1 focus:ring-navy transition-all" 
+                  />
+                  <div className="absolute left-3 top-2.5 text-charcoal/60">
+                    <SearchIcon size={18} />
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
             <div className="flex items-center space-x-4">
-          )}
               {user ? (
                 <div className="flex items-center space-x-4">
                   <span className="text-charcoal/80 text-sm">
+                    Hello, {user.email}
+                  </span>
+                  <button
                     onClick={handleSignOut}
                     className="text-charcoal/80 hover:text-charcoal transition-colors flex items-center gap-1"
                   >
