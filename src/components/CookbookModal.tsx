@@ -104,7 +104,7 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
     };
 
     fetchReviews();
-  }, [cookbook.id]);
+  }, [cookbook.id, user]);
 
   // Fetch recipe cards when cookbook changes
   useEffect(() => {
@@ -224,6 +224,7 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
     setReviewText('');
     setReviewRating(1);
   };
+
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
       <span
@@ -235,19 +236,6 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
     ));
   };
 
-      if (error) throw error;
-      // Add new review to the list
-      setReviews(prev => [data, ...prev]);
-      setUserHasReviewed(true);
-      setShowReviewForm(false);
-      setReviewText('');
-      setReviewRating(1);
-    } catch (err) {
-      setReviewsError(err instanceof Error ? err.message : 'Failed to submit review');
-    } finally {
-      setSubmittingReview(false);
-    }
-  };
   const handleStarClick = (rating: number) => {
     setReviewRating(rating);
   };
@@ -268,17 +256,6 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
       >
         ★
       </button>
-    ));
-  };
-
-  const renderStars = (rating: number) => {
-    return Array.from({ length: 5 }, (_, i) => (
-      <span
-        key={i}
-        className={`text-lg ${i < rating ? 'text-yellow-400' : 'text-gray-300'}`}
-      >
-        ★
-      </span>
     ));
   };
 
