@@ -43,8 +43,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span className="text-navy">Community</span> <span className="text-purple-800">Cookbook</span>
               </h1>
             </div>
-            {currentPage === 'home' && (
-              <div className="flex-1 max-w-md mx-4">
+            <div className="flex-1 max-w-md mx-4">
+              {currentPage === 'home' ? (
                 <div className="relative">
                   <input 
                     type="text" 
@@ -57,8 +57,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <SearchIcon size={18} />
                   </div>
                 </div>
-              </div>
-            )}
+              ) : (
+                <div></div>
+              )}
+            </div>
             <div className="flex items-center space-x-4">
               {user ? (
                 <div></div>
