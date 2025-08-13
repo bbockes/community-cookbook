@@ -77,21 +77,20 @@ export const RecipeCardModal: React.FC<RecipeCardModalProps> = ({
               <p className="text-xs text-charcoal/50 mb-4">
                 Created {new Date(recipeCard.created_at).toLocaleDateString()}
               </p>
-              
-              {/* General Review Text */}
-              {recipeCard.text && (
-                <div className="mb-6">
-                  <h4 className="font-semibold text-charcoal mb-2">General Notes</h4>
-                  <p className="text-charcoal/80 leading-relaxed bg-gray-50 p-4 rounded-md">
-                    {recipeCard.text}
-                  </p>
-                </div>
-              )}
             </div>
           </div>
           
           {/* Detailed Questions */}
           <div className="space-y-6">
+            {recipeCard.text && (
+              <div>
+                <h4 className="font-semibold text-charcoal mb-2">General Notes</h4>
+                <p className="text-charcoal/80 leading-relaxed bg-gray-50 p-4 rounded-md">
+                  {recipeCard.text}
+                </p>
+              </div>
+            )}
+            
             {recipeCard.overall_outcome_text && (
               <div>
                 <h4 className="font-semibold text-charcoal mb-2">
