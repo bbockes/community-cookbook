@@ -19,9 +19,8 @@ interface ProfileProps {
 
 export const Profile: React.FC<ProfileProps> = ({ onCookbookSelect }) => {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState<'submitted' | 'reviews' | 'recipe-cards' | 'wishlist' | 'favorites'>('submitted');
+  const [activeTab, setActiveTab] = useState<'reviews' | 'recipe-cards' | 'wishlist' | 'favorites'>('reviews');
   const [userProfile, setUserProfile] = useState<any>(null);
-  const [submittedCookbooks, setSubmittedCookbooks] = useState<DbCookbook[]>([]);
   const [userReviews, setUserReviews] = useState<ReviewWithCookbook[]>([]);
   const [userRecipeCards, setUserRecipeCards] = useState<RecipeCardWithCookbook[]>([]);
   const [wishlistCookbooks, setWishlistCookbooks] = useState<DbCookbook[]>([]);
@@ -51,16 +50,6 @@ export const Profile: React.FC<ProfileProps> = ({ onCookbookSelect }) => {
 
       if (profileError) throw profileError;
       setUserProfile(profile);
-
-      // Fetch submitted cookbooks
-      const { data: submitted, error: submittedError } = await supabase
-        .from('cookbooks')
-        .select('*')
-        .eq('submitted_by', user.id)
-        .order('created_at', { ascending: false });
-
-      if (submittedError) throw submittedError;
-      setSubmittedCookbooks(submitted || []);
 
       // Fetch user reviews with cookbook info
       const { data: reviews, error: reviewsError } = await supabase
@@ -176,10 +165,6 @@ export const Profile: React.FC<ProfileProps> = ({ onCookbookSelect }) => {
           {/* Stats */}
           <div className="mt-6 flex gap-8">
             <div className="text-center">
-              <div className="text-2xl font-bold text-navy">{submittedCookbooks.length}</div>
-              <div className="text-sm text-charcoal/60">Submitted</div>
-            </div>
-            <div className="text-center">
               <div className="text-2xl font-bold text-navy">{userReviews.length}</div>
               <div className="text-sm text-charcoal/60">Reviews</div>
             </div>
@@ -202,17 +187,6 @@ export const Profile: React.FC<ProfileProps> = ({ onCookbookSelect }) => {
       {/* Tab Navigation */}
       <div className="border-b border-gray-200 mb-8">
         <nav className="container mx-auto px-4 -mb-px flex space-x-8">
-          <button
-            onClick={() => setActiveTab('submitted')}
-            className={`py-3 px-1 border-b-2 font-medium text-sm transition-colors flex items-center gap-2 ${
-              activeTab === 'submitted'
-                ? 'border-navy text-navy'
-                : 'border-transparent text-charcoal/60 hover:text-charcoal hover:border-gray-300'
-            }`}
-          >
-            <BookOpen className="w-4 h-4" />
-            Submitted Cookbooks
-          </button>
           <button
             onClick={() => setActiveTab('reviews')}
             className={`py-3 px-1 border-b-2 font-medium text-sm transition-colors flex items-center gap-2 ${
@@ -262,27 +236,6 @@ export const Profile: React.FC<ProfileProps> = ({ onCookbookSelect }) => {
 
       {/* Tab Content */}
       <div className="container mx-auto px-4">
-        {activeTab === 'submitted' && (
-          <div>
-            <h2 className="text-2xl font-bold text-charcoal mb-6">Submitted Cookbooks</h2>
-            {submittedCookbooks.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {submittedCookbooks.map(cookbook => (
-                  <CookbookCard 
-                    key={cookbook.id} 
-                    cookbook={cookbook} 
-                    onClick={() => onCookbookSelect(cookbook)} 
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-12 text-charcoal/60">
-                You haven't submitted any cookbooks yet
-              </div>
-            )}
-          </div>
-        )}
-
         {activeTab === 'reviews' && (
           <div>
             <h2 className="text-2xl font-bold text-charcoal mb-6">Your Reviews</h2>
