@@ -436,7 +436,7 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                         </button>
                       )}
                       {user && userHasReviewed && (
-                        <div className="flex items-center justify-between">
+                        <>
                           <div className="text-sm text-charcoal/60">
                             You've already reviewed this cookbook
                           </div>
