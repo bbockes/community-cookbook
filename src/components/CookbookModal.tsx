@@ -610,7 +610,7 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
 
                         <div>
                           <label className="block text-sm font-medium text-charcoal mb-2">
-                            Recipe Image (optional)
+                            Recipe Image
                           </label>
                           <ImageUpload
                             value={recipeCardData.image_url}
@@ -621,7 +621,7 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                         
                         <div>
                           <label htmlFor="recipeText" className="block text-sm font-medium text-charcoal mb-2">
-                            General Notes (optional)
+                            General Notes *
                           </label>
                           <textarea
                             id="recipeText"
@@ -630,11 +630,12 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                             rows={3}
                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-navy focus:border-transparent resize-none"
                             placeholder="Share your general thoughts about making this recipe..."
+                            required
                           />
                         </div>
                         <div>
                           <label htmlFor="overallOutcome" className="block text-sm font-medium text-charcoal mb-2">
-                            How did it turn out overall? (optional)
+                            How did it turn out overall? *
                           </label>
                           <textarea
                             id="overallOutcome"
@@ -643,11 +644,12 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                             rows={3}
                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-navy focus:border-transparent resize-none"
                             placeholder="Describe the final result..."
+                            required
                           />
                         </div>
                         <div>
                           <label htmlFor="makeAgain" className="block text-sm font-medium text-charcoal mb-2">
-                            Would you make it again? (optional)
+                            Would you make it again? *
                           </label>
                           <textarea
                             id="makeAgain"
@@ -656,11 +658,12 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                             rows={2}
                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-navy focus:border-transparent resize-none"
                             placeholder="Would you make this again? Why or why not?"
+                            required
                           />
                         </div>
                         <div>
                           <label htmlFor="doDifferently" className="block text-sm font-medium text-charcoal mb-2">
-                            What would you do differently next time? (optional)
+                            What would you do differently next time? *
                           </label>
                           <textarea
                             id="doDifferently"
@@ -669,13 +672,14 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                             rows={2}
                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-navy focus:border-transparent resize-none"
                             placeholder="Any changes or improvements for next time?"
+                            required
                           />
                         </div>
                         
                         <div className="flex gap-3">
                           <button
                             type="submit"
-                            disabled={submittingRecipeCard || !recipeCardData.recipe_title.trim()}
+                            disabled={submittingRecipeCard || !recipeCardData.recipe_title.trim() || !recipeCardData.text.trim() || !recipeCardData.overall_outcome_text.trim() || !recipeCardData.would_make_again_text.trim() || !recipeCardData.what_to_do_differently_text.trim()}
                             className="bg-navy text-white px-4 py-2 rounded-md hover:bg-navy/90 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             {submittingRecipeCard ? 'Submitting...' : 'Submit Recipe Card'}
