@@ -342,32 +342,34 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                 <div>
                   <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-semibold">User Reviews</h3>
-                    {user && !userHasReviewed && (
-                      <button 
-                        onClick={() => setShowReviewForm(true)}
-                        className="bg-navy text-white px-4 py-2 rounded-md hover:bg-navy/90 transition-colors text-sm"
-                      >
-                        Write Review
-                      </button>
-                    )}
-                    {user && userHasReviewed && (
-                      <button 
-                        onClick={handleEditReview}
-                        className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors text-sm"
-                      >
-                        Edit Review
-                      </button>
-                    )}
-                    {!user && (
-                      <div className="text-sm text-charcoal/60">
-                        Sign in to write a review
-                      </div>
-                    )}
-                    {user && userHasReviewed && (
-                      <div className="text-sm text-charcoal/60">
-                        You've already reviewed this cookbook
-                      </div>
-                    )}
+                    <div className="flex items-center gap-3">
+                      {user && !userHasReviewed && (
+                        <button 
+                          onClick={() => setShowReviewForm(true)}
+                          className="bg-navy text-white px-4 py-2 rounded-md hover:bg-navy/90 transition-colors text-sm"
+                        >
+                          Write Review
+                        </button>
+                      )}
+                      {user && userHasReviewed && (
+                        <>
+                          <div className="text-sm text-charcoal/60">
+                            You've already reviewed this cookbook
+                          </div>
+                          <button 
+                            onClick={handleEditReview}
+                            className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors text-sm"
+                          >
+                            Edit Review
+                          </button>
+                        </>
+                      )}
+                      {!user && (
+                        <div className="text-sm text-charcoal/60">
+                          Sign in to write a review
+                        </div>
+                      )}
+                    </div>
                   </div>
                   
                   {/* Review Form */}
