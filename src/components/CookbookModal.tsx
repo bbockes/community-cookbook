@@ -4,6 +4,7 @@ import { XIcon, HeartIcon, BookmarkIcon, ShoppingCartIcon } from 'lucide-react';
 import { DbCookbook } from '../utils/types';
 import { TagPill } from './TagPill';
 import { RecipeCardModal } from './RecipeCardModal';
+import { ImageUpload } from './ImageUpload';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../hooks/useAuth';
 
