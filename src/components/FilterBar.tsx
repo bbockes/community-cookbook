@@ -139,16 +139,16 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                   <button onClick={() => handleSortChange('newest')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'newest' ? 'bg-navy text-white' : 'bg-gray-100 text-charcoal hover:bg-gray-200'}`}>
                     Newest
                   </button>
-                  <button onClick={() => handleSortChange('popular')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'popular' ? 'bg-navy text-white' : 'bg-gray-100 text-charcoal hover:bg-gray-200'}`}>
-                    Most favorited
-                  </button>
                   <button onClick={() => handleSortChange('rating')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'rating' ? 'bg-navy text-white' : 'bg-gray-100 text-charcoal hover:bg-gray-200'}`}>
                     Average rating
+                  </button>
+                  <button onClick={() => handleSortChange('popular')} className={`text-left px-3 py-2 rounded-sm transition-colors ${activeSort === 'popular' ? 'bg-navy text-white' : 'bg-gray-100 text-charcoal hover:bg-gray-200'}`}>
+                    Most favorited
                   </button>
                 </div>
               </div>
               {/* Time Period (only shown when Popular is selected) */}
-              {(activeSort === 'popular' || activeSort === 'rating') && <div className="border-t border-gray-200 pt-4 mt-2">
+              {activeSort === 'popular' && <div className="border-t border-gray-200 pt-4 mt-2">
                   <label className="text-sm font-medium text-gray-700 flex items-center gap-2 mb-3">
                     <ClockIcon size={16} />
                     Time Period
