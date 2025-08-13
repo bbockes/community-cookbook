@@ -180,8 +180,10 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
       setSubmittingReview(false);
     }
   };
-  return <div 
   const handleStarClick = (rating: number) => {
+    setReviewRating(rating);
+  };
+
   const renderInteractiveStars = (rating: number, onStarClick: (rating: number) => void) => {
     return Array.from({ length: 5 }, (_, i) => (
       <button
@@ -196,8 +198,19 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
       </button>
     ));
   };
-    setReviewRating(rating);
+
+  const renderStars = (rating: number) => {
+    return Array.from({ length: 5 }, (_, i) => (
+      <span
+        key={i}
+        className={`text-lg ${i < rating ? 'text-yellow-400' : 'text-gray-300'}`}
+      >
+        ★
+      </span>
+    ));
   };
+
+  return <div 
     className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md flex items-center justify-center z-50 p-4"
     onClick={onClose}
   >
