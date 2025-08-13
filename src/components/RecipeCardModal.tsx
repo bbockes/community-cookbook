@@ -94,15 +94,6 @@ export const RecipeCardModal: React.FC<RecipeCardModalProps> = ({
           
           {/* Detailed Questions */}
           <div className="space-y-6">
-            {recipeCard.text && (
-              <div>
-                <h4 className="font-semibold text-charcoal mb-2">General Notes</h4>
-                <p className="text-charcoal/80 leading-relaxed bg-gray-50 p-4 rounded-md">
-                  {recipeCard.text}
-                </p>
-              </div>
-            )}
-            
             {recipeCard.overall_outcome_text && (
               <div>
                 <h4 className="font-semibold text-charcoal mb-2">
