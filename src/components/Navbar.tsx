@@ -50,7 +50,7 @@ export const Navbar: React.FC<NavbarProps> = ({ searchQuery, setSearchQuery }) =
               {user ? (
                 <div className="flex items-center space-x-4">
                   <span className="text-charcoal/80 text-sm">
-                    Welcome, {user.email}
+                    My Profile
                   </span>
                   <button 
                     onClick={handleSignOut}
