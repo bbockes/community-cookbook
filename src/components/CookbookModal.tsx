@@ -486,10 +486,140 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                 <div>
                   <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-semibold">Recipe Cards</h3>
-                    <button className="bg-navy text-white px-4 py-2 rounded-md hover:bg-navy/90 transition-colors text-sm">
-                      Add Recipe Card
-                    </button>
+                    {user ? (
+                      <button 
+                        onClick={() => setShowRecipeCardForm(true)}
+                        className="bg-navy text-white px-4 py-2 rounded-md hover:bg-navy/90 transition-colors text-sm"
+                      >
+                        Add Recipe Card
+                      </button>
+                    ) : (
+                      <div className="text-sm text-charcoal/60">
+                        Sign in to add a recipe card
+                      </div>
+                    )}
                   </div>
+                  
+                  {/* Recipe Card Form */}
+                  {showRecipeCardForm && user && (
+                    <div className="bg-gray-50 rounded-md p-6 mb-6 border border-gray-200">
+                      <h4 className="text-lg font-semibold text-charcoal mb-4">
+                        Add Your Recipe Card
+                      </h4>
+                      <form onSubmit={handleRecipeCardSubmit} className="space-y-4">
+                        <div>
+                          <label htmlFor="recipeTitle" className="block text-sm font-medium text-charcoal mb-2">
+                            Recipe Title *
+                          </label>
+                          <input
+                            type="text"
+                            id="recipeTitle"
+                            value={recipeCardData.recipe_title}
+                            onChange={(e) => setRecipeCardData(prev => ({ ...prev, recipe_title: e.target.value }))}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-navy focus:border-transparent"
+                            placeholder="What recipe did you make?"
+                            required
+                          />
+                        </div>
+                        
+                        <div>
+                          <label className="block text-sm font-medium text-charcoal mb-2">
+                            Rating *
+                          </label>
+                          <div className="flex items-center gap-1">
+                            {renderRecipeCardStars(recipeCardData.rating)}
+                            <span className="text-sm text-charcoal/60 ml-2">
+                              {recipeCardData.rating}/5 stars
+                            </span>
+                          </div>
+                        </div>
+
+                        <div>
+                          <label htmlFor="recipeImage" className="block text-sm font-medium text-charcoal mb-2">
+                            Recipe Image URL (optional)
+                          </label>
+                          <input
+                            type="url"
+                            id="recipeImage"
+                            value={recipeCardData.image_url}
+                            onChange={(e) => setRecipeCardData(prev => ({ ...prev, image_url: e.target.value }))}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-navy focus:border-transparent"
+                            placeholder="https://example.com/image.jpg"
+                          />
+                        </div>
+                        
+                        <div>
+                          <label htmlFor="recipeText" className="block text-sm font-medium text-charcoal mb-2">
+                            General Notes (optional)
+                          </label>
+                          <textarea
+                            id="recipeText"
+                            value={recipeCardData.text}
+                            onChange={(e) => setRecipeCardData(prev => ({ ...prev, text: e.target.value }))}
+                            rows={3}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-navy focus:border-transparent resize-none"
+                            placeholder="Share your general thoughts about making this recipe..."
+                        <div>
+                          <label htmlFor="overallOutcome" className="block text-sm font-medium text-charcoal mb-2">
+                            How did it turn out overall? (optional)
+                          </label>
+                          <textarea
+                            id="overallOutcome"
+                            value={recipeCardData.overall_outcome_text}
+                            onChange={(e) => setRecipeCardData(prev => ({ ...prev, overall_outcome_text: e.target.value }))}
+                            rows={3}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-navy focus:border-transparent resize-none"
+                            placeholder="Describe the final result..."
+                          />
+                        </div>
+                          />
+                        <div>
+                          <label htmlFor="makeAgain" className="block text-sm font-medium text-charcoal mb-2">
+                            Would you make it again? (optional)
+                          </label>
+                          <textarea
+                            id="makeAgain"
+                            value={recipeCardData.would_make_again_text}
+                            onChange={(e) => setRecipeCardData(prev => ({ ...prev, would_make_again_text: e.target.value }))}
+                            rows={2}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-navy focus:border-transparent resize-none"
+                            placeholder="Would you make this again? Why or why not?"
+                          />
+                        </div>
+                        </div>
+                        <div>
+                          <label htmlFor="doDifferently" className="block text-sm font-medium text-charcoal mb-2">
+                            What would you do differently next time? (optional)
+                          </label>
+                          <textarea
+                            id="doDifferently"
+                            value={recipeCardData.what_to_do_differently_text}
+                            onChange={(e) => setRecipeCardData(prev => ({ ...prev, what_to_do_differently_text: e.target.value }))}
+                            rows={2}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-navy focus:border-transparent resize-none"
+                            placeholder="Any changes or improvements for next time?"
+                          />
+                        </div>
+                        
+                        <div className="flex gap-3">
+                          <button
+                            type="submit"
+                            disabled={submittingRecipeCard || !recipeCardData.recipe_title.trim()}
+                            className="bg-navy text-white px-4 py-2 rounded-md hover:bg-navy/90 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {submittingRecipeCard ? 'Submitting...' : 'Submit Recipe Card'}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleRecipeCardCancel}
+                            className="bg-gray-200 text-charcoal px-4 py-2 rounded-md hover:bg-gray-300 transition-colors text-sm"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  )}
                   
                   {loadingRecipeCards ? (
                     <div className="flex justify-center items-center py-8">
