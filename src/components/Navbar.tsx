@@ -43,7 +43,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span className="text-navy">Community</span> <span className="text-purple-800">Cookbook</span>
               </h1>
             </div>
-            <div className="flex-1 max-w-md mx-4 h-10 flex items-center">
+            <div className="flex-1 max-w-md mx-4 h-10 flex items-center hidden xl:flex">
               {currentPage === 'home' ? (
                 <div className="relative w-full">
                   <input 
