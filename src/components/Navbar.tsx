@@ -36,7 +36,10 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <h1 className="text-2xl font-bold text-navy font-heading">
+              <h1 
+                className="text-2xl font-bold text-navy font-heading cursor-pointer hover:opacity-80 transition-opacity"
+                onClick={() => setCurrentPage('home')}
+              >
                 <span className="text-navy">Community</span> <span className="text-purple-800">Cookbook</span>
               </h1>
             </div>
