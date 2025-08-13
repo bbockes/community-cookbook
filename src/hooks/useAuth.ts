@@ -24,13 +24,39 @@ export function useAuth() {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (email: string, password: string, username: string) => {
+    // First check if username is already taken
+    const { data: existingUser } = await supabase
+      .from('profiles')
+      .select('username')
+      .eq('username', username)
+      .single();
+
+    if (existingUser) {
+      return { data: null, error: { message: 'Username already taken' } };
+    }
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
     });
 
-    // Profile creation is now handled automatically by database trigger
+    // Create profile with username after successful auth signup
+    if (data.user && !error) {
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .insert([
+          {
+            id: data.user.id,
+            email: data.user.email!,
+            username: username,
+          }
+        ]);
+
+      if (profileError) {
+        return { data, error: profileError };
+      }
+    }
 
     return { data, error };
   };

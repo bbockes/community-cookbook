@@ -14,7 +14,7 @@ interface ReviewWithProfile {
   created_at: string;
   updated_at: string;
   profiles: {
-    email: string;
+    username: string;
   };
 }
 
@@ -47,7 +47,7 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
           .select(`
             *,
             profiles (
-              email
+              username
             )
           `)
           .eq('cookbook_id', cookbook.id)
@@ -174,7 +174,7 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                           <div className="flex justify-between items-start mb-2">
                             <div>
                               <p className="font-medium text-charcoal text-sm">
-                                {review.profiles.email}
+                                {review.profiles.username}
                               </p>
                               <div className="flex items-center gap-1 mt-1">
                                 {renderStars(review.rating)}

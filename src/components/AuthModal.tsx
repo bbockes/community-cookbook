@@ -15,6 +15,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 }) => {
   const [mode, setMode] = useState(initialMode);
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -30,13 +31,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     try {
       const { error } = mode === 'signin' 
         ? await signIn(email, password)
-        : await signUp(email, password);
+        : await signUp(email, password, username);
 
       if (error) {
         setError(error.message);
       } else {
         onClose();
         setEmail('');
+        setUsername('');
         setPassword('');
       }
     } catch (err) {
@@ -77,6 +79,26 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               required
             />
           </div>
+
+          {mode === 'signup' && (
+            <div>
+              <label htmlFor="username" className="block text-sm font-medium text-charcoal mb-1">
+                Username
+              </label>
+              <input
+                type="text"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-navy focus:border-transparent"
+                required
+                minLength={3}
+                maxLength={20}
+                pattern="^[a-zA-Z0-9_]+$"
+                title="Username can only contain letters, numbers, and underscores"
+              />
+            </div>
+          )}
 
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-charcoal mb-1">
