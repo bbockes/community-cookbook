@@ -53,6 +53,7 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
   const [recipeCards, setRecipeCards] = useState<RecipeCardWithProfile[]>([]);
   const [loadingRecipeCards, setLoadingRecipeCards] = useState(true);
   const [recipeCardsError, setRecipeCardsError] = useState<string | null>(null);
+  const [selectedRecipeCard, setSelectedRecipeCard] = useState<RecipeCardWithProfile | null>(null);
   
   const tags = [cookbook.cuisine, cookbook.cooking_method].filter(Boolean);
   const publishedDate = new Date(cookbook.created_at).toLocaleDateString();
