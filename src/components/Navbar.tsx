@@ -58,18 +58,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
             <div className="flex items-center space-x-4">
               {user ? (
-                <div className="flex items-center space-x-4">
-                  <span className="text-charcoal/80 text-sm">
-                    Hello, {user.email}
-                  </span>
-                  <button
-                    onClick={handleSignOut}
-                    className="text-charcoal/80 hover:text-charcoal transition-colors flex items-center gap-1"
-                  >
-                    <LogOutIcon size={16} />
-                    Sign Out
-                  </button>
-                </div>
+                <div></div>
               ) : (
                 <>
                   <button 
@@ -91,17 +80,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             {user && (
               <div className="flex items-center space-x-2 ml-6">
                 <button
-                  onClick={() => setCurrentPage('home')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm transition-colors ${
-                    currentPage === 'home' 
-                      ? 'bg-navy text-white' 
-                      : 'text-charcoal/70 hover:text-charcoal hover:bg-gray-100'
-                  }`}
-                >
-                  <HomeIcon size={16} />
-                  Home
-                </button>
-                <button
                   onClick={() => setCurrentPage('profile')}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm transition-colors ${
                     currentPage === 'profile' 
@@ -110,7 +88,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                   }`}
                 >
                   <User size={16} />
-                  Profile
+                  My Profile
+                </button>
+                <button
+                  onClick={handleSignOut}
+                  className="text-charcoal/80 hover:text-charcoal transition-colors flex items-center gap-1"
+                >
+                  <LogOutIcon size={16} />
+                  Sign Out
                 </button>
               </div>
             )}
