@@ -132,7 +132,7 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
   };
 
   return <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-md max-w-[95%] w-[95%] max-h-[95vh] overflow-y-auto">
+      <div className="bg-white rounded-md max-w-[75%] w-[75%] max-h-[75vh] overflow-y-auto">
         <div className="flex justify-end items-center p-4">
           <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
             <XIcon size={20} />
