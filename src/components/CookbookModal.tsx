@@ -435,6 +435,19 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                           Write Review
                         </button>
                       )}
+                      {user && userHasReviewed && (
+                        <>
+                          <div className="text-sm text-charcoal/60">
+                            You've already reviewed this cookbook
+                          </div>
+                          <button 
+                            onClick={handleEditReview}
+                            className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors text-sm"
+                          >
+                            Edit Review
+                          </button>
+                        </>
+                      )}
                       {!user && (
                         <div className="flex flex-col items-end gap-1">
                           <div className="text-sm text-charcoal/60 text-right">
@@ -510,7 +523,7 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                   ) : reviews.length > 0 ? (
                     <div className="space-y-4">
                       {reviews.map((review) => (
-                        <div key={review.id} className="border border-gray-200 rounded-md p-4 bg-gray-50 max-w-xl">
+                        <div key={review.id} className="border border-gray-200 rounded-md p-4 bg-gray-50 max-w-2xl">
                           <div className="flex justify-between items-start mb-2">
                             <div>
                               <p className="font-medium text-charcoal text-sm">
@@ -523,24 +536,9 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                                 </span>
                               </div>
                             </div>
-                            <div className="flex flex-col items-end gap-2">
-                              <span className="text-xs text-charcoal/50">
-                                {new Date(review.created_at).toLocaleDateString()}
-                              </span>
-                              {user && review.user_id === user.id && (
-                                <div className="flex flex-col items-end gap-1">
-                                  <div className="text-xs text-charcoal/60 text-right">
-                                    Your review
-                                  </div>
-                                  <button 
-                                    onClick={handleEditReview}
-                                    className="bg-gray-600 text-white px-3 py-1 rounded-md hover:bg-gray-700 transition-colors text-xs"
-                                  >
-                                    Edit
-                                  </button>
-                                </div>
-                              )}
-                            </div>
+                            <span className="text-xs text-charcoal/50">
+                              {new Date(review.created_at).toLocaleDateString()}
+                            </span>
                           </div>
                           {review.text && (
                             <p className="text-charcoal/80 text-sm leading-relaxed">
