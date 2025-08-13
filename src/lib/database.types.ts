@@ -112,6 +112,9 @@ export interface Database {
           rating: number;
           text: string;
           image_url: string;
+          overall_outcome_text: string;
+          would_make_again_text: string;
+          what_to_do_differently_text: string;
           created_at: string;
           updated_at: string;
         };
@@ -123,6 +126,9 @@ export interface Database {
           rating: number;
           text?: string;
           image_url?: string;
+          overall_outcome_text?: string;
+          would_make_again_text?: string;
+          what_to_do_differently_text?: string;
           created_at?: string;
           updated_at?: string;
         };
@@ -134,6 +140,9 @@ export interface Database {
           rating?: number;
           text?: string;
           image_url?: string;
+          overall_outcome_text?: string;
+          would_make_again_text?: string;
+          what_to_do_differently_text?: string;
           created_at?: string;
           updated_at?: string;
         };
