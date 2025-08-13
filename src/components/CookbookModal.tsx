@@ -131,7 +131,10 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
     ));
   };
 
-  return <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md flex items-center justify-center z-50 p-4">
+  return <div 
+    className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md flex items-center justify-center z-50 p-4"
+    onClick={onClose}
+  >
       <div 
         className="bg-white rounded-md max-w-[85%] w-[85%] max-h-[85vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
