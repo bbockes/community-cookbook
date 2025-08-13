@@ -111,6 +111,7 @@ export interface Database {
           recipe_title: string;
           rating: number;
           text: string;
+          image_url: string;
           created_at: string;
           updated_at: string;
         };
@@ -121,6 +122,7 @@ export interface Database {
           recipe_title: string;
           rating: number;
           text?: string;
+          image_url?: string;
           created_at?: string;
           updated_at?: string;
         };
@@ -131,6 +133,7 @@ export interface Database {
           recipe_title?: string;
           rating?: number;
           text?: string;
+          image_url?: string;
           created_at?: string;
           updated_at?: string;
         };
