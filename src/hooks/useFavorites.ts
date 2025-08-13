@@ -1,107 +1,83 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
 import { useAuth } from './useAuth';
+import { supabase } from '../lib/supabase';
 
-export function useFavorites(cookbookId: string, initialCount: number) {
+export const useFavorites = (cookbookId: string, initialFavoriteCount: number) => {
   const { user } = useAuth();
   const [isFavorited, setIsFavorited] = useState(false);
-  const [favoriteCount, setFavoriteCount] = useState(initialCount);
-  const [loading, setLoading] = useState(false);
+  const [favoriteCount, setFavoriteCount] = useState(initialFavoriteCount);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Check if user has favorited this cookbook
   useEffect(() => {
-    const checkFavoriteStatus = async () => {
-      if (!user) {
-        setIsFavorited(false);
-        return;
-      }
-
-      try {
-        const { data: profile, error } = await supabase
-          .from('profiles')
-          .select('favorite_cookbooks')
-          .eq('id', user.id)
-          .single();
-
-        if (error) throw error;
-        
-        setIsFavorited(profile.favorite_cookbooks?.includes(cookbookId) || false);
-      } catch (err) {
-        console.error('Error checking favorite status:', err);
-      }
-    };
-
-    checkFavoriteStatus();
+    if (user) {
+      checkIfFavorited();
+    } else {
+      setIsFavorited(false);
+    }
   }, [user, cookbookId]);
 
-  const toggleFavorite = async () => {
-    if (!user || loading) return;
-    
-    setLoading(true);
-    
+  const checkIfFavorited = async () => {
+    if (!user) return;
+
     try {
-      // Get current user profile
-      const { data: profile, error: profileError } = await supabase
+      const { data: profile } = await supabase
         .from('profiles')
         .select('favorite_cookbooks')
         .eq('id', user.id)
         .single();
 
-      if (profileError) throw profileError;
-
-      const currentFavorites = profile.favorite_cookbooks || [];
-      const isCurrentlyFavorited = currentFavorites.includes(cookbookId);
-      
-      // Don't allow toggling if already in desired state
-      if (isCurrentlyFavorited === isFavorited) {
-        setLoading(false);
-        return;
+      if (profile) {
+        setIsFavorited(profile.favorite_cookbooks?.includes(cookbookId) || false);
       }
+    } catch (error) {
+      console.error('Error checking favorite status:', error);
+    }
+  };
 
-      let newFavorites: string[];
-      let newCount: number;
+  const toggleFavorite = async () => {
+    if (!user || isLoading) return;
 
-      if (isCurrentlyFavorited) {
-        // Remove from favorites
-        newFavorites = currentFavorites.filter(id => id !== cookbookId);
-        newCount = favoriteCount - 1;
-      } else {
-        // Add to favorites
-        newFavorites = [...currentFavorites, cookbookId];
-        newCount = favoriteCount + 1;
-      }
-
-      // Update user's favorite_cookbooks
-      const { error: updateProfileError } = await supabase
+    setIsLoading(true);
+    try {
+      const { data: profile } = await supabase
         .from('profiles')
-        .update({ favorite_cookbooks: newFavorites })
-        .eq('id', user.id);
+        .select('favorite_cookbooks')
+        .eq('id', user.id)
+        .single();
 
-      if (updateProfileError) throw updateProfileError;
+      if (profile) {
+        const currentFavorites = profile.favorite_cookbooks || [];
+        const newFavorites = isFavorited
+          ? currentFavorites.filter((id: string) => id !== cookbookId)
+          : [...currentFavorites, cookbookId];
 
-      // Update cookbook's favorites count
-      const { error: updateCookbookError } = await supabase
-        .from('cookbooks')
-        .update({ favorites: newCount })
-        .eq('id', cookbookId);
+        await supabase
+          .from('profiles')
+          .update({ favorite_cookbooks: newFavorites })
+          .eq('id', user.id);
 
-      if (updateCookbookError) throw updateCookbookError;
+        // Update cookbook favorites count
+        const newCount = isFavorited ? favoriteCount - 1 : favoriteCount + 1;
+        
+        await supabase
+          .from('cookbooks')
+          .update({ favorites: newCount })
+          .eq('id', cookbookId);
 
-      // Update local state
-      setIsFavorited(!isCurrentlyFavorited);
-      setFavoriteCount(newCount);
-      
-    } catch (err) {
-      console.error('Error toggling favorite:', err);
+        setIsFavorited(!isFavorited);
+        setFavoriteCount(newCount);
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   return {
     isFavorited,
-    favoriteCount,
     toggleFavorite,
-    loading
+    favoriteCount,
+    isLoading
   };
-}
+};
