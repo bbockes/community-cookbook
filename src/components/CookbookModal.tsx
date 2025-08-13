@@ -365,7 +365,8 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
               <h1 className="text-2xl font-bold text-charcoal mb-1">
                 {cookbook.title}
               </h1>
-              <p className="text-charcoal/70 mb-4">by {cookbook.author}</p>
+              <p className="text-charcoal/70 mb-1">by {cookbook.author}</p>
+              <p className="text-charcoal/60 text-sm mb-4">Published {publishedDate}</p>
               <p className="text-charcoal/80 mb-6">{cookbook.description}</p>
               <div className="flex flex-wrap gap-2 mb-6">
                 {tags.map(tag => <TagPill key={tag} tag={tag} />)}
@@ -737,18 +738,6 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
               )}
               
               {/* Cookbook Info moved to bottom */}
-              <div className="mt-8 pt-6 border-t border-gray-200">
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <p className="text-charcoal/60">Published</p>
-                    <p>{publishedDate}</p>
-                  </div>
-                  <div>
-                    <p className="text-charcoal/60">Votes</p>
-                    <p>{cookbook.favorites}</p>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
