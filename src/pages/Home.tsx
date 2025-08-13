@@ -24,8 +24,7 @@ export const Home: React.FC<HomeProps> = ({
     error, 
     hasMore, 
     fetchCookbooks, 
-    loadMoreCookbooks, 
-    addToFavorites 
+    loadMoreCookbooks
   } = useCookbooks();
   
   const loadMoreRef = useRef<HTMLDivElement>(null);
@@ -90,7 +89,6 @@ export const Home: React.FC<HomeProps> = ({
             key={cookbook.id} 
             cookbook={cookbook} 
             onClick={() => onCookbookSelect(cookbook)} 
-            onFavoriteToggle={addToFavorites}
           />
         ))}
       </div>
