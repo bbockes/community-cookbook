@@ -609,16 +609,13 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                         </div>
 
                         <div>
-                          <label htmlFor="recipeImage" className="block text-sm font-medium text-charcoal mb-2">
-                            Recipe Image URL (optional)
+                          <label className="block text-sm font-medium text-charcoal mb-2">
+                            Recipe Image (optional)
                           </label>
-                          <input
-                            type="url"
-                            id="recipeImage"
+                          <ImageUpload
                             value={recipeCardData.image_url}
-                            onChange={(e) => setRecipeCardData(prev => ({ ...prev, image_url: e.target.value }))}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-navy focus:border-transparent"
-                            placeholder="https://example.com/image.jpg"
+                            onChange={(url) => setRecipeCardData(prev => ({ ...prev, image_url: url }))}
+                            placeholder="Upload a photo of your recipe"
                           />
                         </div>
                         
