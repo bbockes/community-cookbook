@@ -154,11 +154,19 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                     Time Period
                   </label>
                   <div className="flex flex-col gap-2">
-                    {['all', 'year', 'month'].map(period => 
-                        {period === 'week' && 'This Week'}
+                    {['all', 'year', 'month'].map(period => (
+                      <button
+                        key={period}
+                        onClick={() => setActiveTimeFilter(period)}
+                        className={`text-left px-3 py-2 rounded-sm transition-colors ${
+                          activeTimeFilter === period ? 'bg-navy text-white' : 'bg-gray-100 text-charcoal hover:bg-gray-200'
+                        }`}
+                      >
+                        {period === 'year' && 'This Year'}
                         {period === 'month' && 'This Month'}
                         {period === 'all' && 'All Time'}
-                      </button>)}
+                      </button>
+                    ))}
                   </div>
                 </div>}
             </div>}
