@@ -63,7 +63,26 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
             <div className="flex items-center space-x-4">
               {user ? (
-                <div></div>
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => setCurrentPage('profile')}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm transition-colors ${
+                      currentPage === 'profile' 
+                        ? 'bg-navy text-white' 
+                        : 'text-charcoal/70 hover:text-charcoal hover:bg-gray-100'
+                    }`}
+                  >
+                    <User size={16} />
+                    My Profile
+                  </button>
+                  <button
+                    onClick={handleSignOut}
+                   className="text-charcoal/80 hover:text-charcoal transition-colors flex items-center gap-1 text-sm"
+                  >
+                    <LogOutIcon size={16} />
+                    Sign Out
+                  </button>
+                </div>
               ) : (
                 <>
                   <button 
@@ -82,28 +101,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </>
               )}
             </div>
-            {user && (
-              <div className="flex items-center space-x-2 ml-6">
-                <button
-                  onClick={() => setCurrentPage('profile')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm transition-colors ${
-                    currentPage === 'profile' 
-                      ? 'bg-navy text-white' 
-                      : 'text-charcoal/70 hover:text-charcoal hover:bg-gray-100'
-                  }`}
-                >
-                  <User size={16} />
-                  My Profile
-                </button>
-                <button
-                  onClick={handleSignOut}
-                 className="text-charcoal/80 hover:text-charcoal transition-colors flex items-center gap-1 text-sm"
-                >
-                  <LogOutIcon size={16} />
-                  Sign Out
-                </button>
-              </div>
-            )}
           </div>
         </div>
       </nav>
