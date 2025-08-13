@@ -18,6 +18,24 @@ interface ReviewWithProfile {
   };
 }
 
+interface RecipeCardWithProfile {
+  id: string;
+  user_id: string;
+  cookbook_id: string;
+  recipe_title: string;
+  rating: number;
+  text: string;
+  image_url: string;
+  overall_outcome_text: string;
+  would_make_again_text: string;
+  what_to_do_differently_text: string;
+  created_at: string;
+  updated_at: string;
+  profiles: {
+    username: string;
+  };
+}
+
 interface CookbookModalProps {
   cookbook: DbCookbook;
   onClose: () => void;
@@ -31,6 +49,9 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
   const [reviews, setReviews] = useState<ReviewWithProfile[]>([]);
   const [loadingReviews, setLoadingReviews] = useState(true);
   const [reviewsError, setReviewsError] = useState<string | null>(null);
+  const [recipeCards, setRecipeCards] = useState<RecipeCardWithProfile[]>([]);
+  const [loadingRecipeCards, setLoadingRecipeCards] = useState(true);
+  const [recipeCardsError, setRecipeCardsError] = useState<string | null>(null);
   
   const tags = [cookbook.cuisine, cookbook.cooking_method].filter(Boolean);
   const publishedDate = new Date(cookbook.created_at).toLocaleDateString();
@@ -64,6 +85,37 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
     };
 
     fetchReviews();
+  }, [cookbook.id]);
+
+  // Fetch recipe cards when cookbook changes
+  useEffect(() => {
+    const fetchRecipeCards = async () => {
+      setLoadingRecipeCards(true);
+      setRecipeCardsError(null);
+      
+      try {
+        const { data, error } = await supabase
+          .from('recipe_cards')
+          .select(`
+            *,
+            profiles (
+              username
+            )
+          `)
+          .eq('cookbook_id', cookbook.id)
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        
+        setRecipeCards(data || []);
+      } catch (err) {
+        setRecipeCardsError(err instanceof Error ? err.message : 'Failed to fetch recipe cards');
+      } finally {
+        setLoadingRecipeCards(false);
+      }
+    };
+
+    fetchRecipeCards();
   }, [cookbook.id]);
 
   const renderStars = (rating: number) => {
@@ -211,9 +263,99 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                       Add Recipe Card
                     </button>
                   </div>
-                  <div className="text-charcoal/60 text-center py-8">
-                    No recipe cards yet. Share your experience with specific recipes!
-                  </div>
+                  
+                  {loadingRecipeCards ? (
+                    <div className="flex justify-center items-center py-8">
+                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-navy"></div>
+                    </div>
+                  ) : recipeCardsError ? (
+                    <div className="text-red-600 text-center py-8 bg-red-50 rounded-md p-4">
+                      {recipeCardsError}
+                    </div>
+                  ) : recipeCards.length > 0 ? (
+                    <div className="space-y-6">
+                      {recipeCards.map((card) => (
+                        <div key={card.id} className="border border-gray-200 rounded-md p-6 bg-gray-50">
+                          <div className="flex justify-between items-start mb-4">
+                            <div>
+                              <h4 className="font-semibold text-lg text-charcoal mb-1">
+                                {card.recipe_title}
+                              </h4>
+                              <p className="text-sm text-charcoal/60 mb-2">
+                                by {card.profiles.username}
+                              </p>
+                              <div className="flex items-center gap-1">
+                                {renderStars(card.rating)}
+                                <span className="text-sm text-charcoal/60 ml-2">
+                                  {card.rating}/5
+                                </span>
+                              </div>
+                            </div>
+                            <span className="text-xs text-charcoal/50">
+                              {new Date(card.created_at).toLocaleDateString()}
+                            </span>
+                          </div>
+                          
+                          {card.image_url && (
+                            <div className="mb-4">
+                              <img 
+                                src={card.image_url} 
+                                alt={card.recipe_title}
+                                className="w-full max-w-md h-48 object-cover rounded-md"
+                              />
+                            </div>
+                          )}
+                          
+                          {card.text && (
+                            <div className="mb-4">
+                              <p className="text-charcoal/80 text-sm leading-relaxed">
+                                {card.text}
+                              </p>
+                            </div>
+                          )}
+                          
+                          <div className="space-y-3">
+                            {card.overall_outcome_text && (
+                              <div>
+                                <h5 className="font-medium text-sm text-charcoal mb-1">
+                                  How did it turn out overall?
+                                </h5>
+                                <p className="text-sm text-charcoal/80 leading-relaxed">
+                                  {card.overall_outcome_text}
+                                </p>
+                              </div>
+                            )}
+                            
+                            {card.would_make_again_text && (
+                              <div>
+                                <h5 className="font-medium text-sm text-charcoal mb-1">
+                                  Would you make it again?
+                                </h5>
+                                <p className="text-sm text-charcoal/80 leading-relaxed">
+                                  {card.would_make_again_text}
+                                </p>
+                              </div>
+                            )}
+                            
+                            {card.what_to_do_differently_text && (
+                              <div>
+                                <h5 className="font-medium text-sm text-charcoal mb-1">
+                                  What would you do differently next time?
+                                </h5>
+                                <p className="text-sm text-charcoal/80 leading-relaxed">
+                                  {card.what_to_do_differently_text}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-charcoal/60 text-center py-8">
+                      No recipe cards yet. Share your experience with specific recipes!
+                    </div>
+                  )}
                 </div>
               )}
               
