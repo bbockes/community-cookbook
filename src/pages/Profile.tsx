@@ -127,8 +127,35 @@ export const Profile: React.FC<ProfileProps> = ({ onCookbookSelect }) => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-navy"></div>
+      <div>
+        {/* Profile Header Placeholder */}
+        <div className="bg-cream border-b border-gray-200 mb-8">
+          <div className="container mx-auto px-4 py-8">
+            <div className="flex items-center gap-6">
+              <div className="w-20 h-20 bg-gray-200 rounded-full animate-pulse"></div>
+              <div>
+                <div className="h-8 bg-gray-200 rounded w-48 mb-2 animate-pulse"></div>
+                <div className="h-4 bg-gray-200 rounded w-64 mb-1 animate-pulse"></div>
+                <div className="h-4 bg-gray-200 rounded w-32 animate-pulse"></div>
+              </div>
+            </div>
+            
+            {/* Stats Placeholder */}
+            <div className="mt-6 flex gap-8">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="text-center">
+                  <div className="h-8 bg-gray-200 rounded w-8 mx-auto mb-1 animate-pulse"></div>
+                  <div className="h-4 bg-gray-200 rounded w-12 animate-pulse"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Loading spinner */}
+        <div className="flex justify-center items-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-navy"></div>
+        </div>
       </div>
     );
   }
