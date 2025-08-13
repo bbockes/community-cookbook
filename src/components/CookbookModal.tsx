@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { XIcon, HeartIcon, BookmarkIcon, ShoppingCartIcon } from 'lucide-react';
 import { DbCookbook } from '../utils/types';
 import { TagPill } from './TagPill';
+import { RecipeCardModal } from './RecipeCardModal';
 import { supabase } from '../lib/supabase';
 
 interface ReviewWithProfile {
@@ -275,7 +276,11 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                   ) : recipeCards.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                       {recipeCards.map((card) => (
-                        <div key={card.id} className="bg-white rounded-md overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-lg group">
+                        <div 
+                          key={card.id} 
+                          onClick={() => setSelectedRecipeCard(card)}
+                          className="bg-white rounded-md overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-lg group"
+                        >
                           <div className="relative aspect-square">
                             {/* Recipe Image */}
                             <img 
@@ -331,5 +336,13 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
           </div>
         </div>
       </div>
+      
+      {/* Recipe Card Detail Modal */}
+      {selectedRecipeCard && (
+        <RecipeCardModal 
+          recipeCard={selectedRecipeCard} 
+          onClose={() => setSelectedRecipeCard(null)} 
+        />
+      )}
     </div>;
 };
