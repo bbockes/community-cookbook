@@ -691,14 +691,14 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                       {recipeCardsError}
                     </div>
                   ) : recipeCards.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                       {recipeCards.map((card) => (
                         <div 
                           key={card.id} 
                           onClick={() => setSelectedRecipeCard(card)}
                           className="bg-white rounded-md overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-lg group"
                         >
-                          <div className="relative aspect-square">
+                          <div className="relative aspect-[7/8]">
                             {/* Recipe Image */}
                             <img 
                               src={card.image_url || 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800'} 
