@@ -521,7 +521,7 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
                   ) : reviews.length > 0 ? (
                     <div className="space-y-4">
                       {reviews.map((review) => (
-                        <div key={review.id} className="border border-gray-200 rounded-md p-4 bg-gray-50">
+                        <div key={review.id} className="border border-gray-200 rounded-md p-4 bg-gray-50 max-w-2xl">
                           <div className="flex justify-between items-start mb-2">
                             <div>
                               <p className="font-medium text-charcoal text-sm">
