@@ -348,15 +348,16 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
     onClick={onClose}
   >
       <div 
-        className="bg-white rounded-md max-w-[85%] w-[85%] max-h-[85vh] overflow-y-auto"
+        className="bg-white rounded-lg max-w-[85%] w-[85%] max-h-[85vh] overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-end items-center p-4">
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
-            <XIcon size={20} />
-          </button>
-        </div>
-        <div className="px-6 pt-0 pb-6">
+        <div className="max-h-[85vh] overflow-y-auto">
+          <div className="flex justify-end items-center p-4">
+            <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+              <XIcon size={20} />
+            </button>
+          </div>
+          <div className="px-6 pt-0 pb-6"></div>
           <div className="flex gap-6">
             <div className="w-1/3">
               <img src={cookbook.image_url || 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'} alt={cookbook.title} className="w-full aspect-[3/4] object-cover rounded-sm" />
