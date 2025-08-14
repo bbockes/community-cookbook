@@ -779,5 +779,4 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
           onClose={() => setSelectedRecipeCard(null)} 
         />
       )}
-    </div>);
-};
+    </div>
