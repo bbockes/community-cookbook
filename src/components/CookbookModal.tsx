@@ -343,10 +343,11 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
     ));
   };
 
-  return (<div 
-    className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md flex items-center justify-center z-50 p-4"
-    onClick={onClose}
-  >
+  return (
+    <div 
+      className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md flex items-center justify-center z-50 p-4"
+      onClick={onClose}
+    >
       <div 
         className="bg-white rounded-lg max-w-[85%] w-[85%] max-h-[85vh] overflow-hidden"
         onClick={(e) => e.stopPropagation()}
@@ -358,71 +359,71 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
             </button>
           </div>
           <div className="px-6 pt-0 pb-6">
-          <div className="flex flex-col lg:flex-row gap-6">
-            <div className="w-full lg:w-1/3">
-              <img src={cookbook.image_url || 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'} alt={cookbook.title} className="w-full aspect-[3/4] object-cover rounded-sm" />
-            </div>
-            <div className="w-full lg:w-2/3">
-              <h1 className="text-2xl font-bold text-charcoal mb-1">
-                {cookbook.title}
-              </h1>
-              <p className="text-charcoal/70 mb-1">by {cookbook.author}</p>
-              <p className="text-charcoal/60 text-sm mb-4">Published {publishedDate}</p>
-              <p className="text-charcoal/80 mb-6">{cookbook.description}</p>
-              <div className="flex flex-wrap gap-2 mb-6 hidden sm:flex">
-                {tags.map(tag => <TagPill key={tag} tag={tag} />)}
+            <div className="flex flex-col lg:flex-row gap-6">
+              <div className="w-full lg:w-1/3">
+                <img src={cookbook.image_url || 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'} alt={cookbook.title} className="w-full aspect-[3/4] object-cover rounded-sm" />
               </div>
-              <div className="hidden lg:flex gap-4">
-                  <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-sm hover:bg-gray-200 transition-colors">
-                    <HeartIcon size={18} />
-                    <span>Favorite</span>
-                  </button>
-                  <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-sm hover:bg-gray-200 transition-colors">
-                    <BookmarkIcon size={18} />
-                    <span>Add to Wishlist</span>
-                  </button>
-                  {cookbook.affiliate_link && (
-                    <a
-                      href={cookbook.affiliate_link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 bg-coral text-white px-4 py-2 rounded-sm hover:bg-coral/90 transition-colors"
-                    >
-                      <ShoppingCartIcon size={18} />
-                      Buy It
-                    </a>
-                  )}
+              <div className="w-full lg:w-2/3">
+                <h1 className="text-2xl font-bold text-charcoal mb-1">
+                  {cookbook.title}
+                </h1>
+                <p className="text-charcoal/70 mb-1">by {cookbook.author}</p>
+                <p className="text-charcoal/60 text-sm mb-4">Published {publishedDate}</p>
+                <p className="text-charcoal/80 mb-6">{cookbook.description}</p>
+                <div className="flex flex-wrap gap-2 mb-6 hidden sm:flex">
+                  {tags.map(tag => <TagPill key={tag} tag={tag} />)}
+                </div>
+                <div className="hidden lg:flex gap-4">
+                    <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-sm hover:bg-gray-200 transition-colors">
+                      <HeartIcon size={18} />
+                      <span>Favorite</span>
+                    </button>
+                    <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-sm hover:bg-gray-200 transition-colors">
+                      <BookmarkIcon size={18} />
+                      <span>Add to Wishlist</span>
+                    </button>
+                    {cookbook.affiliate_link && (
+                      <a
+                        href={cookbook.affiliate_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 bg-coral text-white px-4 py-2 rounded-sm hover:bg-coral/90 transition-colors"
+                      >
+                        <ShoppingCartIcon size={18} />
+                        Buy It
+                      </a>
+                    )}
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Mobile-only pills section - show below 658px */}
-          <div className="flex flex-wrap gap-2 mb-6 px-6 sm:hidden">
-            {tags.map(tag => <TagPill key={tag} tag={tag} />)}
-          </div>
+            {/* Mobile-only pills section - show below 658px */}
+            <div className="flex flex-wrap gap-2 mb-6 sm:hidden">
+              {tags.map(tag => <TagPill key={tag} tag={tag} />)}
+            </div>
 
-          {/* Mobile-only buttons section - show below 850px */}
-          <div className="flex flex-col gap-3 px-6 mb-6 lg:hidden">
-            <button className="flex items-center justify-center gap-2 px-4 py-3 bg-gray-100 rounded-sm hover:bg-gray-200 transition-colors">
-              <HeartIcon size={18} />
-              <span>Favorite</span>
-            </button>
-            <button className="flex items-center justify-center gap-2 px-4 py-3 bg-gray-100 rounded-sm hover:bg-gray-200 transition-colors">
-              <BookmarkIcon size={18} />
-              <span>Add to Wishlist</span>
-            </button>
-            {cookbook.affiliate_link && (
-              <a
-                href={cookbook.affiliate_link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 bg-coral text-white px-4 py-3 rounded-sm hover:bg-coral/90 transition-colors"
-              >
-                <ShoppingCartIcon size={18} />
-                Buy It
-              </a>
-            )}
-          </div>
+            {/* Mobile-only buttons section - show below 850px */}
+            <div className="flex flex-col gap-3 mb-6 lg:hidden">
+              <button className="flex items-center justify-center gap-2 px-4 py-3 bg-gray-100 rounded-sm hover:bg-gray-200 transition-colors">
+                <HeartIcon size={18} />
+                <span>Favorite</span>
+              </button>
+              <button className="flex items-center justify-center gap-2 px-4 py-3 bg-gray-100 rounded-sm hover:bg-gray-200 transition-colors">
+                <BookmarkIcon size={18} />
+                <span>Add to Wishlist</span>
+              </button>
+              {cookbook.affiliate_link && (
+                <a
+                  href={cookbook.affiliate_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 bg-coral text-white px-4 py-3 rounded-sm hover:bg-coral/90 transition-colors"
+                >
+                  <ShoppingCartIcon size={18} />
+                  Buy It
+                </a>
+              )}
+            </div>
             {/* Tab Navigation */}
             <div className="border-b border-gray-200 mb-6">
               <nav className="-mb-px flex space-x-8">
