@@ -769,7 +769,6 @@ export const CookbookModal: React.FC<CookbookModalProps> = ({
             </div>
           </div>
         </div>
-        </div>
       </div>
 
       {/* Recipe Card Detail Modal */}
