@@ -18,7 +18,6 @@ export const CookbookCard: React.FC<CookbookCardProps> = ({
   const { user } = useAuth();
   const { isFavorited, toggleFavorite, favoriteCount } = useFavorites(cookbook.id, cookbook.favorites);
   const { isWishlisted, toggleWishlist } = useWishlist(cookbook.id);
-  const [isHovered, setIsHovered] = useState(false);
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -35,11 +34,10 @@ export const CookbookCard: React.FC<CookbookCardProps> = ({
   };
   const tags = [cookbook.cuisine, cookbook.cooking_method].filter(Boolean);
 
-  return <div className="bg-white rounded-md overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-lg group" onClick={onClick} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+  return <div className="bg-white rounded-md overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-lg group" onClick={onClick}>
       <div className="relative aspect-square">
         {/* Cookbook Image */}
         <img src={cookbook.image_url || 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'} alt={cookbook.title} className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:grayscale-[30%]" />
-        {/* Overlay with info on hover */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center p-5">
           <h3 className="font-semibold text-lg text-white mb-1">
             {cookbook.title}
