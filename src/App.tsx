@@ -1,13 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { Home } from './pages/Home';
 import { Profile } from './pages/Profile';
 import { CookbookPage } from './pages/CookbookPage';
+import { DbCookbook } from './utils/types';
 import { useAuth } from './hooks/useAuth';
 
 function App() {
   const { user, loading } = useAuth();
+  const [currentPage, setCurrentPage] = useState<'home' | 'profile'>('home');
+  const [selectedCookbook, setSelectedCookbook] = useState<DbCookbook | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleCookbookSelect = (cookbook: DbCookbook) => {
+    setSelectedCookbook(cookbook);
+  };
+
+  const handleBackToHome = () => {
+    setSelectedCookbook(null);
+  };
 
   if (loading) {
     return (
@@ -18,21 +29,35 @@ function App() {
   }
 
   return (
-    <Router>
-      <div className="min-h-screen bg-gray-50">
-        <Navbar />
-        <div className="container mx-auto px-4 py-8">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route 
-              path="/profile" 
-              element={user ? <Profile /> : <Navigate to="/" replace />} 
-            />
-            <Route path="/cookbook/:slug" element={<CookbookPage />} />
-          </Routes>
-        </div>
+    <div className="min-h-screen bg-gray-50">
+      <Navbar 
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
+      <div className="container mx-auto px-4 py-8">
+        {selectedCookbook ? (
+          <CookbookPage 
+            cookbook={selectedCookbook} 
+            onBack={handleBackToHome} 
+          />
+        ) : currentPage === 'home' ? (
+          <Home 
+            onCookbookSelect={handleCookbookSelect}
+            searchQuery={searchQuery}
+          />
+        ) : currentPage === 'profile' ? (
+          user ? (
+            <Profile onCookbookSelect={handleCookbookSelect} />
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-charcoal/60">Please sign in to view your profile</p>
+            </div>
+          )
+        ) : null}
       </div>
-    </Router>
+    </div>
   );
 }
 
