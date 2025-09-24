@@ -21,14 +21,16 @@ function App() {
     <Router>
       <div className="min-h-screen bg-gray-50">
         <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route 
-            path="/profile" 
-            element={user ? <Profile /> : <Navigate to="/" replace />} 
-          />
-          <Route path="/cookbook/:slug" element={<CookbookPage />} />
-        </Routes>
+        <div className="container mx-auto px-4">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route 
+              path="/profile" 
+              element={user ? <Profile /> : <Navigate to="/" replace />} 
+            />
+            <Route path="/cookbook/:slug" element={<CookbookPage />} />
+          </Routes>
+        </div>
       </div>
     </Router>
   );
