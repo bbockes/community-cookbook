@@ -4,7 +4,7 @@ import { TagPill } from './TagPill';
 import { CuisineCard } from './CuisineCard';
 import { MethodCard } from './MethodCard';
 import { cuisineTags, cookingMethodTags, subcuisines } from '../utils/data';
-import { ChevronDownIcon, SlidersIcon, FilterIcon, ClockIcon, UtensilsIcon, ArrowDownAZIcon } from 'lucide-react';
+import { ChevronDown as ChevronDownIcon, FileSliders as SlidersIcon, Filter as FilterIcon, Clock as ClockIcon, Utensils as UtensilsIcon, ArrowDownAZ as ArrowDownAZIcon } from 'lucide-react';
 
 interface FilterBarProps {
   activeSort: string;
