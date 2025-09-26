@@ -4,7 +4,7 @@ import { TagPill } from './TagPill';
 import { CuisineCard } from './CuisineCard';
 import { MethodCard } from './MethodCard';
 import { cuisineTags, cookingMethodTags, subcuisines } from '../utils/data';
-import { ChevronDownIcon, SlidersIcon, FilterIcon, ClockIcon, UtensilsIcon, ArrowDownAZIcon } from 'lucide-react';
+import { ChevronDown as ChevronDownIcon, FileSliders as SlidersIcon, Filter as FilterIcon, Clock as ClockIcon, Utensils as UtensilsIcon, ArrowDownAZ as ArrowDownAZIcon } from 'lucide-react';
 
 interface FilterBarProps {
   activeSort: string;
@@ -111,7 +111,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             <ChevronDownIcon size={16} className={`transition-transform duration-200 ${isCuisineOpen ? 'rotate-180' : ''}`} />
           </button>
             {/* Cuisine Dropdown */}
-            {isCuisineOpen && <div className="absolute top-full left-0 mt-2 bg-white rounded-md border border-gray-200 shadow-md p-8 z-20 animate-fadeIn transition-all duration-300 w-[800px]">
+            {isCuisineOpen && <div className="absolute top-full left-0 mt-2 bg-white rounded-md border border-gray-200 shadow-md p-8 z-20 animate-fadeIn transition-all duration-300 w-full">
                 {showSubcuisines && (
                   <div className="mb-6 transition-all duration-300">
                     <button 
@@ -165,7 +165,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             <ChevronDownIcon size={16} className={`transition-transform duration-200 ${isCookingMethodOpen ? 'rotate-180' : ''}`} />
           </button>
             {/* Cooking Methods Dropdown */}
-            {isCookingMethodOpen && <div className="absolute top-full left-0 mt-2 bg-white rounded-md border border-gray-200 shadow-md p-8 z-20 animate-fadeIn transition-all duration-300 w-[800px]">
+            {isCookingMethodOpen && <div className="absolute top-full left-0 mt-2 bg-white rounded-md border border-gray-200 shadow-md p-8 z-20 animate-fadeIn transition-all duration-300 w-full">
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
                   {cookingMethodTags.map(method => <MethodCard key={method} method={method} active={activeCookingMethod === method} onClick={() => setActiveCookingMethod(method)} />)}
                 </div>
