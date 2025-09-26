@@ -3,7 +3,8 @@ import { useEffect, useRef } from 'react';
 import { TagPill } from './TagPill';
 import { CuisineCard } from './CuisineCard';
 import { MethodCard } from './MethodCard';
-import { cuisineTags, cookingMethoimport { ChevronDown as ChevronDownIcon, FileSliders as SlidersIcon, Filter as FilterIcon, Clock as ClockIcon, Utensils as UtensilsIcon, ArrowDownAZ as ArrowDownAZIcon } from 'lucide-react'Icon, ArrowDownAZIcon } from 'lucide-react';
+import { cuisineTags, cookingMethodTags, subcuisines } from '../utils/data';
+import { ChevronDown as ChevronDownIcon, Clock as ClockIcon } from 'lucide-react';
 
 interface FilterBarProps {
   activeSort: string;
