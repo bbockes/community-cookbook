@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { TagPill } from './TagPill';
 import { CuisineCard } from './CuisineCard';
 import { MethodCard } from './MethodCard';
@@ -31,6 +32,32 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [showSubcuisines, setShowSubcuisines] = useState<string | null>(null);
   const [parentCuisine, setParentCuisine] = useState<string | null>(null);
+
+  const cuisineRef = useRef<HTMLDivElement>(null);
+  const cookingMethodRef = useRef<HTMLDivElement>(null);
+  const sortRef = useRef<HTMLDivElement>(null);
+
+  // Click outside handler
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (cuisineRef.current && !cuisineRef.current.contains(event.target as Node)) {
+        setIsCuisineOpen(false);
+        setShowSubcuisines(null);
+        setParentCuisine(null);
+      }
+      if (cookingMethodRef.current && !cookingMethodRef.current.contains(event.target as Node)) {
+        setIsCookingMethodOpen(false);
+      }
+      if (sortRef.current && !sortRef.current.contains(event.target as Node)) {
+        setIsSortOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleSortChange = (sort: string) => {
     setActiveSort(sort);
@@ -72,7 +99,8 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   return <div className="mb-8">
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center">
-          <button onClick={() => {
+          <div ref={cuisineRef} className="relative">
+            <button onClick={() => {
           setIsCuisineOpen(!isCuisineOpen);
           if (!isCuisineOpen) {
             setIsSortOpen(false);
@@ -82,16 +110,19 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             <span>Cuisine</span>
             <ChevronDownIcon size={16} className={`transition-transform duration-200 ${isCuisineOpen ? 'rotate-180' : ''}`} />
           </button>
-          <button onClick={() => {
+          </div>
+          <div ref={cookingMethodRef} className="relative ml-2">
+            <button onClick={() => {
           setIsCookingMethodOpen(!isCookingMethodOpen);
           if (!isCookingMethodOpen) {
             setIsSortOpen(false);
             setIsCuisineOpen(false);
           }
-        }} className={`flex items-center gap-2 px-4 py-2 bg-white rounded-sm border border-gray-200 shadow-sm hover:bg-gray-50 transition-all duration-300 ml-2 ${isCookingMethodOpen ? 'ring-2 ring-navy ring-offset-2 shadow-md bg-navy/5' : ''}`}>
+        }} className={`flex items-center gap-2 px-4 py-2 bg-white rounded-sm border border-gray-200 shadow-sm hover:bg-gray-50 transition-all duration-300 ${isCookingMethodOpen ? 'ring-2 ring-navy ring-offset-2 shadow-md bg-navy/5' : ''}`}>
             <span>Cooking Methods</span>
             <ChevronDownIcon size={16} className={`transition-transform duration-200 ${isCookingMethodOpen ? 'rotate-180' : ''}`} />
           </button>
+          </div>
           {(activeCuisine !== 'All' || activeCookingMethod !== 'All') && <div className="ml-4 flex items-center flex-wrap gap-2">
               <span className="text-sm text-charcoal/60 mr-1">Filtered by:</span>
               {activeCuisine !== 'All' && (
@@ -118,7 +149,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               </button>
             </div>}
         </div>
-        <div className="relative">
+        <div ref={sortRef} className="relative">
           <button onClick={() => {
           setIsSortOpen(!isSortOpen);
           if (!isSortOpen) {
