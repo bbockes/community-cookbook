@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { TagPill } from './TagPill';
 import { CuisineCard } from './CuisineCard';
 import { MethodCard } from './MethodCard';
-import { cuisineTags, cookingMethodTags, subcuisines } from '../utils/data';
-import { ChevronDownIcon, SlidersIcon, FilterIcon, ClockIcon, UtensilsIcon, ArrowDownAZIcon } from 'lucide-react';
+import { cuisineTags, cookingMethoimport { ChevronDown as ChevronDownIcon, FileSliders as SlidersIcon, Filter as FilterIcon, Clock as ClockIcon, Utensils as UtensilsIcon, ArrowDownAZ as ArrowDownAZIcon } from 'lucide-react'Icon, ArrowDownAZIcon } from 'lucide-react';
 
 interface FilterBarProps {
   activeSort: string;
@@ -31,6 +31,32 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [showSubcuisines, setShowSubcuisines] = useState<string | null>(null);
   const [parentCuisine, setParentCuisine] = useState<string | null>(null);
+
+  const cuisineRef = useRef<HTMLDivElement>(null);
+  const cookingMethodRef = useRef<HTMLDivElement>(null);
+  const sortRef = useRef<HTMLDivElement>(null);
+
+  // Click outside handler
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (cuisineRef.current && !cuisineRef.current.contains(event.target as Node)) {
+        setIsCuisineOpen(false);
+        setShowSubcuisines(null);
+        setParentCuisine(null);
+      }
+      if (cookingMethodRef.current && !cookingMethodRef.current.contains(event.target as Node)) {
+        setIsCookingMethodOpen(false);
+      }
+      if (sortRef.current && !sortRef.current.contains(event.target as Node)) {
+        setIsSortOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleSortChange = (sort: string) => {
     setActiveSort(sort);
@@ -72,7 +98,8 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   return <div className="mb-8">
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center">
-          <button onClick={() => {
+          <div ref={cuisineRef} className="relative">
+            <button onClick={() => {
           setIsCuisineOpen(!isCuisineOpen);
           if (!isCuisineOpen) {
             setIsSortOpen(false);
@@ -82,16 +109,67 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             <span>Cuisine</span>
             <ChevronDownIcon size={16} className={`transition-transform duration-200 ${isCuisineOpen ? 'rotate-180' : ''}`} />
           </button>
-          <button onClick={() => {
+            {/* Cuisine Dropdown */}
+            {isCuisineOpen && <div className="absolute top-full left-0 mt-2 bg-white rounded-md border border-gray-200 shadow-md p-8 z-20 animate-fadeIn transition-all duration-300 w-full">
+                {showSubcuisines && (
+                  <div className="mb-6 transition-all duration-300">
+                    <button 
+                      onClick={handleBackToCuisines}
+                      className="text-indigo-600 hover:text-indigo-800 text-sm font-medium mb-4 flex items-center gap-1"
+                    >
+                      ← Back to cuisines
+                    </button>
+                  </div>
+                )}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 transition-all duration-300">
+                  {showSubcuisines ? (
+                    <>
+                      <CuisineCard 
+                        key="all-subcuisine" 
+                        cuisine={`All ${showSubcuisines}`}
+                        active={activeCuisine === showSubcuisines} 
+                        onClick={() => handleCuisineClick(showSubcuisines)} 
+                      />
+                      {subcuisines[showSubcuisines as keyof typeof subcuisines]?.map(subcuisine => (
+                        <CuisineCard 
+                          key={subcuisine} 
+                          cuisine={subcuisine} 
+                          active={activeCuisine === subcuisine} 
+                          onClick={() => handleCuisineClick(subcuisine)} 
+                        />
+                      ))}
+                    </>
+                  ) : (
+                    cuisineTags.map(tag => (
+                      <CuisineCard 
+                        key={tag} 
+                        cuisine={tag} 
+                        active={activeCuisine === tag} 
+                        onClick={() => handleCuisineClick(tag)} 
+                      />
+                    ))
+                  )}
+                </div>
+              </div>}
+          </div>
+          <div ref={cookingMethodRef} className="relative ml-2">
+            <button onClick={() => {
           setIsCookingMethodOpen(!isCookingMethodOpen);
           if (!isCookingMethodOpen) {
             setIsSortOpen(false);
             setIsCuisineOpen(false);
           }
-        }} className={`flex items-center gap-2 px-4 py-2 bg-white rounded-sm border border-gray-200 shadow-sm hover:bg-gray-50 transition-all duration-300 ml-2 ${isCookingMethodOpen ? 'ring-2 ring-navy ring-offset-2 shadow-md bg-navy/5' : ''}`}>
+        }} className={`flex items-center gap-2 px-4 py-2 bg-white rounded-sm border border-gray-200 shadow-sm hover:bg-gray-50 transition-all duration-300 ${isCookingMethodOpen ? 'ring-2 ring-navy ring-offset-2 shadow-md bg-navy/5' : ''}`}>
             <span>Cooking Methods</span>
             <ChevronDownIcon size={16} className={`transition-transform duration-200 ${isCookingMethodOpen ? 'rotate-180' : ''}`} />
           </button>
+            {/* Cooking Methods Dropdown */}
+            {isCookingMethodOpen && <div className="absolute top-full left-0 mt-2 bg-white rounded-md border border-gray-200 shadow-md p-8 z-20 animate-fadeIn transition-all duration-300 w-full">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+                  {cookingMethodTags.map(method => <MethodCard key={method} method={method} active={activeCookingMethod === method} onClick={() => setActiveCookingMethod(method)} />)}
+                </div>
+              </div>}
+          </div>
           {(activeCuisine !== 'All' || activeCookingMethod !== 'All') && <div className="ml-4 flex items-center flex-wrap gap-2">
               <span className="text-sm text-charcoal/60 mr-1">Filtered by:</span>
               {activeCuisine !== 'All' && (
@@ -118,7 +196,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               </button>
             </div>}
         </div>
-        <div className="relative">
+        <div ref={sortRef} className="relative">
           <button onClick={() => {
           setIsSortOpen(!isSortOpen);
           if (!isSortOpen) {
@@ -130,7 +208,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             <ChevronDownIcon size={16} className={`transition-transform duration-200 ${isSortOpen ? 'rotate-180' : ''}`} />
           </button>
           {/* Sort Dropdown */}
-          {isSortOpen && <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-md border border-gray-200 shadow-md p-4 z-20 animate-fadeIn">
+          {isSortOpen && <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-md border border-gray-200 shadow-md p-4 z-30 animate-fadeIn">
               <div className="flex flex-col gap-2 mb-4">
                 <label className="text-sm font-medium text-gray-700">
                   Sort by
@@ -172,55 +250,5 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             </div>}
         </div>
       </div>
-      
-      {/* Cuisine Dropdown */}
-      {isCuisineOpen && <div className="bg-white rounded-md border border-gray-200 shadow-md p-8 mb-6 animate-fadeIn transition-all duration-300">
-          {showSubcuisines && (
-            <div className="mb-6 transition-all duration-300">
-              <button 
-                onClick={handleBackToCuisines}
-                className="text-indigo-600 hover:text-indigo-800 text-sm font-medium mb-4 flex items-center gap-1"
-              >
-                ← Back to cuisines
-              </button>
-            </div>
-          )}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 transition-all duration-300">
-            {showSubcuisines ? (
-              <>
-                <CuisineCard 
-                  key="all-subcuisine" 
-                  cuisine={`All ${showSubcuisines}`}
-                  active={activeCuisine === showSubcuisines} 
-                  onClick={() => handleCuisineClick(showSubcuisines)} 
-                />
-                {subcuisines[showSubcuisines as keyof typeof subcuisines]?.map(subcuisine => (
-                  <CuisineCard 
-                    key={subcuisine} 
-                    cuisine={subcuisine} 
-                    active={activeCuisine === subcuisine} 
-                    onClick={() => handleCuisineClick(subcuisine)} 
-                  />
-                ))}
-              </>
-            ) : (
-              cuisineTags.map(tag => (
-                <CuisineCard 
-                  key={tag} 
-                  cuisine={tag} 
-                  active={activeCuisine === tag} 
-                  onClick={() => handleCuisineClick(tag)} 
-                />
-              ))
-            )}
-          </div>
-        </div>}
-      
-      {/* Cooking Methods Dropdown */}
-      {isCookingMethodOpen && <div className="bg-white rounded-md border border-gray-200 shadow-md p-8 mb-6 animate-fadeIn transition-all duration-300">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-            {cookingMethodTags.map(method => <MethodCard key={method} method={method} active={activeCookingMethod === method} onClick={() => setActiveCookingMethod(method)} />)}
-          </div>
-        </div>}
     </div>;
 };
