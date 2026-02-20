@@ -21,3 +21,12 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+.footer-newsletter-col {
+  grid-column: 1;
+}
+@media (min-width: 768px) {
+  .footer-newsletter-col {
+    grid-column: 3 / 6;
+  }
+}

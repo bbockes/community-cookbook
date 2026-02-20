@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShoppingCartIcon, MenuIcon, XIcon, SearchIcon } from 'lucide-react';
+import { MenuIcon, XIcon, SearchIcon } from 'lucide-react';
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
@@ -33,12 +33,6 @@ export const Header = () => {
             <div className="flex items-center space-x-4">
               <button className="text-gray-700 hover:text-amber-600">
                 <SearchIcon size={20} />
-              </button>
-              <button className="text-gray-700 hover:text-amber-600 relative">
-                <ShoppingCartIcon size={20} />
-                <span className="absolute -top-1 -right-1 bg-amber-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                  3
-                </span>
               </button>
             </div>
           </div>

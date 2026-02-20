@@ -2,14 +2,8 @@ import React, { useState } from 'react';
 import {
   Star,
   Heart,
-  ShoppingCart,
-  ChevronLeft,
   ChevronRight,
   Search,
-  Plus,
-  Clock,
-  Utensils,
-  Smile,
   User,
   ShoppingBag } from
 'lucide-react';
@@ -123,7 +117,7 @@ export const ProductPage = ({ book, onBack }: ProductPageProps) => {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Breadcrumbs */}
-      <div className="text-sm text-gray-500 mb-8 flex items-center gap-2">
+      <div className="text-base text-gray-500 mb-8 flex items-center gap-2">
         <button
           onClick={onBack}
           className="hover:text-amber-600 hover:underline">
@@ -141,68 +135,33 @@ export const ProductPage = ({ book, onBack }: ProductPageProps) => {
       {/* Main Product Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
         {/* Left: Images */}
-        <div className="space-y-4">
-          <div className="relative aspect-square bg-gray-100 rounded-xl overflow-hidden group">
-            <button className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition z-10">
-              <ChevronLeft size={24} />
-            </button>
+        <div className="flex justify-center items-start">
+          <div
+            className="aspect-square bg-gray-100 rounded-xl overflow-hidden"
+            style={{ width: '80%' }}>
             <img
               src={book.image}
               alt={book.title}
               className="w-full h-full object-cover" />
-
-            <button className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition z-10">
-              <ChevronRight size={24} />
-            </button>
-          </div>
-          <div className="grid grid-cols-5 gap-4">
-            {[...Array(5)].map((_, i) =>
-            <div
-              key={i}
-              className={`aspect-square rounded-lg overflow-hidden cursor-pointer ${i === 0 ? 'ring-2 ring-amber-600' : 'opacity-70 hover:opacity-100'}`}>
-
-                <img
-                src={book.image}
-                alt="Thumbnail"
-                className="w-full h-full object-cover" />
-
-              </div>
-            )}
           </div>
         </div>
 
         {/* Right: Info */}
         <div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
             {book.title}
           </h1>
-          <p className="text-xl text-gray-600 mb-6">by {book.author}</p>
+          <p className="text-lg text-gray-600 mb-2">by {book.author}</p>
 
-          <div className="flex items-center gap-6 mb-8">
-            <span className="text-3xl font-bold text-gray-900">
-              ${book.price.toFixed(2)}
+          <div className="flex items-center gap-2 mb-8">
+            <Star className="fill-amber-400 text-amber-400" size={20} />
+            <span className="text-base font-medium">
+              {book.rating} out of 5
             </span>
-            <div className="flex items-center gap-2">
-              <Star className="fill-amber-400 text-amber-400" size={24} />
-              <span className="text-lg font-medium">
-                {book.rating} out of 5
-              </span>
-              <span className="text-gray-500">(70 reviews)</span>
-            </div>
+            <span className="text-base text-gray-500">(70 reviews)</span>
           </div>
 
-          <div className="border-b border-gray-200 mb-6">
-            <div className="flex gap-8">
-              <button className="pb-2 border-b-2 border-black font-semibold">
-                Description
-              </button>
-              <button className="pb-2 border-b-2 border-transparent text-gray-500 hover:text-gray-800">
-                Dimensions
-              </button>
-            </div>
-          </div>
-
-          <p className="text-gray-600 leading-relaxed mb-4">
+          <p className="text-gray-600 text-lg leading-relaxed mb-4">
             This new cookbook brings the foods and flavors of {book.category}{' '}
             cooking alive with color photographs throughout, notes about
             important customs, festivals and holidays, and a collection of 185
@@ -216,7 +175,7 @@ export const ProductPage = ({ book, onBack }: ProductPageProps) => {
           <div className="space-y-3">
             <button className="w-full bg-black text-white py-4 rounded-lg font-bold hover:bg-gray-800 transition flex items-center justify-center gap-2">
               <ShoppingBag size={20} />
-              Add to Cart
+              Buy now
             </button>
             <button className="w-full bg-white text-black border-2 border-black py-4 rounded-lg font-bold hover:bg-gray-50 transition flex items-center justify-center gap-2">
               <Heart size={20} />
@@ -233,7 +192,10 @@ export const ProductPage = ({ book, onBack }: ProductPageProps) => {
             onClick={() => setActiveTab('reviews')}
             className={`pb-4 text-lg font-semibold transition ${activeTab === 'reviews' ? 'border-b-2 border-black text-black' : 'text-gray-500 hover:text-gray-800'}`}>
 
-            Cookbook Reviews
+            Cookbook Reviews{' '}
+            <span className="ml-2 bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">
+              3
+            </span>
           </button>
           <button
             onClick={() => setActiveTab('recipes')}
@@ -287,22 +249,23 @@ export const ProductPage = ({ book, onBack }: ProductPageProps) => {
 
                 </div>
                 <div className="p-4">
-                  <h3 className="font-bold text-lg mb-1">{card.title}</h3>
-                  <p className="text-gray-500 text-sm mb-4">{card.user}</p>
-
-                  <div className="flex justify-between gap-2">
-                    <div className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full text-xs font-medium">
-                      <Smile size={14} className="text-amber-600" />
-                      <span>{card.ratings.taste}</span>
+                  <p className="text-gray-700 font-medium mb-3">{card.user}</p>
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-1">
+                      <Star className="fill-amber-400 text-amber-400" size={18} />
+                      <span className="font-medium">
+                        {(
+                          (card.ratings.taste +
+                            card.ratings.time +
+                            card.ratings.difficulty) /
+                          3
+                        ).toFixed(1)}
+                      </span>
                     </div>
-                    <div className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full text-xs font-medium">
-                      <Clock size={14} className="text-amber-600" />
-                      <span>{card.ratings.time}</span>
-                    </div>
-                    <div className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full text-xs font-medium">
-                      <Utensils size={14} className="text-amber-600" />
-                      <span>{card.ratings.difficulty}</span>
-                    </div>
+                    <span className="text-gray-500 text-sm">
+                      {card.comments.length}{' '}
+                      {card.comments.length === 1 ? 'comment' : 'comments'}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -312,8 +275,67 @@ export const ProductPage = ({ book, onBack }: ProductPageProps) => {
       }
 
       {activeTab === 'reviews' &&
-      <div className="text-center py-12 text-gray-500">
-          <p>No reviews yet. Be the first to review this cookbook!</p>
+      <div style={{ width: '75%' }}>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
+            <div className="relative w-full md:w-96">
+              <Search
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                size={20} />
+              <input
+                type="text"
+                placeholder="Search reviews"
+                className="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" />
+            </div>
+            <div className="flex items-center gap-4 w-full md:w-auto">
+              <button className="flex items-center gap-2 text-gray-600 font-medium">
+                Highest Rated <ChevronRight className="rotate-90" size={16} />
+              </button>
+              <button className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-lg font-semibold transition">
+                Add Review
+              </button>
+            </div>
+          </div>
+
+          <div className="space-y-0">
+            <div className="border-b border-gray-200 py-6">
+              <div className="mb-4">
+                <p className="font-medium text-gray-900 mb-1">Sarah Mitchell</p>
+                  <div className="flex items-center gap-2">
+                    <Star className="fill-amber-400 text-amber-400" size={16} />
+                    <span className="text-sm text-gray-500">5.0 · 2 weeks ago</span>
+                </div>
+              </div>
+              <p className="text-gray-600 leading-relaxed">
+                This cookbook has completely transformed my cooking. The recipes are clear, well-organized, and the results have been outstanding every single time. The French classics section is particularly wonderful—I've made the boeuf bourguignon three times already!
+              </p>
+            </div>
+
+            <div className="border-b border-gray-200 py-6">
+              <div className="mb-4">
+                <p className="font-medium text-gray-900 mb-1">Michael Chen</p>
+                  <div className="flex items-center gap-2">
+                    <Star className="fill-amber-400 text-amber-400" size={16} />
+                    <span className="text-sm text-gray-500">4.5 · 1 month ago</span>
+                </div>
+              </div>
+              <p className="text-gray-600 leading-relaxed">
+                A must-have for anyone serious about French cuisine. The instructions are detailed without being overwhelming, and the tips scattered throughout are invaluable. My only minor gripe is that some ingredients can be hard to source locally.
+              </p>
+            </div>
+
+            <div className="border-b border-gray-200 py-6">
+              <div className="mb-4">
+                <p className="font-medium text-gray-900 mb-1">Emma Rodriguez</p>
+                  <div className="flex items-center gap-2">
+                    <Star className="fill-amber-400 text-amber-400" size={16} />
+                    <span className="text-sm text-gray-500">4.8 · 3 weeks ago</span>
+                </div>
+              </div>
+              <p className="text-gray-600 leading-relaxed">
+                Absolutely love this cookbook! The photography is beautiful and really helps visualize the finished dishes. I've tried over a dozen recipes and each one has been a hit with my family. Highly recommend for both beginners and experienced cooks.
+              </p>
+            </div>
+          </div>
         </div>
       }
 

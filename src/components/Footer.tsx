@@ -4,9 +4,13 @@ export const Footer = () => {
   return (
     <footer className="bg-gray-800 text-white">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div>
-            <h3 className="text-xl font-bold mb-4">CookBookMarket</h3>
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
+          <div className="md:col-span-2">
+            <h3
+              className="text-2xl font-bold mb-4"
+              style={{ fontFamily: "'Livvic', sans-serif" }}>
+              Community Cookbook
+            </h3>
             <p className="text-gray-300 mb-4">
               Your destination for premium cookbooks from renowned chefs and
               culinary experts around the world.
@@ -23,12 +27,12 @@ export const Footer = () => {
               </a>
             </div>
           </div>
-          <div>
+          <div className="footer-newsletter-col">
             <h4 className="text-lg font-semibold mb-4">Newsletter</h4>
             <p className="text-gray-300 mb-4">
               Subscribe to receive updates, access to exclusive deals, and more.
             </p>
-            <form className="flex">
+            <form className="flex max-w-lg">
               <input
                 type="email"
                 placeholder="Your email"
@@ -42,7 +46,7 @@ export const Footer = () => {
         </div>
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
           <p>
-            &copy; {new Date().getFullYear()} CookBookMarket. All rights
+            &copy; {new Date().getFullYear()} Community Cookbook. All rights
             reserved.
           </p>
         </div>
