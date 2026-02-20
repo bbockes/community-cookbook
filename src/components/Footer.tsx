@@ -12,8 +12,7 @@ export const Footer = () => {
               Community Cookbook
             </h3>
             <p className="text-gray-300 mb-4">
-              Your destination for premium cookbooks from renowned chefs and
-              culinary experts around the world.
+              A better way to discover and shop for cookbooks — crafted by people who live for good food.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-300 hover:text-amber-400">
