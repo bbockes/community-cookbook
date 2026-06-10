@@ -9,7 +9,10 @@ import { ApiErrorPanel } from './components/ApiErrorPanel';
 import {
   getCollectionCacheKey,
   getCollectionConfig,
-  TabId } from
+  getProductBreadcrumbLabel,
+  TabId,
+  BrowseContext,
+} from
 './config/bookCollections';
 interface SubcategoryItem {
   name: string;
@@ -73,14 +76,14 @@ const subcategories: Record<
   {
     name: 'Mediterranean',
     image:
-    'https://images.unsplash.com/photo-1523986390382-10f312ca0a17?auto=format&fit=crop&w=800&q=80'
+    'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80'
   }],
 
   methods: [
   {
     name: 'All Methods',
     image:
-    'https://images.unsplash.com/photo-1556910103-1c02745a30bf?auto=format&fit=crop&w=800&q=80'
+    'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=800&q=80'
   },
   {
     name: 'Baking',
@@ -195,6 +198,8 @@ export function App() {
   );
   const [activeSubFilter, setActiveSubFilter] = useState<string | null>(null);
   const [selectedBook, setSelectedBook] = useState<Cookbook | null>(null);
+  const [productBrowseContext, setProductBrowseContext] =
+    useState<BrowseContext | null>(null);
 
   const loadBooks = useCallback(async () => {
     setIsLoading(true);
@@ -262,6 +267,11 @@ export function App() {
     if (activeSubFilter) breadcrumbParts.push(activeSubFilter);
   }
   const handleBookClick = (book: Cookbook) => {
+    setProductBrowseContext({
+      tab: activeTab,
+      subcategory: activeSubcategory,
+      subFilter: activeSubFilter,
+    });
     setSelectedBook(book);
     window.scrollTo(0, 0);
   };
@@ -272,7 +282,12 @@ export function App() {
         <main className="flex-grow">
           <ProductPage
             book={selectedBook}
-            onBack={() => setSelectedBook(null)} />
+            browseContext={productBrowseContext}
+            onBack={() => {
+              setSelectedBook(null);
+              setProductBrowseContext(null);
+            }}
+          />
 
         </main>
         <Footer />

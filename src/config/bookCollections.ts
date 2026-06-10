@@ -203,3 +203,32 @@ export function getCollectionCacheKey(
 ): string {
   return [tab, subcategory ?? 'none', subFilter ?? 'none'].join(':');
 }
+
+export type BrowseContext = {
+  tab: TabId;
+  subcategory: string | null;
+  subFilter: string | null;
+};
+
+/** Middle breadcrumb segment for the product page (3 levels: home > this > title). */
+export function getProductBreadcrumbLabel(context: BrowseContext): string {
+  if (context.subFilter) return context.subFilter;
+
+  if (context.subcategory) {
+    if (context.tab === 'cuisines') return `${context.subcategory} cuisine`;
+    return context.subcategory;
+  }
+
+  switch (context.tab) {
+    case 'all':
+      return 'All Cookbooks';
+    case 'bestsellers':
+      return 'Best Sellers';
+    case 'cuisines':
+      return 'All Cuisines';
+    case 'methods':
+      return 'All Methods';
+    case 'authors':
+      return 'All Authors';
+  }
+}

@@ -1,24 +1,14 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { BookOpen } from 'lucide-react';
 import { Cookbook, formatAuthors } from '../types/cookbook';
+import { saveResolvedCover } from '../services/coverCache';
+import { buildCoverSources, isGoogleCoverUrl } from '../services/coverUrls';
 
 type CookbookCoverProps = {
-  book: Pick<Cookbook, 'title' | 'authors' | 'image' | 'isbn13' | 'isbn10'>;
+  book: Pick<Cookbook, 'id' | 'title' | 'authors' | 'image' | 'isbn13' | 'isbn10'>;
   className?: string;
   imgClassName?: string;
 };
-
-function openLibraryCover(isbn: string, size: 'L' | 'M' = 'L'): string {
-  return `https://covers.openlibrary.org/b/isbn/${isbn}-${size}.jpg?default=false`;
-}
-
-function abeBooksCover(isbn: string): string {
-  return `https://pictures.abebooks.com/isbn/${isbn}-us-300.jpg`;
-}
-
-function isGoogleCoverUrl(url: string): boolean {
-  return url.includes('books.google') || url.includes('googleusercontent');
-}
 
 /** Google often returns a gray "image not available" PNG that still loads with HTTP 200. */
 function isPlaceholderCover(img: HTMLImageElement): boolean {
@@ -38,7 +28,6 @@ function isPlaceholderCover(img: HTMLImageElement): boolean {
   try {
     data = ctx.getImageData(0, 0, width, height).data;
   } catch {
-    // Cross-origin taint — can't inspect pixels; prefer trying the next source.
     return isGoogleCoverUrl(img.currentSrc);
   }
 
@@ -110,26 +99,6 @@ function PlaceholderCover({
   );
 }
 
-function addIsbnSources(urls: string[], isbn: string): void {
-  urls.push(openLibraryCover(isbn, 'L'));
-  urls.push(abeBooksCover(isbn));
-  urls.push(openLibraryCover(isbn, 'M'));
-}
-
-function buildCoverSources(
-  book: Pick<Cookbook, 'image' | 'isbn13' | 'isbn10'>
-): string[] {
-  const urls: string[] = [];
-
-  if (book.isbn13) addIsbnSources(urls, book.isbn13);
-  if (book.isbn10 && book.isbn10 !== book.isbn13) {
-    addIsbnSources(urls, book.isbn10);
-  }
-  if (book.image) urls.push(book.image);
-
-  return [...new Set(urls)];
-}
-
 export function CookbookCover({
   book,
   className,
@@ -148,9 +117,13 @@ export function CookbookCover({
   const handleLoad = useCallback(
     (event: React.SyntheticEvent<HTMLImageElement>) => {
       const img = event.currentTarget;
-      if (isPlaceholderCover(img)) advance();
+      if (isPlaceholderCover(img)) {
+        advance();
+        return;
+      }
+      saveResolvedCover(book.id, img.currentSrc);
     },
-    [advance]
+    [advance, book.id]
   );
 
   if (exhausted || !currentSrc) {

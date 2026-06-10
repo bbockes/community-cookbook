@@ -67,18 +67,10 @@ function googleCoverUrl(volumeId) {
   return url.toString();
 }
 
-function openLibraryCover(isbn) {
-  return `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg?default=false`;
-}
-
 function buildBook(volumeId, bookEntry, meta) {
   const isbn13 = meta?.isbn13;
   const isbn10 = meta?.isbn10;
-  const image = isbn13
-    ? openLibraryCover(isbn13)
-    : isbn10
-      ? openLibraryCover(isbn10)
-      : googleCoverUrl(volumeId);
+  const image = googleCoverUrl(volumeId);
 
   return {
     id: volumeId,

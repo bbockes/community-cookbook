@@ -1,9 +1,16 @@
 import { Cookbook } from '../types/cookbook';
 import { curatedBookMeta } from '../config/curatedBookMeta';
 import { curatedBookMetaOverrides } from '../config/curatedBookMetaOverrides';
+import { volumesWithoutCovers } from '../config/volumesWithoutCovers';
+import { getResolvedCover } from './coverCache';
+import { googleCoverUrl } from './coverUrls';
 import staticBookCatalog from '../data/staticBookCatalog.json';
 
 const catalog = staticBookCatalog as Record<string, Cookbook>;
+
+function isDisplayableBook(book: Cookbook): boolean {
+  return !volumesWithoutCovers.has(book.id);
+}
 
 function resolveIsbns(
   volumeId: string,
@@ -21,14 +28,23 @@ function resolveIsbns(
 
 function enrichBook(book: Cookbook): Cookbook {
   const { isbn13, isbn10 } = resolveIsbns(book.id, book.isbn13, book.isbn10);
-  if (isbn13 === book.isbn13 && isbn10 === book.isbn10) return book;
+  const cachedCover = getResolvedCover(book.id);
+  const image = cachedCover ?? googleCoverUrl(book.id);
 
-  return { ...book, isbn13, isbn10 };
+  return {
+    ...book,
+    isbn13,
+    isbn10,
+    image,
+  };
 }
 
 export function getStaticBook(id: string): Cookbook | null {
+  if (volumesWithoutCovers.has(id)) return null;
   const book = catalog[id];
-  return book ? enrichBook(book) : null;
+  if (!book) return null;
+  const enriched = enrichBook(book);
+  return isDisplayableBook(enriched) ? enriched : null;
 }
 
 export function getStaticBooks(ids: readonly string[]): Cookbook[] {
@@ -52,5 +68,5 @@ export function hasStaticCatalog(): boolean {
 }
 
 export function getAllStaticBooks(): Cookbook[] {
-  return Object.values(catalog).map(enrichBook);
+  return Object.values(catalog).map(enrichBook).filter(isDisplayableBook);
 }

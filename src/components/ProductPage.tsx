@@ -7,116 +7,86 @@ import {
   ShoppingBag } from
 'lucide-react';
 import { Cookbook, formatAuthors } from '../types/cookbook';
+import { BrowseContext, getProductBreadcrumbLabel } from '../config/bookCollections';
 import { CookbookCover } from './CookbookCover';
 import { fetchCookbookById } from '../services/googleBooks';
+import { ReviewSummary, buildReviewSummary } from './ReviewSummary';
 import { RecipeCardModal, RecipeCardData } from './RecipeCardModal';
+
 interface ProductPageProps {
   book: Cookbook;
+  browseContext: BrowseContext | null;
   onBack: () => void;
 }
-const MOCK_RECIPE_CARDS: RecipeCardData[] = [
-{
-  id: 1,
-  title: 'Goat Curry with Yogurt',
-  user: 'Isabella Santos',
-  userAvatar:
-  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80',
-  image:
-  'https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=800&q=80',
-  bookTitle: 'Foods & Flavors of Nepal',
-  ratings: {
-    taste: 4.7,
-    time: 5.0,
-    difficulty: 4.2
-  },
-  reviews: {
-    taste:
-    'YESSS!! The tender, smoky chicken paired with the creamy tomato gravy creates an unforgettable flavor sensation.',
-    time: 'This recipe was really easy to follow. The instructions were clear and the photos helped a lot.',
-    ingredients:
-    'Yes, the ingredients for this recipe were easily accessible; however, I did find it slightly challenging to locate one of the spices used.'
-  },
-  comments: [
-  {
-    id: 1,
-    user: 'Maria Santos',
-    avatar:
-    'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100&q=80',
-    text: 'Sounds like an amazing dish!!',
-    timeAgo: '5 months ago'
-  },
-  {
-    id: 2,
-    user: 'Ahmed Khan',
-    avatar:
-    'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80',
-    text: "Can't wait to try this one!",
-    timeAgo: '2 weeks ago'
-  },
-  {
-    id: 3,
-    user: 'Anna Petrovna',
-    avatar:
-    'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&q=80',
-    text: 'Agreed. There are SO many great recipes in this cookbook. Excited to try them all.',
-    timeAgo: '1 day ago'
-  }]
 
-},
-{
-  id: 2,
-  title: 'Chicken Chowelaa',
-  user: 'Isabella Santos',
-  userAvatar:
-  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80',
-  image:
-  'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=800&q=80',
-  bookTitle: 'Foods & Flavors of Nepal',
-  ratings: {
-    taste: 4.8,
-    time: 4.8,
-    difficulty: 4.8
-  },
-  reviews: {
-    taste:
-    'Absolutely delicious! The spices were perfectly balanced and the chicken was so tender.',
-    time: 'Instructions were straightforward. Took about 45 minutes total.',
-    ingredients:
-    'Found everything at my local grocery store except the fenugreek seeds.'
-  },
-  comments: []
-},
-{
-  id: 3,
-  title: 'Green Jackfruit Curry',
-  user: 'Ayaan Patel',
-  userAvatar:
-  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80',
-  image:
-  'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80',
-  bookTitle: 'Foods & Flavors of Nepal',
-  ratings: {
-    taste: 4.8,
-    time: 4.3,
-    difficulty: 2.0
-  },
-  reviews: {
-    taste:
-    'Surprisingly meaty texture for a vegetarian dish. Very satisfying.',
-    time: 'Prep took longer than expected due to cutting the jackfruit.',
-    ingredients:
-    'Canned jackfruit was easy to find, but fresh is better if you can get it.'
-  },
-  comments: []
-}];
+const LOREM =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.';
 
-export const ProductPage = ({ book, onBack }: ProductPageProps) => {
+const PLACEHOLDER_REVIEWS = [
+  { id: 1, author: 'Lorem Ipsum', rating: 4.5, date: '2 weeks ago' },
+  { id: 2, author: 'Dolor Sit', rating: 5.0, date: '1 month ago' },
+  { id: 3, author: 'Amet Consectetur', rating: 4.0, date: '3 weeks ago' },
+];
+
+const PLACEHOLDER_RECIPE_CARDS = [
+  { id: 1, author: 'Lorem Ipsum', rating: 4.6, comments: 2 },
+  { id: 2, author: 'Dolor Sit', rating: 4.8, comments: 0 },
+  { id: 3, author: 'Amet Consectetur', rating: 4.2, comments: 5 },
+];
+
+const RECIPE_TITLES = [
+  'Lorem ipsum dolor plate',
+  'Consectetur elit bowl',
+  'Adipiscing sed amet stew',
+];
+
+const AVATAR_URL =
+  'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100&q=80';
+
+function roundRating(value: number): number {
+  return Math.round(value);
+}
+
+function buildRecipeCards(bookTitle: string): RecipeCardData[] {
+  return PLACEHOLDER_RECIPE_CARDS.map((card, index) => {
+    const taste = roundRating(card.rating);
+    const time = roundRating(Math.min(5, card.rating + 0.1));
+    const difficulty = roundRating(Math.max(1, card.rating - 0.2));
+
+    const comments =
+      card.comments === 0
+        ? []
+        : Array.from({ length: Math.min(card.comments, 3) }, (_, i) => ({
+            id: i + 1,
+            user: i === 0 ? 'Lorem Ipsum' : i === 1 ? 'Dolor Sit' : 'Amet Consectetur',
+            avatar: AVATAR_URL,
+            text: LOREM,
+            timeAgo: i === 0 ? '2 weeks ago' : i === 1 ? '5 days ago' : '1 day ago',
+          }));
+
+    return {
+      id: card.id,
+      title: RECIPE_TITLES[index],
+      user: card.author,
+      userAvatar: AVATAR_URL,
+      image: '',
+      bookTitle,
+      ratings: { taste, time, difficulty },
+      reviews: {
+        taste: LOREM,
+        time: LOREM,
+        ingredients: LOREM,
+      },
+      comments,
+    };
+  });
+}
+
+export const ProductPage = ({ book, browseContext, onBack }: ProductPageProps) => {
   const [bookDetails, setBookDetails] = useState<Cookbook>(book);
   const [isLoadingDetails, setIsLoadingDetails] = useState(true);
   const [activeTab, setActiveTab] = useState<'reviews' | 'recipes'>('recipes');
-  const [selectedRecipe, setSelectedRecipe] = useState<RecipeCardData | null>(
-    null
-  );
+  const [selectedRecipe, setSelectedRecipe] = useState<RecipeCardData | null>(null);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
   useEffect(() => {
@@ -144,6 +114,12 @@ export const ProductPage = ({ book, onBack }: ProductPageProps) => {
   `${description.slice(0, 400).trim()}…` :
   description;
 
+  const reviewSummary = buildReviewSummary(PLACEHOLDER_REVIEWS);
+  const recipeCards = buildRecipeCards(bookDetails.title);
+  const breadcrumbCategory = browseContext
+    ? getProductBreadcrumbLabel(browseContext)
+    : 'All Cookbooks';
+
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Breadcrumbs */}
@@ -155,9 +131,7 @@ export const ProductPage = ({ book, onBack }: ProductPageProps) => {
           home
         </button>
         <span>&gt;</span>
-        <span className="capitalize">
-          {bookDetails.category?.toLowerCase() ?? 'cookbook'} cookbooks
-        </span>
+        <span className="text-gray-500">{breadcrumbCategory}</span>
         <span>&gt;</span>
         <span className="text-gray-900 font-medium truncate max-w-[300px]">
           {bookDetails.title}
@@ -168,12 +142,11 @@ export const ProductPage = ({ book, onBack }: ProductPageProps) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
         {/* Left: Images */}
         <div className="flex justify-center items-start">
-          <div
-            className="aspect-square bg-gray-100 rounded-xl overflow-hidden"
-            style={{ width: '80%' }}>
+          <div className="bg-gray-100 rounded-xl overflow-hidden max-h-[400px]">
             <CookbookCover
               book={bookDetails}
-              imgClassName="w-full h-full object-cover" />
+              imgClassName="max-h-[400px] w-auto object-contain"
+            />
           </div>
         </div>
 
@@ -203,7 +176,7 @@ export const ProductPage = ({ book, onBack }: ProductPageProps) => {
             <>
                 <Star className="fill-amber-400 text-amber-400" size={20} />
                 <span className="text-base font-medium">
-                  {bookDetails.rating} out of 5
+                  {Math.round(bookDetails.rating)} out of 5
                 </span>
                 {bookDetails.ratingsCount != null && bookDetails.ratingsCount > 0 &&
               <span className="text-base text-gray-500">
@@ -274,7 +247,7 @@ export const ProductPage = ({ book, onBack }: ProductPageProps) => {
 
             Recipe Cards{' '}
             <span className="ml-2 bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">
-              12
+              3
             </span>
           </button>
         </div>
@@ -306,31 +279,35 @@ export const ProductPage = ({ book, onBack }: ProductPageProps) => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {MOCK_RECIPE_CARDS.map((card) =>
-          <div
-            key={card.id}
-            onClick={() => setSelectedRecipe(card)}
-            className="border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition cursor-pointer">
-
-                <div className="h-48 overflow-hidden">
-                  <img
-                src={card.image}
-                alt={card.title}
-                className="w-full h-full object-cover hover:scale-105 transition duration-500" />
-
-                </div>
+            {recipeCards.map((card) => (
+              <div
+                key={card.id}
+                role="button"
+                tabIndex={0}
+                onClick={() => setSelectedRecipe(card)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setSelectedRecipe(card);
+                  }
+                }}
+                className="border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition cursor-pointer"
+              >
+                <div className="h-48 bg-gray-100" />
                 <div className="p-4">
-                  <p className="text-gray-700 font-medium mb-3">{card.user}</p>
+                  <p className="text-gray-900 font-medium mb-1">{card.title}</p>
+                  <p className="text-gray-500 text-sm mb-1">{card.user}</p>
+                  <p className="text-gray-500 text-sm mb-3 line-clamp-2">{LOREM}</p>
                   <div className="flex items-center gap-3">
                     <div className="flex items-center gap-1">
                       <Star className="fill-amber-400 text-amber-400" size={18} />
                       <span className="font-medium">
-                        {(
+                        {Math.round(
                           (card.ratings.taste +
                             card.ratings.time +
                             card.ratings.difficulty) /
-                          3
-                        ).toFixed(1)}
+                            3
+                        )}
                       </span>
                     </div>
                     <span className="text-gray-500 text-sm">
@@ -340,71 +317,52 @@ export const ProductPage = ({ book, onBack }: ProductPageProps) => {
                   </div>
                 </div>
               </div>
-          )}
+            ))}
           </div>
         </div>
       }
 
       {activeTab === 'reviews' &&
-      <div style={{ width: '75%' }}>
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
-            <div className="relative w-full md:w-96">
-              <Search
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-                size={20} />
-              <input
-                type="text"
-                placeholder="Search reviews"
-                className="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" />
-            </div>
-            <div className="flex items-center gap-4 w-full md:w-auto">
-              <button className="flex items-center gap-2 text-gray-600 font-medium">
-                Highest Rated <ChevronRight className="rotate-90" size={16} />
-              </button>
-              <button className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-lg font-semibold transition">
-                Add Review
-              </button>
-            </div>
-          </div>
+      <div className="w-full">
+          <div className="flex flex-col lg:flex-row gap-10 lg:gap-14 items-start">
+            <ReviewSummary
+              averageRating={reviewSummary.averageRating}
+              totalRatings={reviewSummary.totalRatings}
+              distribution={reviewSummary.distribution}
+            />
 
-          <div className="space-y-0">
-            <div className="border-b border-gray-200 py-6">
-              <div className="mb-4">
-                <p className="font-medium text-gray-900 mb-1">Sarah Mitchell</p>
-                  <div className="flex items-center gap-2">
-                    <Star className="fill-amber-400 text-amber-400" size={16} />
-                    <span className="text-sm text-gray-500">5.0 · 2 weeks ago</span>
+            <div className="flex-1 min-w-0 w-full">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                <div className="relative w-full sm:flex-1 sm:max-w-none">
+                  <Search
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                    size={20} />
+                  <input
+                    type="text"
+                    placeholder="Search reviews"
+                    className="w-full pl-12 pr-4 py-3 bg-gray-100 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-amber-500" />
                 </div>
+                <button className="flex items-center gap-2 text-gray-600 font-medium hover:text-gray-900 transition shrink-0 sm:ml-4">
+                  Highest Rated <ChevronRight className="rotate-90" size={16} />
+                </button>
               </div>
-              <p className="text-gray-600 leading-relaxed">
-                This cookbook has completely transformed my cooking. The recipes are clear, well-organized, and the results have been outstanding every single time. The French classics section is particularly wonderful—I've made the boeuf bourguignon three times already!
-              </p>
-            </div>
 
-            <div className="border-b border-gray-200 py-6">
-              <div className="mb-4">
-                <p className="font-medium text-gray-900 mb-1">Michael Chen</p>
-                  <div className="flex items-center gap-2">
-                    <Star className="fill-amber-400 text-amber-400" size={16} />
-                    <span className="text-sm text-gray-500">4.5 · 1 month ago</span>
-                </div>
+              <div className="space-y-0">
+                {PLACEHOLDER_REVIEWS.map((review) => (
+                  <div key={review.id} className="border-b border-gray-200 py-6 text-left">
+                    <div className="mb-4">
+                      <p className="font-medium text-gray-900 mb-1">{review.author}</p>
+                      <div className="flex items-center gap-2">
+                        <Star className="fill-amber-400 text-amber-400" size={16} />
+                        <span className="text-sm text-gray-500">
+                          {Math.round(review.rating)} · {review.date}
+                        </span>
+                      </div>
+                    </div>
+                    <p className="text-gray-600 leading-relaxed">{LOREM}</p>
+                  </div>
+                ))}
               </div>
-              <p className="text-gray-600 leading-relaxed">
-                A must-have for anyone serious about French cuisine. The instructions are detailed without being overwhelming, and the tips scattered throughout are invaluable. My only minor gripe is that some ingredients can be hard to source locally.
-              </p>
-            </div>
-
-            <div className="border-b border-gray-200 py-6">
-              <div className="mb-4">
-                <p className="font-medium text-gray-900 mb-1">Emma Rodriguez</p>
-                  <div className="flex items-center gap-2">
-                    <Star className="fill-amber-400 text-amber-400" size={16} />
-                    <span className="text-sm text-gray-500">4.8 · 3 weeks ago</span>
-                </div>
-              </div>
-              <p className="text-gray-600 leading-relaxed">
-                Absolutely love this cookbook! The photography is beautiful and really helps visualize the finished dishes. I've tried over a dozen recipes and each one has been a hit with my family. Highly recommend for both beginners and experienced cooks.
-              </p>
             </div>
           </div>
         </div>
@@ -413,7 +371,8 @@ export const ProductPage = ({ book, onBack }: ProductPageProps) => {
       <RecipeCardModal
         isOpen={!!selectedRecipe}
         onClose={() => setSelectedRecipe(null)}
-        recipe={selectedRecipe} />
+        recipe={selectedRecipe}
+      />
 
     </div>);
 
