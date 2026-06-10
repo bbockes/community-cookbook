@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Star,
   Heart,
   ChevronRight,
   Search,
-  User,
   ShoppingBag } from
 'lucide-react';
-import { Cookbook } from './BookCard';
+import { Cookbook, formatAuthors } from '../types/cookbook';
+import { CookbookCover } from './CookbookCover';
+import { fetchCookbookById } from '../services/googleBooks';
 import { RecipeCardModal, RecipeCardData } from './RecipeCardModal';
 interface ProductPageProps {
   book: Cookbook;
@@ -110,10 +111,39 @@ const MOCK_RECIPE_CARDS: RecipeCardData[] = [
 }];
 
 export const ProductPage = ({ book, onBack }: ProductPageProps) => {
+  const [bookDetails, setBookDetails] = useState<Cookbook>(book);
+  const [isLoadingDetails, setIsLoadingDetails] = useState(true);
   const [activeTab, setActiveTab] = useState<'reviews' | 'recipes'>('recipes');
   const [selectedRecipe, setSelectedRecipe] = useState<RecipeCardData | null>(
     null
   );
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    setBookDetails(book);
+    setIsLoadingDetails(true);
+    fetchCookbookById(book.id)
+      .then((details) => {
+        if (!cancelled && details) setBookDetails(details);
+      })
+      .catch(() => {
+        if (!cancelled) setBookDetails(book);
+      })
+      .finally(() => {
+        if (!cancelled) setIsLoadingDetails(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [book]);
+
+  const description = bookDetails.description?.replace(/<[^>]+>/g, '') ?? '';
+  const truncatedDescription =
+  description.length > 400 && !isDescriptionExpanded ?
+  `${description.slice(0, 400).trim()}…` :
+  description;
+
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Breadcrumbs */}
@@ -125,10 +155,12 @@ export const ProductPage = ({ book, onBack }: ProductPageProps) => {
           home
         </button>
         <span>&gt;</span>
-        <span className="capitalize">{book.category} cookbooks</span>
+        <span className="capitalize">
+          {bookDetails.category?.toLowerCase() ?? 'cookbook'} cookbooks
+        </span>
         <span>&gt;</span>
         <span className="text-gray-900 font-medium truncate max-w-[300px]">
-          {book.title.toLowerCase()}
+          {bookDetails.title}
         </span>
       </div>
 
@@ -139,38 +171,77 @@ export const ProductPage = ({ book, onBack }: ProductPageProps) => {
           <div
             className="aspect-square bg-gray-100 rounded-xl overflow-hidden"
             style={{ width: '80%' }}>
-            <img
-              src={book.image}
-              alt={book.title}
-              className="w-full h-full object-cover" />
+            <CookbookCover
+              book={bookDetails}
+              imgClassName="w-full h-full object-cover" />
           </div>
         </div>
 
         {/* Right: Info */}
         <div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            {book.title}
+            {bookDetails.title}
           </h1>
-          <p className="text-lg text-gray-600 mb-2">by {book.author}</p>
+          <p className="text-lg text-gray-600 mb-2">
+            by {formatAuthors(bookDetails.authors)}
+          </p>
+
+          {bookDetails.publisher &&
+          <p className="text-base text-gray-500 mb-2">
+              Published by {bookDetails.publisher}
+            </p>
+          }
+
+          {bookDetails.pageCount != null && bookDetails.pageCount > 0 &&
+          <p className="text-base text-gray-500 mb-4">
+              {bookDetails.pageCount} pages
+            </p>
+          }
 
           <div className="flex items-center gap-2 mb-8">
-            <Star className="fill-amber-400 text-amber-400" size={20} />
-            <span className="text-base font-medium">
-              {book.rating} out of 5
-            </span>
-            <span className="text-base text-gray-500">(70 reviews)</span>
+            {bookDetails.rating != null ?
+            <>
+                <Star className="fill-amber-400 text-amber-400" size={20} />
+                <span className="text-base font-medium">
+                  {bookDetails.rating} out of 5
+                </span>
+                {bookDetails.ratingsCount != null && bookDetails.ratingsCount > 0 &&
+              <span className="text-base text-gray-500">
+                    ({bookDetails.ratingsCount}{' '}
+                    {bookDetails.ratingsCount === 1 ? 'review' : 'reviews'})
+                  </span>
+              }
+              </> :
+
+            <span className="text-base text-gray-500">No ratings yet</span>
+            }
           </div>
 
-          <p className="text-gray-600 text-lg leading-relaxed mb-4">
-            This new cookbook brings the foods and flavors of {book.category}{' '}
-            cooking alive with color photographs throughout, notes about
-            important customs, festivals and holidays, and a collection of 185
-            recipes that spans traditional fare to popular fusion dishes, street
-            foods and the modern table.
-          </p>
-          <button className="text-amber-600 font-semibold hover:underline mb-8">
-            More...
-          </button>
+          {isLoadingDetails ?
+          <div className="space-y-3 mb-8 animate-pulse">
+              <div className="h-4 bg-gray-200 rounded w-full" />
+              <div className="h-4 bg-gray-200 rounded w-full" />
+              <div className="h-4 bg-gray-200 rounded w-5/6" />
+            </div> :
+          description ?
+          <div className="mb-8">
+              <p className="text-gray-600 text-lg leading-relaxed whitespace-pre-line">
+                {truncatedDescription}
+              </p>
+              {description.length > 400 &&
+            <button
+              onClick={() => setIsDescriptionExpanded((prev) => !prev)}
+              className="text-amber-600 font-semibold hover:underline mt-2">
+
+                  {isDescriptionExpanded ? 'Show less' : 'Read more'}
+                </button>
+            }
+            </div> :
+
+          <p className="text-gray-500 text-lg mb-8">
+              No description available for this cookbook.
+            </p>
+          }
 
           <div className="space-y-3">
             <button className="w-full bg-black text-white py-4 rounded-lg font-bold hover:bg-gray-800 transition flex items-center justify-center gap-2">

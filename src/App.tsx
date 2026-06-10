@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Header } from './components/Header';
 import { BookGrid } from './components/BookGrid';
 import { Footer } from './components/Footer';
-import { cookbookData } from './data/cookbooks';
 import { ProductPage } from './components/ProductPage';
-import { Cookbook } from './components/BookCard';
-type TabId = 'all' | 'cuisines' | 'methods' | 'authors' | 'bestsellers';
+import { Cookbook } from './types/cookbook';
+import { fetchBookCollection } from './services/googleBooks';
+import { ApiErrorPanel } from './components/ApiErrorPanel';
+import {
+  getCollectionCacheKey,
+  getCollectionConfig,
+  TabId } from
+'./config/bookCollections';
 interface SubcategoryItem {
   name: string;
   image: string;
@@ -180,50 +185,44 @@ const subMethodFilters: Record<string, string[]> = {
   'Stir-Fry': ['All Stir-Fry', 'Wok', 'Pan-Fry', 'Deep-Fry'],
   Roasting: ['All Roasting', 'Oven Roast', 'Spit Roast', 'Pan Roast']
 };
-function filterBooks(category: TabId, subcategory: string | null) {
-  if (category === 'all') return cookbookData;
-  if (category === 'bestsellers')
-  return cookbookData.filter((b) => b.bestseller);
-  if (!subcategory) return cookbookData;
-  if (category === 'cuisines') {
-    if (subcategory === 'All Cuisines') return cookbookData;
-    const cuisineMap: Record<string, string[]> = {
-      French: ['The Art of French Cooking'],
-      Asian: ['Asian Flavors'],
-      Italian: [],
-      Mexican: [],
-      Mediterranean: ['Clean Eating Cookbook']
-    };
-    const titles = cuisineMap[subcategory] || [];
-    if (titles.length === 0) return [];
-    return cookbookData.filter((b) => titles.includes(b.title));
-  }
-  if (category === 'methods') {
-    if (subcategory === 'All Methods') return cookbookData;
-    const methodMap: Record<string, string[]> = {
-      Baking: ['baking'],
-      Grilling: ['quick'],
-      'Slow Cooking': ['international'],
-      'Stir-Fry': ['international'],
-      Roasting: ['quick']
-    };
-    const categories = methodMap[subcategory] || [];
-    return cookbookData.filter((b) => categories.includes(b.category));
-  }
-  if (category === 'authors') {
-    if (subcategory === 'All Authors') return cookbookData;
-    return cookbookData.filter((b) => b.author === subcategory);
-  }
-  return cookbookData;
-}
 export function App() {
+  const [cookbooks, setCookbooks] = useState<Cookbook[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState<unknown>(null);
   const [activeTab, setActiveTab] = useState<TabId>('all');
   const [activeSubcategory, setActiveSubcategory] = useState<string | null>(
     null
   );
   const [activeSubFilter, setActiveSubFilter] = useState<string | null>(null);
   const [selectedBook, setSelectedBook] = useState<Cookbook | null>(null);
-  const filteredBooks = filterBooks(activeTab, activeSubcategory);
+
+  const loadBooks = useCallback(async () => {
+    setIsLoading(true);
+    setLoadError(null);
+    try {
+      const config = getCollectionConfig(
+        activeTab,
+        activeSubcategory,
+        activeSubFilter
+      );
+      const cacheKey = getCollectionCacheKey(
+        activeTab,
+        activeSubcategory,
+        activeSubFilter
+      );
+      const books = await fetchBookCollection(config, cacheKey);
+      setCookbooks(books);
+    } catch (error) {
+      setLoadError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [activeTab, activeSubcategory, activeSubFilter]);
+
+  useEffect(() => {
+    loadBooks();
+  }, [loadBooks]);
+
   const handleTabChange = (tabId: TabId) => {
     setActiveTab(tabId);
     setActiveSubcategory(null);
@@ -396,12 +395,24 @@ export function App() {
               }
             </div>
             <span className="text-base text-gray-400">
-              {filteredBooks.length}{' '}
-              {filteredBooks.length === 1 ? 'cookbook' : 'cookbooks'}
+              {cookbooks.length}{' '}
+              {cookbooks.length === 1 ? 'cookbook' : 'cookbooks'}
             </span>
           </div>
 
-          <BookGrid books={filteredBooks} onBookClick={handleBookClick} />
+          {isLoading &&
+          <div className="flex justify-center py-20">
+              <div className="h-10 w-10 animate-spin rounded-full border-4 border-amber-600 border-t-transparent" />
+            </div>
+          }
+
+          {!isLoading && loadError != null &&
+          <ApiErrorPanel error={loadError} onRetry={loadBooks} />
+          }
+
+          {!isLoading && !loadError &&
+          <BookGrid books={cookbooks} onBookClick={handleBookClick} />
+          }
         </div>
       </main>
       <Footer />
