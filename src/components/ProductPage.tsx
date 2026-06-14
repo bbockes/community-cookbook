@@ -161,7 +161,7 @@ export const ProductPage = ({
           </div>
         </div>
 
-        <div className="w-full min-w-0 sm:flex-1 sm:pt-1">
+        <div className="w-full min-w-0 sm:flex-1 sm:pt-1 sm:pl-3 lg:pl-4">
           <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl lg:text-[2rem] lg:leading-tight">
             {bookDetails.title}
           </h1>

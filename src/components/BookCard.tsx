@@ -13,7 +13,9 @@ const coverShadow =
 
 export const BookCard = ({ book, onClick }: BookCardProps) => {
   const [isFavorited, setIsFavorited] = useState(false);
-  const rating = book.rating ?? 0;
+  const reviewCount = book.communityReviewCount ?? 0;
+  const averageRating = book.communityAverageRating;
+  const hasCommunityReviews = reviewCount > 0 && averageRating != null;
 
   return (
     <div
@@ -45,18 +47,18 @@ export const BookCard = ({ book, onClick }: BookCardProps) => {
         </p>
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            {book.rating != null ? (
+            {hasCommunityReviews ? (
               <>
                 {[...Array(5)].map((_, i) => (
                   <span
                     key={i}
-                    className={`text-base ${i < Math.round(rating) ? 'text-amber-400' : 'text-gray-300'}`}
+                    className={`text-base ${i < Math.round(averageRating) ? 'text-amber-400' : 'text-gray-300'}`}
                   >
                     ★
                   </span>
                 ))}
                 <span className="text-sm text-gray-500 ml-1">
-                  ({Math.round(rating)})
+                  ({averageRating.toFixed(1)})
                 </span>
               </>
             ) : (

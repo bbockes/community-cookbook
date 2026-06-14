@@ -100,6 +100,19 @@ function matchesAny(haystack, keywords) {
   return keywords.some((keyword) => haystack.includes(keyword));
 }
 
+/** Phrases that disqualify a cuisine match (e.g. "african" ≠ African American cooking). */
+const CUISINE_SKIP_PATTERNS = {
+  African: [/african[\s-]american/],
+};
+
+function matchesCuisine(name, haystack, keywords) {
+  const skipPatterns = CUISINE_SKIP_PATTERNS[name];
+  if (skipPatterns?.some((pattern) => pattern.test(haystack))) {
+    return false;
+  }
+  return matchesAny(haystack, keywords);
+}
+
 /** Infer browse collections from Google Books metadata. */
 export function inferCollections(cookbook) {
   const keys = new Set([getCollectionKey('all', null, null)]);
@@ -111,7 +124,7 @@ export function inferCollections(cookbook) {
   keys.add(getCollectionKey('foodTypes', null, null));
 
   for (const { name, keywords } of CUISINE_RULES) {
-    if (matchesAny(haystack, keywords)) {
+    if (matchesCuisine(name, haystack, keywords)) {
       keys.add(getCollectionKey('cuisines', name, null));
     }
   }

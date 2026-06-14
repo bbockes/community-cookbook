@@ -13,17 +13,25 @@
         "moroccan",
         "nigerian",
         "senegalese",
+        "kenyan",
+        "south african",
+        "ghanaian",
         "tagine",
         "injera",
         "harissa",
-        "jollof"
+        "jollof",
+        "berber"
       ],
       "pills": [
         "North African",
         "West African",
         "East African",
         "Southern African",
-        "Ethiopian"
+        "Ethiopian",
+        "Moroccan",
+        "Nigerian",
+        "Senegalese",
+        "South African"
       ]
     },
     {
@@ -38,16 +46,24 @@
         "thai",
         "vietnamese",
         "nepalese",
+        "burmese",
+        "myanmar",
+        "filipino",
+        "indonesian",
+        "malaysian",
         "sichuan",
         "cantonese",
         "ramen",
         "pho",
         "curry",
         "wok",
-        "filipino",
-        "indonesian",
-        "malaysian",
-        "southeast asian"
+        "southeast asian",
+        "taiwanese",
+        "singaporean",
+        "pakistani",
+        "sri lankan",
+        "cambodian",
+        "laotian"
       ],
       "pills": [
         "Chinese",
@@ -56,6 +72,11 @@
         "Indian",
         "Thai",
         "Vietnamese",
+        "Nepalese",
+        "Burmese",
+        "Filipino",
+        "Indonesian",
+        "Malaysian",
         "Southeast Asian"
       ]
     },
@@ -71,12 +92,29 @@
         "israeli",
         "arabic",
         "arab",
+        "egyptian",
+        "syrian",
+        "iraqi",
+        "armenian",
+        "georgian",
+        "yemeni",
         "shawarma",
         "falafel",
         "hummus",
-        "kebab"
+        "kebab",
+        "mezze"
       ],
-      "pills": ["Lebanese", "Turkish", "Persian", "Israeli", "Arabic"]
+      "pills": [
+        "Lebanese",
+        "Turkish",
+        "Persian",
+        "Israeli",
+        "Arabic",
+        "Egyptian",
+        "Syrian",
+        "Armenian",
+        "Georgian"
+      ]
     },
     {
       "name": "European",
@@ -95,13 +133,21 @@
         "polish",
         "hungarian",
         "russian",
+        "portuguese",
+        "irish",
+        "swiss",
+        "austrian",
+        "dutch",
+        "belgian",
         "provencal",
         "provençal",
         "tuscan",
         "sicilian",
         "bistro",
         "paris",
-        "mediterranean"
+        "mediterranean",
+        "catalan",
+        "basque"
       ],
       "pills": [
         "French",
@@ -111,7 +157,11 @@
         "German",
         "British",
         "Nordic",
-        "Eastern European"
+        "Eastern European",
+        "Portuguese",
+        "Russian",
+        "Polish",
+        "Irish"
       ]
     },
     {
@@ -127,9 +177,27 @@
         "soul food",
         "new england",
         "texas",
-        "california"
+        "california",
+        "tex-mex",
+        "southwestern",
+        "pacific northwest",
+        "midwestern",
+        "native american",
+        "african american",
+        "african-american",
+        "amish",
+        "pennsylvania dutch"
       ],
-      "pills": ["American", "Southern", "Cajun & Creole", "Canadian"]
+      "pills": [
+        "American",
+        "Southern",
+        "Cajun & Creole",
+        "Canadian",
+        "Tex-Mex",
+        "Southwestern",
+        "New England",
+        "Pacific Northwest"
+      ]
     },
     {
       "name": "Latin American",
@@ -149,14 +217,24 @@
         "mole",
         "ceviche",
         "colombian",
-        "chilean"
+        "chilean",
+        "venezuelan",
+        "ecuadorian",
+        "puerto rican",
+        "dominican",
+        "guatemalan"
       ],
       "pills": [
         "Mexican",
         "Caribbean",
         "Central American",
         "Brazilian",
-        "Peruvian"
+        "Peruvian",
+        "Argentine",
+        "Cuban",
+        "Colombian",
+        "Chilean",
+        "Oaxacan"
       ]
     },
     {
@@ -169,9 +247,24 @@
         "polynesian",
         "hawaiian",
         "pacific",
-        "maori"
+        "maori",
+        "melanesian",
+        "fijian",
+        "samoan",
+        "tahitian",
+        "tongan",
+        "papua new guinean"
       ],
-      "pills": ["Australian", "New Zealand", "Polynesian", "Hawaiian"]
+      "pills": [
+        "Australian",
+        "New Zealand",
+        "Polynesian",
+        "Hawaiian",
+        "Melanesian",
+        "Fijian",
+        "Samoan",
+        "Tahitian"
+      ]
     }
   ]
 }

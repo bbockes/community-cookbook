@@ -11,6 +11,9 @@ export type Cookbook = {
   category?: string;
   rating?: number;
   ratingsCount?: number;
+  /** Community-submitted reviews (shown in UI instead of Google Books ratings). */
+  communityReviewCount?: number;
+  communityAverageRating?: number;
   bestseller?: boolean;
 };
 
