@@ -1,5 +1,5 @@
 import React from 'react';
-import { GoogleBooksError } from '../services/googleBooks';
+import { ApiError } from '../services/cookbookApi';
 
 interface ApiErrorPanelProps {
   error: unknown;
@@ -7,12 +7,11 @@ interface ApiErrorPanelProps {
 }
 
 export function ApiErrorPanel({ error, onRetry }: ApiErrorPanelProps) {
-  const isRateLimit =
-    error instanceof GoogleBooksError && error.status === 429;
+  const isRateLimit = error instanceof ApiError && error.status === 429;
   const missingApiKey =
     isRateLimit &&
-    error instanceof GoogleBooksError &&
-    (error.usesSharedQuota || !__BOOKS_API_KEY_CONFIGURED__);
+    error instanceof ApiError &&
+    (error.usesSharedQuota || error.apiKeyConfigured === false);
   const ownQuotaExceeded = isRateLimit && !missingApiKey;
 
   return (

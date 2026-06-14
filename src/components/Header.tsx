@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { MenuIcon, XIcon, SearchIcon } from 'lucide-react';
+
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
@@ -31,7 +32,7 @@ export const Header = () => {
               </a>
             </nav>
             <div className="flex items-center space-x-4">
-              <button className="text-gray-700 hover:text-amber-600">
+              <button type="button" className="text-gray-700 hover:text-amber-600" aria-label="Search">
                 <SearchIcon size={20} />
               </button>
             </div>

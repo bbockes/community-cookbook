@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { BookOpen } from 'lucide-react';
 import { Cookbook, formatAuthors } from '../types/cookbook';
 import { saveResolvedCover } from '../services/coverCache';
-import { buildCoverSources, isGoogleCoverUrl } from '../services/coverUrls';
+import { buildCoverSources } from '../services/coverUrls';
 
 type CookbookCoverProps = {
   book: Pick<Cookbook, 'id' | 'title' | 'authors' | 'image' | 'isbn13' | 'isbn10'>;
@@ -28,7 +28,9 @@ function isPlaceholderCover(img: HTMLImageElement): boolean {
   try {
     data = ctx.getImageData(0, 0, width, height).data;
   } catch {
-    return isGoogleCoverUrl(img.currentSrc);
+    // Cross-origin images (Google Books, etc.) can't be pixel-checked without
+    // CORS headers. Treat a loaded image as valid rather than skipping it.
+    return false;
   }
 
   let lightDesaturated = 0;
@@ -136,12 +138,16 @@ export function CookbookCover({
     );
   }
 
+  const useCrossOrigin = currentSrc.includes('openlibrary.org');
+
   return (
     <img
       key={currentSrc}
       src={currentSrc}
       alt={`Cover of ${book.title}`}
       className={imgClassName ?? className}
+      crossOrigin={useCrossOrigin ? 'anonymous' : undefined}
+      referrerPolicy="no-referrer"
       onLoad={handleLoad}
       onError={advance}
     />

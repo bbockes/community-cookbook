@@ -1,0 +1,177 @@
+{
+  "cuisines": [
+    {
+      "name": "African",
+      "image": "https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=800&q=80",
+      "keywords": [
+        "african",
+        "north african",
+        "west african",
+        "east african",
+        "southern african",
+        "ethiopian",
+        "moroccan",
+        "nigerian",
+        "senegalese",
+        "tagine",
+        "injera",
+        "harissa",
+        "jollof"
+      ],
+      "pills": [
+        "North African",
+        "West African",
+        "East African",
+        "Southern African",
+        "Ethiopian"
+      ]
+    },
+    {
+      "name": "Asian",
+      "image": "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=800&q=80",
+      "keywords": [
+        "asian",
+        "chinese",
+        "japanese",
+        "korean",
+        "indian",
+        "thai",
+        "vietnamese",
+        "nepalese",
+        "sichuan",
+        "cantonese",
+        "ramen",
+        "pho",
+        "curry",
+        "wok",
+        "filipino",
+        "indonesian",
+        "malaysian",
+        "southeast asian"
+      ],
+      "pills": [
+        "Chinese",
+        "Japanese",
+        "Korean",
+        "Indian",
+        "Thai",
+        "Vietnamese",
+        "Southeast Asian"
+      ]
+    },
+    {
+      "name": "Middle Eastern",
+      "image": "https://images.unsplash.com/photo-1548345680-f5495c100399?w=800&q=80",
+      "keywords": [
+        "middle eastern",
+        "lebanese",
+        "turkish",
+        "persian",
+        "iranian",
+        "israeli",
+        "arabic",
+        "arab",
+        "shawarma",
+        "falafel",
+        "hummus",
+        "kebab"
+      ],
+      "pills": ["Lebanese", "Turkish", "Persian", "Israeli", "Arabic"]
+    },
+    {
+      "name": "European",
+      "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80",
+      "keywords": [
+        "european",
+        "french",
+        "italian",
+        "spanish",
+        "greek",
+        "german",
+        "british",
+        "english",
+        "scandinavian",
+        "nordic",
+        "polish",
+        "hungarian",
+        "russian",
+        "provencal",
+        "provençal",
+        "tuscan",
+        "sicilian",
+        "bistro",
+        "paris",
+        "mediterranean"
+      ],
+      "pills": [
+        "French",
+        "Italian",
+        "Spanish",
+        "Greek",
+        "German",
+        "British",
+        "Nordic",
+        "Eastern European"
+      ]
+    },
+    {
+      "name": "North American",
+      "image": "https://images.unsplash.com/photo-1550547660-d9450f859349?w=800&q=80",
+      "keywords": [
+        "american",
+        "north american",
+        "southern",
+        "cajun",
+        "creole",
+        "canadian",
+        "soul food",
+        "new england",
+        "texas",
+        "california"
+      ],
+      "pills": ["American", "Southern", "Cajun & Creole", "Canadian"]
+    },
+    {
+      "name": "Latin American",
+      "image": "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=800&q=80",
+      "keywords": [
+        "latin american",
+        "mexican",
+        "caribbean",
+        "central american",
+        "brazilian",
+        "peruvian",
+        "argentine",
+        "cuban",
+        "oaxacan",
+        "taco",
+        "tamale",
+        "mole",
+        "ceviche",
+        "colombian",
+        "chilean"
+      ],
+      "pills": [
+        "Mexican",
+        "Caribbean",
+        "Central American",
+        "Brazilian",
+        "Peruvian"
+      ]
+    },
+    {
+      "name": "Oceanian",
+      "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80",
+      "keywords": [
+        "oceanian",
+        "australian",
+        "new zealand",
+        "polynesian",
+        "hawaiian",
+        "pacific",
+        "maori"
+      ],
+      "pills": ["Australian", "New Zealand", "Polynesian", "Hawaiian"]
+    }
+  ]
+}

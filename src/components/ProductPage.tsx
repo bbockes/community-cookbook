@@ -1,32 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import {
   Star,
-  Heart,
   ChevronRight,
-  Search,
-  ShoppingBag } from
+  Search } from
 'lucide-react';
 import { Cookbook, formatAuthors } from '../types/cookbook';
 import { BrowseContext, getProductBreadcrumbLabel } from '../config/bookCollections';
 import { CookbookCover } from './CookbookCover';
-import { fetchCookbookById } from '../services/googleBooks';
+import { formatDescription } from '../utils/formatDescription';
+import { fetchCookbookById } from '../services/cookbookApi';
 import { ReviewSummary, buildReviewSummary } from './ReviewSummary';
 import { RecipeCardModal, RecipeCardData } from './RecipeCardModal';
 
 interface ProductPageProps {
   book: Cookbook;
   browseContext: BrowseContext | null;
-  onBack: () => void;
+  onBackHome: () => void;
+  onBackToBrowse: () => void;
 }
 
 const LOREM =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.';
-
-const PLACEHOLDER_REVIEWS = [
-  { id: 1, author: 'Lorem Ipsum', rating: 4.5, date: '2 weeks ago' },
-  { id: 2, author: 'Dolor Sit', rating: 5.0, date: '1 month ago' },
-  { id: 3, author: 'Amet Consectetur', rating: 4.0, date: '3 weeks ago' },
-];
 
 const PLACEHOLDER_RECIPE_CARDS = [
   { id: 1, author: 'Lorem Ipsum', rating: 4.6, comments: 2 },
@@ -82,7 +76,15 @@ function buildRecipeCards(bookTitle: string): RecipeCardData[] {
   });
 }
 
-export const ProductPage = ({ book, browseContext, onBack }: ProductPageProps) => {
+const coverShadow =
+  'drop-shadow-[-4px_6px_8px_rgba(0,0,0,0.12)] drop-shadow-[0_14px_24px_rgba(0,0,0,0.18)]';
+
+export const ProductPage = ({
+  book,
+  browseContext,
+  onBackHome,
+  onBackToBrowse,
+}: ProductPageProps) => {
   const [bookDetails, setBookDetails] = useState<Cookbook>(book);
   const [isLoadingDetails, setIsLoadingDetails] = useState(true);
   const [activeTab, setActiveTab] = useState<'reviews' | 'recipes'>('recipes');
@@ -108,145 +110,133 @@ export const ProductPage = ({ book, browseContext, onBack }: ProductPageProps) =
     };
   }, [book]);
 
-  const description = bookDetails.description?.replace(/<[^>]+>/g, '') ?? '';
+  const description = formatDescription(bookDetails.description);
   const truncatedDescription =
   description.length > 400 && !isDescriptionExpanded ?
   `${description.slice(0, 400).trim()}…` :
   description;
 
-  const reviewSummary = buildReviewSummary(PLACEHOLDER_REVIEWS);
+  const communityReviews: { rating: number }[] = [];
+  const reviewSummary = buildReviewSummary(communityReviews);
   const recipeCards = buildRecipeCards(bookDetails.title);
   const breadcrumbCategory = browseContext
     ? getProductBreadcrumbLabel(browseContext)
     : 'All Cookbooks';
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* Breadcrumbs */}
-      <div className="text-base text-gray-500 mb-8 flex items-center gap-2">
+    <div className="container mx-auto max-w-6xl px-4 py-6 sm:py-8">
+      <nav
+        aria-label="Breadcrumb"
+        className="mb-6 flex items-center gap-1.5 text-sm text-gray-400"
+      >
         <button
-          onClick={onBack}
-          className="hover:text-amber-600 hover:underline">
-
-          home
+          onClick={onBackHome}
+          className="hover:text-amber-600 transition-colors"
+        >
+          Home
         </button>
-        <span>&gt;</span>
-        <span className="text-gray-500">{breadcrumbCategory}</span>
-        <span>&gt;</span>
-        <span className="text-gray-900 font-medium truncate max-w-[300px]">
-          {bookDetails.title}
-        </span>
-      </div>
+        <ChevronRight size={14} className="shrink-0 text-gray-300" aria-hidden />
+        {browseContext ? (
+          <button
+            onClick={onBackToBrowse}
+            className="font-medium text-gray-600 hover:text-amber-600 transition-colors"
+          >
+            {breadcrumbCategory}
+          </button>
+        ) : (
+          <span className="font-medium text-gray-600">{breadcrumbCategory}</span>
+        )}
+        <ChevronRight size={14} className="shrink-0 text-gray-300" aria-hidden />
+        <span className="truncate font-medium text-gray-700">{bookDetails.title}</span>
+      </nav>
 
-      {/* Main Product Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
-        {/* Left: Images */}
-        <div className="flex justify-center items-start">
-          <div className="bg-gray-100 rounded-xl overflow-hidden max-h-[400px]">
+      <div className="mb-12 flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:gap-8 lg:gap-10">
+        <div className="shrink-0">
+          <div className="w-[240px] sm:w-[260px] lg:w-[280px]">
             <CookbookCover
               book={bookDetails}
-              imgClassName="max-h-[400px] w-auto object-contain"
+              className={`w-full ${coverShadow}`}
+              imgClassName={`w-full object-contain ${coverShadow}`}
             />
           </div>
         </div>
 
-        {/* Right: Info */}
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <div className="w-full min-w-0 sm:flex-1 sm:pt-1">
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl lg:text-[2rem] lg:leading-tight">
             {bookDetails.title}
           </h1>
-          <p className="text-lg text-gray-600 mb-2">
+          <p className="mt-1.5 text-base text-gray-500 sm:text-lg">
             by {formatAuthors(bookDetails.authors)}
           </p>
 
-          {bookDetails.publisher &&
-          <p className="text-base text-gray-500 mb-2">
-              Published by {bookDetails.publisher}
-            </p>
-          }
-
-          {bookDetails.pageCount != null && bookDetails.pageCount > 0 &&
-          <p className="text-base text-gray-500 mb-4">
-              {bookDetails.pageCount} pages
-            </p>
-          }
-
-          <div className="flex items-center gap-2 mb-8">
-            {bookDetails.rating != null ?
-            <>
-                <Star className="fill-amber-400 text-amber-400" size={20} />
-                <span className="text-base font-medium">
-                  {Math.round(bookDetails.rating)} out of 5
-                </span>
-                {bookDetails.ratingsCount != null && bookDetails.ratingsCount > 0 &&
-              <span className="text-base text-gray-500">
-                    ({bookDetails.ratingsCount}{' '}
-                    {bookDetails.ratingsCount === 1 ? 'review' : 'reviews'})
-                  </span>
-              }
-              </> :
-
-            <span className="text-base text-gray-500">No ratings yet</span>
-            }
-          </div>
-
-          {isLoadingDetails ?
-          <div className="space-y-3 mb-8 animate-pulse">
-              <div className="h-4 bg-gray-200 rounded w-full" />
-              <div className="h-4 bg-gray-200 rounded w-full" />
-              <div className="h-4 bg-gray-200 rounded w-5/6" />
-            </div> :
-          description ?
-          <div className="mb-8">
-              <p className="text-gray-600 text-lg leading-relaxed whitespace-pre-line">
+          {isLoadingDetails ? (
+            <div className="mt-5 space-y-2.5 animate-pulse">
+              <div className="h-4 rounded bg-gray-200 w-full" />
+              <div className="h-4 rounded bg-gray-200 w-full" />
+              <div className="h-4 rounded bg-gray-200 w-4/5" />
+            </div>
+          ) : description ? (
+            <div className="mt-5">
+              <p className="text-[15px] leading-relaxed text-gray-600 whitespace-pre-line sm:text-base">
                 {truncatedDescription}
               </p>
-              {description.length > 400 &&
-            <button
-              onClick={() => setIsDescriptionExpanded((prev) => !prev)}
-              className="text-amber-600 font-semibold hover:underline mt-2">
-
+              {description.length > 400 && (
+                <button
+                  onClick={() => setIsDescriptionExpanded((prev) => !prev)}
+                  className="mt-2 text-sm font-semibold text-amber-600 hover:underline"
+                >
                   {isDescriptionExpanded ? 'Show less' : 'Read more'}
                 </button>
-            }
-            </div> :
-
-          <p className="text-gray-500 text-lg mb-8">
+              )}
+            </div>
+          ) : (
+            <p className="mt-5 text-base text-gray-400">
               No description available for this cookbook.
             </p>
-          }
+          )}
 
-          <div className="space-y-3">
-            <button className="w-full bg-black text-white py-4 rounded-lg font-bold hover:bg-gray-800 transition flex items-center justify-center gap-2">
-              <ShoppingBag size={20} />
+          <div className="mt-6 flex flex-col gap-2.5 sm:max-w-sm">
+            <button
+              type="button"
+              className="w-full rounded-lg bg-[#394282] py-3 text-sm font-semibold text-white transition hover:bg-[#2f3668] sm:text-base"
+            >
               Buy now
             </button>
-            <button className="w-full bg-white text-black border-2 border-black py-4 rounded-lg font-bold hover:bg-gray-50 transition flex items-center justify-center gap-2">
-              <Heart size={20} />
+            <button
+              type="button"
+              className="w-full rounded-lg border border-orange-400 bg-orange-50 py-3 text-sm font-semibold text-[#394282] transition hover:bg-orange-100 sm:text-base"
+            >
               Add to Wishlist
             </button>
           </div>
         </div>
       </div>
 
-      {/* Tabs Section */}
       <div className="border-b border-gray-200 mb-8">
-        <div className="flex gap-8">
+        <div className="flex gap-6 sm:gap-8">
           <button
             onClick={() => setActiveTab('reviews')}
-            className={`pb-4 text-lg font-semibold transition ${activeTab === 'reviews' ? 'border-b-2 border-black text-black' : 'text-gray-500 hover:text-gray-800'}`}>
-
-            Cookbook Reviews{' '}
-            <span className="ml-2 bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">
-              3
+            className={`relative pb-3.5 text-base font-semibold transition sm:text-lg ${
+              activeTab === 'reviews'
+                ? 'text-gray-900 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:rounded-full after:bg-[#394282]'
+                : 'text-gray-400 hover:text-gray-700'
+            }`}
+          >
+            Cookbook Reviews
+            <span className="ml-2 rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-500">
+              {reviewSummary.totalRatings}
             </span>
           </button>
           <button
             onClick={() => setActiveTab('recipes')}
-            className={`pb-4 text-lg font-semibold transition ${activeTab === 'recipes' ? 'border-b-2 border-black text-black' : 'text-gray-500 hover:text-gray-800'}`}>
-
-            Recipe Cards{' '}
-            <span className="ml-2 bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">
+            className={`relative pb-3.5 text-base font-semibold transition sm:text-lg ${
+              activeTab === 'recipes'
+                ? 'text-gray-900 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:rounded-full after:bg-[#394282]'
+                : 'text-gray-400 hover:text-gray-700'
+            }`}
+          >
+            Recipe Cards
+            <span className="ml-2 rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-500">
               3
             </span>
           </button>
@@ -326,42 +316,24 @@ export const ProductPage = ({ book, browseContext, onBack }: ProductPageProps) =
       <div className="w-full">
           <div className="flex flex-col lg:flex-row gap-10 lg:gap-14 items-start">
             <ReviewSummary
-              averageRating={reviewSummary.averageRating}
+              averageRating={
+                reviewSummary.totalRatings > 0 ? reviewSummary.averageRating : undefined
+              }
               totalRatings={reviewSummary.totalRatings}
-              distribution={reviewSummary.distribution}
+              distribution={
+                reviewSummary.totalRatings > 0 ? reviewSummary.distribution : undefined
+              }
             />
 
             <div className="flex-1 min-w-0 w-full">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-                <div className="relative w-full sm:flex-1 sm:max-w-none">
-                  <Search
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-                    size={20} />
-                  <input
-                    type="text"
-                    placeholder="Search reviews"
-                    className="w-full pl-12 pr-4 py-3 bg-gray-100 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-amber-500" />
-                </div>
-                <button className="flex items-center gap-2 text-gray-600 font-medium hover:text-gray-900 transition shrink-0 sm:ml-4">
-                  Highest Rated <ChevronRight className="rotate-90" size={16} />
-                </button>
-              </div>
-
-              <div className="space-y-0">
-                {PLACEHOLDER_REVIEWS.map((review) => (
-                  <div key={review.id} className="border-b border-gray-200 py-6 text-left">
-                    <div className="mb-4">
-                      <p className="font-medium text-gray-900 mb-1">{review.author}</p>
-                      <div className="flex items-center gap-2">
-                        <Star className="fill-amber-400 text-amber-400" size={16} />
-                        <span className="text-sm text-gray-500">
-                          {Math.round(review.rating)} · {review.date}
-                        </span>
-                      </div>
-                    </div>
-                    <p className="text-gray-600 leading-relaxed">{LOREM}</p>
-                  </div>
-                ))}
+              <div className="rounded-xl border border-dashed border-gray-200 bg-white px-6 py-12 text-center">
+                <p className="text-gray-900 font-medium mb-1.5">
+                  No reviews yet
+                </p>
+                <p className="text-sm text-gray-500 leading-relaxed max-w-md mx-auto">
+                  Be the first to share your thoughts on this cookbook with the
+                  community.
+                </p>
               </div>
             </div>
           </div>

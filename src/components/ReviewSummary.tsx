@@ -2,9 +2,9 @@ import React from 'react';
 import { ChevronDown, Star } from 'lucide-react';
 
 type ReviewSummaryProps = {
-  averageRating: number;
-  totalRatings: number;
-  distribution: Record<1 | 2 | 3 | 4 | 5, number>;
+  averageRating?: number;
+  totalRatings?: number;
+  distribution?: Record<1 | 2 | 3 | 4 | 5, number>;
 };
 
 function StarRating({ rating, size = 20 }: { rating: number; size?: number }) {
@@ -29,9 +29,28 @@ function StarRating({ rating, size = 20 }: { rating: number; size?: number }) {
 
 export function ReviewSummary({
   averageRating,
-  totalRatings,
+  totalRatings = 0,
   distribution,
 }: ReviewSummaryProps) {
+  const hasReviews = totalRatings > 0 && averageRating != null;
+
+  if (!hasReviews) {
+    return (
+      <aside className="w-full lg:w-64 shrink-0">
+        <h2 className="font-semibold text-gray-900 mb-1">Review this cookbook</h2>
+        <p className="text-sm text-gray-500 mb-4">
+          Share your thoughts with the community
+        </p>
+        <button
+          type="button"
+          className="w-full py-2.5 px-4 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm font-semibold transition"
+        >
+          Write a review
+        </button>
+      </aside>
+    );
+  }
+
   return (
     <aside className="w-full lg:w-64 shrink-0">
       <h2 className="text-lg font-semibold text-gray-900 mb-3">
@@ -41,36 +60,38 @@ export function ReviewSummary({
       <div className="flex items-center gap-2 mb-1">
         <StarRating rating={averageRating} />
         <span className="text-base font-medium text-gray-900">
-          {Math.round(averageRating)} out of 5
+          {averageRating.toFixed(1)} out of 5
         </span>
       </div>
 
       <p className="text-sm text-gray-500 mb-5">
         {totalRatings.toLocaleString()}{' '}
-        {totalRatings === 1 ? 'rating' : 'ratings'}
+        {totalRatings === 1 ? 'review' : 'reviews'}
       </p>
 
-      <div className="space-y-2 mb-5">
-        {([5, 4, 3, 2, 1] as const).map((star) => (
-          <div key={star} className="flex items-center gap-2 text-sm">
-            <button
-              type="button"
-              className="text-gray-600 hover:text-amber-600 shrink-0 w-12 text-left transition"
-            >
-              {star} star
-            </button>
-            <div className="flex-1 h-4 rounded-full bg-gray-100 overflow-hidden">
-              <div
-                className="h-full bg-amber-500 rounded-full"
-                style={{ width: `${distribution[star]}%` }}
-              />
+      {distribution && (
+        <div className="space-y-2 mb-5">
+          {([5, 4, 3, 2, 1] as const).map((star) => (
+            <div key={star} className="flex items-center gap-2 text-sm">
+              <button
+                type="button"
+                className="text-gray-600 hover:text-amber-600 shrink-0 w-12 text-left transition"
+              >
+                {star} star
+              </button>
+              <div className="flex-1 h-4 rounded-full bg-gray-100 overflow-hidden">
+                <div
+                  className="h-full bg-amber-500 rounded-full"
+                  style={{ width: `${distribution[star]}%` }}
+                />
+              </div>
+              <span className="text-gray-500 w-8 text-right shrink-0">
+                {distribution[star]}%
+              </span>
             </div>
-            <span className="text-gray-500 w-8 text-right shrink-0">
-              {distribution[star]}%
-            </span>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       <button
         type="button"

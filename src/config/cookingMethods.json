@@ -1,0 +1,124 @@
+{
+  "methods": [
+    {
+      "name": "Boiling",
+      "image": "https://images.unsplash.com/photo-1547592180-85f173990554?w=800&q=80",
+      "keywords": ["boil", "boiling"],
+      "pills": ["Stocks & Broths", "Pasta", "Eggs"]
+    },
+    {
+      "name": "Simmering",
+      "image": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=800&q=80",
+      "keywords": ["simmer", "simmering"],
+      "pills": ["Sauces", "Soups"]
+    },
+    {
+      "name": "Poaching",
+      "image": "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&q=80",
+      "keywords": ["poach", "poaching"],
+      "pills": ["Fish", "Eggs"]
+    },
+    {
+      "name": "Steaming",
+      "image": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&q=80",
+      "keywords": ["steam", "steaming"],
+      "pills": ["Vegetables", "Seafood", "Dumplings"]
+    },
+    {
+      "name": "Blanching",
+      "image": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=80",
+      "keywords": ["blanch", "blanching"],
+      "pills": ["Vegetables"]
+    },
+    {
+      "name": "Stewing",
+      "image": "https://images.unsplash.com/photo-1547592180-85f173990554?w=800&q=80",
+      "keywords": ["stew", "stewing"],
+      "pills": ["Meat", "Vegetable"]
+    },
+    {
+      "name": "Braising",
+      "image": "https://images.unsplash.com/photo-1547592180-85f173990554?w=800&q=80",
+      "keywords": ["braise", "braising"],
+      "pills": ["Beef", "Pork", "Vegetables"]
+    },
+    {
+      "name": "Roasting/Baking",
+      "image": "https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=800&q=80",
+      "keywords": ["roasting", "roast", "baking", "bake", "oven baked"],
+      "pills": ["Roasting", "Baking"]
+    },
+    {
+      "name": "Broiling",
+      "image": "https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=800&q=80",
+      "keywords": ["broil", "broiling"],
+      "pills": []
+    },
+    {
+      "name": "Grilling/Barbecuing",
+      "image": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80",
+      "keywords": ["grill", "grilling", "barbecue", "barbeque", "bbq"],
+      "pills": ["Charcoal", "Gas", "BBQ"]
+    },
+    {
+      "name": "Sautéing/Stir-frying",
+      "image": "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=800&q=80",
+      "keywords": ["sauté", "saute", "sautéing", "sauteing", "stir-fry", "stir fry", "wok"],
+      "pills": ["Sautéing", "Stir-Frying", "Wok"]
+    },
+    {
+      "name": "Frying",
+      "image": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&q=80",
+      "keywords": ["frying", "fried", "deep-fry", "deep fry", "shallow fry", "pan fry"],
+      "pills": ["Shallow Fry", "Deep Fry"]
+    },
+    {
+      "name": "Smoking",
+      "image": "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800&q=80",
+      "keywords": ["smoking", "smoke", "smoked"],
+      "pills": ["Hot Smoke", "Cold Smoke"]
+    },
+    {
+      "name": "Pressure Cooking",
+      "image": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=800&q=80",
+      "keywords": ["pressure cook", "pressure cooking", "instant pot", "multi-cooker"],
+      "pills": ["Instant Pot"]
+    },
+    {
+      "name": "Sous Vide",
+      "image": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=800&q=80",
+      "keywords": ["sous vide", "sous-vide"],
+      "pills": []
+    },
+    {
+      "name": "Microwave Cooking",
+      "image": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=800&q=80",
+      "keywords": ["microwave"],
+      "pills": []
+    },
+    {
+      "name": "Fermenting",
+      "image": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=80",
+      "keywords": ["ferment", "fermenting", "fermentation"],
+      "pills": ["Bread", "Vegetables"]
+    },
+    {
+      "name": "Curing",
+      "image": "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800&q=80",
+      "keywords": ["curing", "cured", "charcuterie", "cure"],
+      "pills": ["Charcuterie", "Bacon", "Fish"]
+    },
+    {
+      "name": "Pickling",
+      "image": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=80",
+      "keywords": ["pickle", "pickling", "pickled"],
+      "pills": ["Quick Pickle", "Fermented"]
+    },
+    {
+      "name": "Raw Preparation",
+      "image": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800&q=80",
+      "keywords": ["raw food", "uncooked", "no-cook", "no cook"],
+      "pills": ["Raw", "No-Cook"]
+    }
+  ]
+}
